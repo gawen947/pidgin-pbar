@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-05 20:04:49 gawen>
+   Time-stamp: <2010-10-05 20:51:01 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -23,6 +23,7 @@
 #include "widget_gtk.h"
 #include "widget_prpl.h"
 #include "preferences.h"
+#include "purple.h"
 
 struct widget *bar = NULL;
 
@@ -161,8 +162,6 @@ void init_widget()
   g_return_if_fail(bar->installed);
 
   /* for buddy icon */
-  const PidginBuddyList *blist;
-  const PidginStatusBox *statusbox;
   GdkPixbuf *icon;
 
   /* for nickname, personal message and status box */
@@ -170,8 +169,6 @@ void init_widget()
   gboolean state;
 
   /* for status */
-  const PurpleSavedStatus *status;
-  PurpleStatusPrimitive prim;
   const gchar *stock;
 
   /* nickname */
@@ -185,18 +182,14 @@ void init_widget()
   set_widget_pm(markup, value);
 
   /* buddy icon */
-  blist = pidgin_blist_get_default_gtk_blist();
-  statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
-  icon = statusbox->buddy_icon;
+  icon = get_buddy_icon();
   if(icon)
     gtk_image_set_from_pixbuf(GTK_IMAGE(bar->icon), icon);
   else
     gtk_image_set_from_stock(GTK_IMAGE(bar->icon), GTK_STOCK_MISSING_IMAGE, 48);
 
   /* status image */
-  status = purple_savedstatus_get_current();
-  prim   = purple_savedstatus_get_type(status);
-  stock  = pidgin_stock_id_from_status_primitive(prim);
+  stock  = get_status_stock_id();
   set_widget_status(stock);
 
   /* statusbox hidding */

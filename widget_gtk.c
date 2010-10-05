@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-05 12:58:07 gawen>
+   Time-stamp: <2010-10-05 20:55:16 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -21,6 +21,7 @@
 #include "preferences.h"
 #include "widget_gtk.h"
 #include "widget.h"
+#include "purple.h"
 
 static void colorshift(GdkPixbuf *dest, GdkPixbuf *src, int shift)
 {
@@ -76,7 +77,6 @@ void cb_buddy_icon(GtkWidget *widget, gpointer data)
   GtkWidget *chooser;
 
   blist = pidgin_blist_get_default_gtk_blist();
-  /* TODO: ugly indenting */
   chooser = pidgin_buddy_icon_chooser_new(GTK_WINDOW
                                           (gtk_widget_get_toplevel
                                            (GTK_WIDGET(blist))),
@@ -89,14 +89,9 @@ void cb_buddy_icon_enter(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  const PidginBuddyList *blist;
-  const PidginStatusBox *statusbox;
   GdkPixbuf *icon;
 
-  blist = pidgin_blist_get_default_gtk_blist();
-  statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
-  icon = gdk_pixbuf_copy(statusbox->buddy_icon);
-
+  icon = get_buddy_icon();
   colorshift(icon,icon,32);
   set_widget_icon(icon);
   pidgin_set_cursor(bar->event_box, GDK_HAND2);
@@ -106,14 +101,9 @@ void cb_buddy_icon_leave(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  const PidginBuddyList *blist;
-  const PidginStatusBox *statusbox;
   GdkPixbuf *icon;
 
-  blist = pidgin_blist_get_default_gtk_blist();
-  statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
-  icon = statusbox->buddy_icon;
-
+  icon = get_buddy_icon();
   set_widget_icon(icon);
   pidgin_set_cursor(bar->event_box, GDK_ARROW);
 }

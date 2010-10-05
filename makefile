@@ -34,7 +34,7 @@ endif
 
 .PHONY: all clean
 
-OBJS = pbar.o preferences.o widget.o widget_gtk.o widget_prpl.o
+OBJS = pbar.o preferences.o widget.o widget_gtk.o widget_prpl.o purple.o
 
 all: $(plugin)
 

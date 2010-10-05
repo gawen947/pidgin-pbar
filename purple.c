@@ -1,5 +1,5 @@
-/* File: widget_prpl.c
-   Time-stamp: <2010-10-05 20:58:30 gawen>
+/* File: purple.c
+   Time-stamp: <2010-10-05 20:43:05 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -18,28 +18,38 @@
 
 #include "common.h"
 
-#include "preferences.h"
-#include "widget.h"
-#include "widget_prpl.h"
+#include "purple.h"
 
-void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
+gboolean is_gtk_blist_created()
 {
-  /* TODO: override pidgin status as an option */
-  g_return_if_fail(bar->installed);
+  const PidginBuddyList *blist;
 
-  PurpleSavedStatus *status;
+  blist = pidgin_blist_get_default_gtk_blist();
+
+  if(!blist ||
+     !blist->vbox ||
+     !gtk_widget_get_visible(blist->vbox))
+    return FALSE;
+  return TRUE;
+}
+
+GdkPixbuf * get_buddy_icon()
+{
+  const PidginBuddyList *blist;
+  const PidginStatusBox *statusbox;
+
+  blist = pidgin_blist_get_default_gtk_blist();
+  statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
+  return statusbox->buddy_icon;
+}
+
+const gchar * get_status_stock_id()
+{
+  const PurpleSavedStatus *status;
   PurpleStatusPrimitive prim;
-  const gchar *stock;
-  const gchar *pm;
 
-  /* TODO: use callback parameters instead */
-  pm = purple_prefs_get_string(PREF "/personal-message");
   status = purple_savedstatus_get_current();
-  purple_savedstatus_set_message(status,pm);
-  purple_savedstatus_activate(status);
-
-  prim = purple_savedstatus_get_type(status);
-  stock = pidgin_stock_id_from_status_primitive(prim);
-  set_widget_status(stock);
+  prim   = purple_savedstatus_get_type(status);
+  return pidgin_stock_id_from_status_primitive(prim);
 }
 

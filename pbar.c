@@ -1,5 +1,5 @@
 /* File: pbar.c
-   Time-stamp: <2010-10-04 20:24:49 gawen>
+   Time-stamp: <2010-10-05 20:47:33 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -23,6 +23,7 @@
 #include "pbar.h"
 #include "preferences.h"
 #include "widget.h"
+#include "purple.h"
 
 static gboolean plugin_load(PurplePlugin *plugin);
 static gboolean plugin_unload(PurplePlugin *plugin);
@@ -59,17 +60,6 @@ static PurplePluginInfo info = {
 };
 
 PurplePlugin *thisplugin;
-
-static gboolean is_gtk_blist_created()
-{
-  const PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
-
-  if(!blist ||
-     !blist->vbox ||
-     !gtk_widget_get_visible(blist->vbox))
-    return FALSE;
-  return TRUE;
-}
 
 static void cb_blist_created()
 {
