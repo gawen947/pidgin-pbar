@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-05 16:31:29 gawen>
+   Time-stamp: <2010-10-05 17:54:42 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -29,26 +29,32 @@ static void cb_hide_statusbox(GtkWidget *widget, gpointer data);
 
 void init_prefs()
 {
+  const struct prefs_string {
+    const char *name;
+    const char *value;
+  } prefs_add_string[] = {
+    { PREF "/personal-message-markup-hover", "<span color=\"darkgreen\"><small><i>%p</i></small></span>" },
+    { PREF "/personal-message-markup", "<small><i>%p</i></small>" },
+    { PREF "/nickname-markup-hover", "<span color=\"darkgreen\"><b>%n</b></span>" },
+    { PREF "/nickname-markup", "<b>%n</b>" },
+    { PREF "/personal-message", EMPTY_PM },
+    { PREF "/nickname", EMPTY_NAME},
+    { NULL, NULL }
+  }; register const struct prefs_string *s = prefs_add_string;
+
+  const struct prefs_bool {
+    const char *name;
+    gboolean value;
+  } prefs_add_bool[] = {
+    { PREF "/hide-statusbox", TRUE },
+    { NULL, FALSE }
+  }; register const struct prefs_bool *b = prefs_add_bool;
+
   purple_prefs_add_none(PREF);
-  purple_prefs_add_string(PREF "/personal-message-markup-hover",
-                          "<span color=\"darkgreen\"><small><i>%p</i></small></span>");
-
-  purple_prefs_add_string(PREF "/personal-message-markup",
-                          "<small><i>%p</i></small>");
-
-  purple_prefs_add_string(PREF "/nickname-markup-hover",
-                          "<span color=\"darkgreen\"><b>%n</b></span>");
-
-  purple_prefs_add_string(PREF "/nickname-markup",
-                          "<b>%n</b>");
-
-  purple_prefs_add_string(PREF "/personal-message",
-                          EMPTY_PM);
-
-  purple_prefs_add_string(PREF "/nickname",
-                          EMPTY_NAME);
-
-  purple_prefs_add_bool(PREF "/hide-statusbox", TRUE);
+  for(; s->name ; s++)
+    purple_prefs_add_string(s->name, s->value);
+  for(; b->name ; b++)
+    purple_prefs_add_bool(b->name, b->value);
 }
 
 GtkWidget * get_config_frame(PurplePlugin *plugin)
