@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-05 01:26:12 gawen>
+   Time-stamp: <2010-10-05 12:58:07 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -89,8 +89,8 @@ void cb_buddy_icon_enter(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  PidginBuddyList *blist;
-  PidginStatusBox *statusbox;
+  const PidginBuddyList *blist;
+  const PidginStatusBox *statusbox;
   GdkPixbuf *icon;
 
   blist = pidgin_blist_get_default_gtk_blist();
@@ -98,10 +98,7 @@ void cb_buddy_icon_enter(GtkWidget *widget, gpointer data)
   icon = gdk_pixbuf_copy(statusbox->buddy_icon);
 
   colorshift(icon,icon,32);
-
-  /* TODO: use widget interface instead */
-  gtk_image_set_from_pixbuf(GTK_IMAGE(bar->icon), icon);
-
+  set_widget_icon(icon);
   pidgin_set_cursor(bar->event_box, GDK_HAND2);
 }
 
@@ -109,18 +106,15 @@ void cb_buddy_icon_leave(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  PidginBuddyList *blist;
-  PidginStatusBox *statusbox;
+  const PidginBuddyList *blist;
+  const PidginStatusBox *statusbox;
   GdkPixbuf *icon;
 
   blist = pidgin_blist_get_default_gtk_blist();
   statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
   icon = statusbox->buddy_icon;
 
-  if(icon)
-    gtk_image_set_from_pixbuf(GTK_IMAGE(bar->icon), icon);
-  else
-    gtk_image_set_from_stock(GTK_IMAGE(bar->icon), GTK_STOCK_MISSING_IMAGE, 48);
+  set_widget_icon(icon);
   pidgin_set_cursor(bar->event_box, GDK_ARROW);
 }
 
