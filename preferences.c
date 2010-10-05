@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-05 17:54:42 gawen>
+   Time-stamp: <2010-10-05 19:16:24 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -33,12 +33,18 @@ void init_prefs()
     const char *name;
     const char *value;
   } prefs_add_string[] = {
-    { PREF "/personal-message-markup-hover", "<span color=\"darkgreen\"><small><i>%p</i></small></span>" },
-    { PREF "/personal-message-markup", "<small><i>%p</i></small>" },
-    { PREF "/nickname-markup-hover", "<span color=\"darkgreen\"><b>%n</b></span>" },
-    { PREF "/nickname-markup", "<b>%n</b>" },
-    { PREF "/personal-message", EMPTY_PM },
-    { PREF "/nickname", EMPTY_NAME},
+    { PREF "/personal-message-markup-hover",
+      "<span color=\"darkgreen\"><small><i>%p</i></small></span>" },
+    { PREF "/personal-message-markup",
+      "<small><i>%p</i></small>" },
+    { PREF "/nickname-markup-hover",
+      "<span color=\"darkgreen\"><b>%n</b></span>" },
+    { PREF "/nickname-markup",
+      "<b>%n</b>" },
+    { PREF "/personal-message",
+      EMPTY_PM },
+    { PREF "/nickname",
+      EMPTY_NAME},
     { NULL, NULL }
   }; register const struct prefs_string *s = prefs_add_string;
 
@@ -59,74 +65,59 @@ void init_prefs()
 
 GtkWidget * get_config_frame(PurplePlugin *plugin)
 {
-  /* create widgets */
-  GtkWidget *table = gtk_table_new(5, 2, FALSE);
-  GtkWidget *l_n_m  = gtk_label_new("Nickname markup");
-  GtkWidget *l_n_mh = gtk_label_new("Nickname markup hover");
-  GtkWidget *l_p_m  = gtk_label_new("Personal message markup");
-  GtkWidget *l_p_mh = gtk_label_new("Personal message markup hover");
-  GtkWidget *n_m    = gtk_entry_new();
-  GtkWidget *n_mh   = gtk_entry_new();
-  GtkWidget *p_m    = gtk_entry_new();
-  GtkWidget *p_mh   = gtk_entry_new();
-  GtkWidget *sb     = gtk_check_button_new_with_label("Hide status box");
+  struct widget {
+    const char *name;
+    const char *prefs;
+    void (*callback)(GtkWidget *, gpointer);
+  };
 
-  /* load configuration */
-  const gchar *s_n_m  = purple_prefs_get_string(PREF "/nickname-markup");
-  const gchar *s_n_mh = purple_prefs_get_string(PREF "/nickname-markup-hover");
-  const gchar *s_p_m  = purple_prefs_get_string(PREF "/personal-message-markup");
-  const gchar *s_p_mh = purple_prefs_get_string(PREF "/personal-message-markup-hover");
-  gboolean s_sb = purple_prefs_get_bool(PREF "/hide-statusbox");
+  const struct widget entry[] = {
+    { "Nickname markup",
+      PREF "/nickname-markup",
+      cb_nickname_markup },
+    { "Nickname markup hover",
+      PREF "/nickname-markup-hover",
+      cb_nickname_markup_hover },
+    { "Personal message markup",
+      PREF "/personal-message-markup",
+      cb_personal_message_markup },
+    { "Personal message markup hover",
+      PREF "/personal-message-markup-hover",
+      cb_personal_message_markup_hover },
+    { NULL, NULL, NULL }
+  }; register const struct widget *e = entry;
 
-  /* set configuration */
-  gtk_entry_set_text(GTK_ENTRY(n_m),s_n_m);
-  gtk_entry_set_text(GTK_ENTRY(n_mh),s_n_mh);
-  gtk_entry_set_text(GTK_ENTRY(p_m),s_p_m);
-  gtk_entry_set_text(GTK_ENTRY(p_mh),s_p_mh);
-  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(sb),s_sb);
+  const struct widget check_button[] = {
+    { "Hide status box",
+      PREF "/hide-statusbox",
+      cb_hide_statusbox },
+    { NULL, NULL, NULL }
+  }; register const struct widget *cb = check_button;
 
-  /* setup widgets */
-  gtk_misc_set_alignment(GTK_MISC(l_n_m), 0., .5);
-  gtk_misc_set_alignment(GTK_MISC(l_n_mh), 0., .5);
-  gtk_misc_set_alignment(GTK_MISC(l_p_m), 0., .5);
-  gtk_misc_set_alignment(GTK_MISC(l_p_mh), 0., .5);
+  GtkWidget *table = gtk_table_new(((sizeof(entry) - 2) +
+                                    sizeof(check_button) / 2 - 1) /
+                                   sizeof(struct widget),
+                                   2, FALSE);
+  int x = 0, y = 0;
+  for(; e->name ; e++, y++) {
+    GtkWidget *widget_label  = gtk_label_new(e->name);
+    GtkWidget *widget_entry  = gtk_entry_new();
+    const gchar *prefs_value = purple_prefs_get_string(e->prefs);
 
-  /* pack widgets */
-  gtk_table_attach(GTK_TABLE(table),l_n_m,0,1,0,1, GTK_FILL, GTK_FILL, 5, 5);
-  gtk_table_attach(GTK_TABLE(table),l_n_mh,0,1,1,2, GTK_FILL, GTK_FILL, 5, 5);
-  gtk_table_attach(GTK_TABLE(table),l_p_m,0,1,2,3, GTK_FILL, GTK_FILL, 5, 5);
-  gtk_table_attach(GTK_TABLE(table),l_p_mh,0,1,3,4, GTK_FILL, GTK_FILL, 5, 5);
-  gtk_table_attach(GTK_TABLE(table),n_m,1,2,0,1, GTK_FILL, GTK_FILL, 5, 5);
-  gtk_table_attach(GTK_TABLE(table),n_mh,1,2,1,2, GTK_FILL, GTK_FILL, 5, 5);
-  gtk_table_attach(GTK_TABLE(table),p_m,1,2,2,3, GTK_FILL, GTK_FILL, 5, 5);
-  gtk_table_attach(GTK_TABLE(table),p_mh,1,2,3,4, GTK_FILL, GTK_FILL, 5, 5);
-  gtk_table_attach(GTK_TABLE(table),sb,0,1,4,5,GTK_FILL, GTK_FILL, 5, 5);
+    gtk_entry_set_text(GTK_ENTRY(widget_entry), prefs_value);
+    gtk_misc_set_alignment(GTK_MISC(widget_label), 0., .5);
+    gtk_table_attach(GTK_TABLE(table), widget_label, 0, 1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
+    gtk_table_attach(GTK_TABLE(table), widget_entry, 1, 2, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
+    g_signal_connect(G_OBJECT(widget_entry), "changed", G_CALLBACK(e->callback),NULL);
+  }
+  for(; cb->name ; cb++, x = (x + 1) % 2, y++) {
+    GtkWidget *widget_cb = gtk_check_button_new_with_label(cb->name);
+    gboolean prefs_value = purple_prefs_get_bool(cb->prefs);
 
-  /* connect signals */
-  g_signal_connect(G_OBJECT(n_m),
-                   "changed",
-                   G_CALLBACK(cb_nickname_markup),
-                   NULL);
-
-  g_signal_connect(G_OBJECT(n_mh),
-                   "changed",
-                   G_CALLBACK(cb_nickname_markup_hover),
-                   NULL);
-
-  g_signal_connect(G_OBJECT(p_m),
-                   "changed",
-                   G_CALLBACK(cb_personal_message_markup),
-                   NULL);
-
-  g_signal_connect(G_OBJECT(p_mh),
-                   "changed",
-                   G_CALLBACK(cb_personal_message_markup_hover),
-                   NULL);
-
-  g_signal_connect(G_OBJECT(sb),
-                   "toggled",
-                   G_CALLBACK(cb_hide_statusbox),
-                   NULL);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget_cb), prefs_value);
+    gtk_table_attach(GTK_TABLE(table), widget_cb, x, x+1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
+    g_signal_connect(G_OBJECT(widget_cb), "toggled", G_CALLBACK(cb->callback),NULL);
+  }
 
   return table;
 }
