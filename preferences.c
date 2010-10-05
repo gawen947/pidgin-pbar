@@ -92,7 +92,8 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     gtk_misc_set_alignment(GTK_MISC(widget_label), 0., .5);
     gtk_table_attach(GTK_TABLE(table), widget_label, 0, 1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     gtk_table_attach(GTK_TABLE(table), widget_entry, 1, 2, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
-    g_signal_connect(G_OBJECT(widget_entry), "changed", G_CALLBACK(e->callback),NULL);
+    g_signal_connect(G_OBJECT(widget_entry), "activate", G_CALLBACK(e->callback),NULL);
+    g_signal_connect(G_OBJECT(widget_entry), "focus-out-event", G_CALLBACK(e->callback),NULL);
   }
   for(; cb->name ; cb++, x = (x + 1) % 2, y++) {
     GtkWidget *widget_cb = gtk_check_button_new_with_label(cb->name);
