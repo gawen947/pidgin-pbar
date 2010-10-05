@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-05 19:16:24 gawen>
+   Time-stamp: <2010-10-05 19:28:59 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -33,18 +33,12 @@ void init_prefs()
     const char *name;
     const char *value;
   } prefs_add_string[] = {
-    { PREF "/personal-message-markup-hover",
-      "<span color=\"darkgreen\"><small><i>%p</i></small></span>" },
-    { PREF "/personal-message-markup",
-      "<small><i>%p</i></small>" },
-    { PREF "/nickname-markup-hover",
-      "<span color=\"darkgreen\"><b>%n</b></span>" },
-    { PREF "/nickname-markup",
-      "<b>%n</b>" },
-    { PREF "/personal-message",
-      EMPTY_PM },
-    { PREF "/nickname",
-      EMPTY_NAME},
+    { PREF "/personal-message-markup-hover", "<span color=\"darkgreen\"><small><i>%p</i></small></span>" },
+    { PREF "/personal-message-markup", "<small><i>%p</i></small>" },
+    { PREF "/nickname-markup-hover", "<span color=\"darkgreen\"><b>%n</b></span>" },
+    { PREF "/nickname-markup", "<b>%n</b>" },
+    { PREF "/personal-message", EMPTY_PM },
+    { PREF "/nickname", EMPTY_NAME},
     { NULL, NULL }
   }; register const struct prefs_string *s = prefs_add_string;
 
@@ -72,25 +66,15 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   };
 
   const struct widget entry[] = {
-    { "Nickname markup",
-      PREF "/nickname-markup",
-      cb_nickname_markup },
-    { "Nickname markup hover",
-      PREF "/nickname-markup-hover",
-      cb_nickname_markup_hover },
-    { "Personal message markup",
-      PREF "/personal-message-markup",
-      cb_personal_message_markup },
-    { "Personal message markup hover",
-      PREF "/personal-message-markup-hover",
-      cb_personal_message_markup_hover },
+    { "Nickname markup", PREF "/nickname-markup", cb_nickname_markup },
+    { "Nickname markup hover", PREF "/nickname-markup-hover", cb_nickname_markup_hover },
+    { "Personal message markup", PREF "/personal-message-markup", cb_personal_message_markup },
+    { "Personal message markup hover", PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
     { NULL, NULL, NULL }
   }; register const struct widget *e = entry;
 
   const struct widget check_button[] = {
-    { "Hide status box",
-      PREF "/hide-statusbox",
-      cb_hide_statusbox },
+    { "Hide status box", PREF "/hide-statusbox", cb_hide_statusbox },
     { NULL, NULL, NULL }
   }; register const struct widget *cb = check_button;
 
