@@ -1,5 +1,5 @@
- /* File: prefs.c
-   Time-stamp: <2010-10-05 01:17:58 gawen>
+/* File: prefs.c
+   Time-stamp: <2010-10-05 16:31:29 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -79,16 +79,22 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   gtk_entry_set_text(GTK_ENTRY(p_mh),s_p_mh);
   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(sb),s_sb);
 
+  /* setup widgets */
+  gtk_misc_set_alignment(GTK_MISC(l_n_m), 0., .5);
+  gtk_misc_set_alignment(GTK_MISC(l_n_mh), 0., .5);
+  gtk_misc_set_alignment(GTK_MISC(l_p_m), 0., .5);
+  gtk_misc_set_alignment(GTK_MISC(l_p_mh), 0., .5);
+
   /* pack widgets */
-  gtk_table_attach_defaults(GTK_TABLE(table),l_n_m,0,1,0,1);
-  gtk_table_attach_defaults(GTK_TABLE(table),l_n_mh,0,1,1,2);
-  gtk_table_attach_defaults(GTK_TABLE(table),l_p_m,0,1,2,3);
-  gtk_table_attach_defaults(GTK_TABLE(table),l_p_mh,0,1,3,4);
-  gtk_table_attach_defaults(GTK_TABLE(table),n_m,1,2,0,1);
-  gtk_table_attach_defaults(GTK_TABLE(table),n_mh,1,2,1,2);
-  gtk_table_attach_defaults(GTK_TABLE(table),p_m,1,2,2,3);
-  gtk_table_attach_defaults(GTK_TABLE(table),p_mh,1,2,3,4);
-  gtk_table_attach_defaults(GTK_TABLE(table),sb,1,2,4,5);
+  gtk_table_attach(GTK_TABLE(table),l_n_m,0,1,0,1, GTK_FILL, GTK_FILL, 5, 5);
+  gtk_table_attach(GTK_TABLE(table),l_n_mh,0,1,1,2, GTK_FILL, GTK_FILL, 5, 5);
+  gtk_table_attach(GTK_TABLE(table),l_p_m,0,1,2,3, GTK_FILL, GTK_FILL, 5, 5);
+  gtk_table_attach(GTK_TABLE(table),l_p_mh,0,1,3,4, GTK_FILL, GTK_FILL, 5, 5);
+  gtk_table_attach(GTK_TABLE(table),n_m,1,2,0,1, GTK_FILL, GTK_FILL, 5, 5);
+  gtk_table_attach(GTK_TABLE(table),n_mh,1,2,1,2, GTK_FILL, GTK_FILL, 5, 5);
+  gtk_table_attach(GTK_TABLE(table),p_m,1,2,2,3, GTK_FILL, GTK_FILL, 5, 5);
+  gtk_table_attach(GTK_TABLE(table),p_mh,1,2,3,4, GTK_FILL, GTK_FILL, 5, 5);
+  gtk_table_attach(GTK_TABLE(table),sb,0,1,4,5,GTK_FILL, GTK_FILL, 5, 5);
 
   /* connect signals */
   g_signal_connect(G_OBJECT(n_m),
