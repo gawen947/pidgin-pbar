@@ -1,4 +1,13 @@
 CC=gcc
+RM=rm -f
+INSTALL=install
+
+COMMIT=$(shell ./hash.sh)
+
+CFLAGS+=-O2 -Wall
+ifdef DEBUG
+CFLAGS+=-g
+endif
 
 PIDGIN_CFLAGS=`pkg-config --cflags pidgin purple`
 PIDGIN_LIBS=`pkg-config --libs pidgin purple`
@@ -14,11 +23,6 @@ GOBJECT_LIBS=`pkg-config --libs gobject-2.0`
 P = @printf "[%s] $@\n" # <- space before hash is important!!!
 Q = @
 
-CFLAGS+=-O2 -Wall
-
-ifdef DEBUG
-CFLAGS+=-g
-endif
 
 SHLIBEXT=so
 ifdef STATIC
@@ -45,7 +49,7 @@ $(plugin): LIBS := $(PIDGIN_LIBS) $(GTK_LIBS) \
 # $(P)CC shows [CC] and the next line shows the nice output
 %.o:: %.c
 	$(P)CC
-	$(Q)$(CC) $(CFLAGS) -Wp,-MMD,$(dir $@).$(notdir $@).d -o $@ -c $<
+	$(Q)$(CC) -DCOMMIT="\"$(COMMIT)\"" $(CFLAGS) -Wp,-MMD,$(dir $@).$(notdir $@).d -o $@ -c $<
 
 # Make the shared object/lib
 %.so::
@@ -53,11 +57,11 @@ $(plugin): LIBS := $(PIDGIN_LIBS) $(GTK_LIBS) \
 	$(Q)$(CC) -shared -o $@ $^ $(LIBS)
 
 clean:
-	rm -f $(plugin) $(OBJS)
+	$(RM) $(plugin) $(OBJS)
 
 install: $(plugin)
 	mkdir -p $(PIDGIN_PLUGINDIR)
-	install $(plugin) $(PIDGIN_PLUGINDIR)
+	$(INSTALL) $(plugin) $(PIDGIN_PLUGINDIR)
 
 uninstall:
-	rm $(PIDGIN_PLUGINDIR)/$(plugin)
+	$(RM) $(PIDGIN_PLUGINDIR)/$(plugin)

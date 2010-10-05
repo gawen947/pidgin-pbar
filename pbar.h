@@ -1,5 +1,5 @@
 /* File: pbar.h
-   Time-stamp: <2010-10-05 01:17:08 gawen>
+   Time-stamp: <2010-10-05 16:46:19 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -32,11 +32,16 @@
 /* name */
 #define NAME               "pbar"
 #define DISP_NAME          "PBar"
+#define VERSION            "0.1-git"
 
 /* plugin information */
 #define PLUGIN_ID          "gtk-" NAME
 #define PLUGIN_NAME        N_(DISP_NAME)
-#define PLUGIN_VERSION     "0.1-git"
+#ifndef COMMIT
+# define PLUGIN_VERSION    VERSION
+#else
+# define PLUGIN_VERSION    VERSION " (commit:" COMMIT ")"
+#endif
 #define PLUGIN_SUMMARY     N_("Set alias and status globally")
 #define PLUGIN_DESCRIPTION N_("Display a toolbar to set alias " \
                               "and status globally")
