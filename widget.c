@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-05 12:55:02 gawen>
+   Time-stamp: <2010-10-05 20:04:49 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -86,68 +86,48 @@ void create_widget()
   bar->hover_name = FALSE;
   bar->hover_pm   = FALSE;
 
-  /* connect gtk signals */
-  g_signal_connect(G_OBJECT(bar->event_box),
-                   "button-press-event",
-                   G_CALLBACK(cb_buddy_icon),
-                   NULL);
-  g_signal_connect(G_OBJECT(bar->event_box),
-                   "enter-notify-event",
-                   G_CALLBACK(cb_buddy_icon_enter),
-                   NULL);
-  g_signal_connect(G_OBJECT(bar->event_box),
-                   "leave-notify-event",
-                   G_CALLBACK(cb_buddy_icon_leave),
-                   NULL);
+  /* connect gtk and purple signals */
+  const struct g_signal {
+    GtkWidget *widget;
+    const gchar *signal;
+    void (*callback)(GtkWidget *, gpointer);
+  } g_signal_connections[] = {
+    { bar->event_box, "button-press-event", cb_buddy_icon },
+    { bar->event_box, "enter-notify-event", cb_buddy_icon_enter },
+    { bar->event_box, "leave-notify-event", cb_buddy_icon_leave },
+    { bar->name_button, "clicked", cb_name_button },
+    { bar->name_button, "enter", cb_name_button_enter },
+    { bar->name_button, "leave", cb_name_button_leave },
+    { bar->name_entry, "activate", cb_name_entry },
+    { bar->name_entry, "focus-out-event", cb_name_entry },
+    { bar->pm_button, "clicked", cb_pm_button },
+    { bar->pm_button, "enter", cb_pm_button_enter },
+    { bar->pm_button, "leave", cb_pm_button_leave },
+    { bar->pm_entry, "activate", cb_pm_entry },
+    { bar->pm_entry, "focus-out-event", cb_pm_entry },
+    { NULL, NULL, NULL }
+  }; register const struct g_signal *g_sig = g_signal_connections;
 
-  g_signal_connect(G_OBJECT(bar->name_button),
-                   "clicked",
-                   G_CALLBACK(cb_name_button),
-                   NULL);
-  g_signal_connect(G_OBJECT(bar->name_button),
-                   "enter",
-                   G_CALLBACK(cb_name_button_enter),
-                   NULL);
-  g_signal_connect(G_OBJECT(bar->name_button),
-                   "leave",
-                   G_CALLBACK(cb_name_button_leave),
-                   NULL);
-  g_signal_connect(G_OBJECT(bar->name_entry),
-                   "activate",
-                   G_CALLBACK(cb_name_entry),
-                   NULL);
-  g_signal_connect(G_OBJECT(bar->name_entry),
-                   "focus-out-event",
-                   G_CALLBACK(cb_name_entry),
-                   NULL);
+  const struct p_signal {
+    void * instance;
+    const char *signal;
+    void * callback;
+  } p_signal_connections[] = {
+    { purple_accounts_get_handle(), "account-status-changed", cb_status },
+    { NULL, NULL, NULL }
+  }; register const struct p_signal *p_sig = p_signal_connections;
 
-  g_signal_connect(G_OBJECT(bar->pm_button),
-                   "clicked",
-                   G_CALLBACK(cb_pm_button),
-                   NULL);
-  g_signal_connect(G_OBJECT(bar->pm_button),
-                   "enter",
-                   G_CALLBACK(cb_pm_button_enter),
-                   NULL);
-  g_signal_connect(G_OBJECT(bar->pm_button),
-                   "leave",
-                   G_CALLBACK(cb_pm_button_leave),
-                   NULL);
-  g_signal_connect(G_OBJECT(bar->pm_entry),
-                   "activate",
-                   G_CALLBACK(cb_pm_entry),
-                   NULL);
-  g_signal_connect(G_OBJECT(bar->pm_entry),
-                   "focus-out-event",
-                   G_CALLBACK(cb_pm_entry),
-                   NULL);
-
-  /* connect purple signals */
-  purple_signal_connect(purple_accounts_get_handle(),
-                        "account-status-changed",
-                        thisplugin,
-                        PURPLE_CALLBACK(cb_status),
-                        NULL);
+  for(; g_sig->widget ; g_sig++)
+    g_signal_connect(G_OBJECT(g_sig->widget),
+                     g_sig->signal,
+                     G_CALLBACK(g_sig->callback),
+                     NULL);
+  for(; p_sig->instance ; p_sig++)
+    purple_signal_connect(p_sig->instance,
+                          p_sig->signal,
+                          thisplugin,
+                          PURPLE_CALLBACK(p_sig->callback),
+                          NULL);
 
   /* show everything */
   gtk_widget_show_all(bar->hbox);
