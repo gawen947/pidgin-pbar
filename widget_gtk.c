@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-06 19:48:42 gawen>
+   Time-stamp: <2010-10-06 22:10:39 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -23,10 +23,15 @@
 #include "widget.h"
 #include "purple.h"
 
-static void set_buddy_icon_path(const gchar *path, gpointer data)
+static void cb_icon_choose(const gchar *path, gpointer data)
 {
   g_return_if_fail(path);
+
   purple_prefs_set_path(PIDGIN_PREFS_ROOT "/accounts/buddyicon", path);
+  /* TODO: this introduce a bug :
+     if buddy icon has changed using our chooser the icon widget won't
+     be updated until hovered because buddy->icon is set through a
+     pref callback on buddyicon */
 }
 
 void cb_buddy_icon(GtkWidget *widget, gpointer data)
@@ -40,7 +45,7 @@ void cb_buddy_icon(GtkWidget *widget, gpointer data)
   chooser = pidgin_buddy_icon_chooser_new(GTK_WINDOW
                                           (gtk_widget_get_toplevel
                                            (GTK_WIDGET(blist))),
-                                          set_buddy_icon_path,
+                                          cb_icon_choose,
                                           NULL);
   gtk_widget_show(chooser);
 }

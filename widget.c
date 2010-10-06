@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-06 19:28:10 gawen>
+   Time-stamp: <2010-10-06 21:33:40 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -110,24 +110,24 @@ void create_widget()
   }; register const struct g_signal *g_sig = g_signal_connections;
 
   const struct p_signal {
-    void * instance;
+    void *instance;
     const char *signal;
-    void * callback;
-  } p_signal_connections[] = {
+    void *callback;
+  } purple_signal_connections[] = {
     { purple_accounts_get_handle(), "account-status-changed", cb_status },
     { NULL, NULL, NULL }
-  }; register const struct p_signal *p_sig = p_signal_connections;
+  }; register const struct p_signal *purple_sig = purple_signal_connections;
 
   for(; g_sig->widget ; g_sig++)
     g_signal_connect(G_OBJECT(g_sig->widget),
                      g_sig->signal,
                      G_CALLBACK(g_sig->callback),
                      NULL);
-  for(; p_sig->instance ; p_sig++)
-    purple_signal_connect(p_sig->instance,
-                          p_sig->signal,
+  for(; purple_sig->instance ; purple_sig++)
+    purple_signal_connect(purple_sig->instance,
+                          purple_sig->signal,
                           thisplugin,
-                          PURPLE_CALLBACK(p_sig->callback),
+                          PURPLE_CALLBACK(purple_sig->callback),
                           NULL);
 
   /* show everything */

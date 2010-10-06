@@ -22,5 +22,6 @@
 #include "common.h"
 
 void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new);
+void cb_buddy_icon_set(const char *name, PurplePrefType type, gconstpointer val, gpointer data);
 
 #endif /* _WIDGET_PRPL_H_ */

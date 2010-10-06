@@ -21,6 +21,8 @@
 
 #include "common.h"
 
+#define PURPLE_PREFS_CALLBACK(func) ((PurplePrefCallback)func)
+
 gboolean is_gtk_blist_created();
 GdkPixbuf * get_buddy_icon();
 GdkPixbuf * get_buddy_icon_hover();

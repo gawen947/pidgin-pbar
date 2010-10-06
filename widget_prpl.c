@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-10-05 20:58:30 gawen>
+   Time-stamp: <2010-10-06 20:10:07 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -21,6 +21,7 @@
 #include "preferences.h"
 #include "widget.h"
 #include "widget_prpl.h"
+#include "purple.h"
 
 void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
 {
