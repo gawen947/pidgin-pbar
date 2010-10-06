@@ -183,10 +183,7 @@ void init_widget()
 
   /* buddy icon */
   icon = get_buddy_icon();
-  if(icon)
-    gtk_image_set_from_pixbuf(GTK_IMAGE(bar->icon), icon);
-  else
-    gtk_image_set_from_stock(GTK_IMAGE(bar->icon), GTK_STOCK_MISSING_IMAGE, 48);
+  set_widget_icon(icon);
 
   /* status image */
   stock  = get_status_stock_id();
