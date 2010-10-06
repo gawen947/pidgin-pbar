@@ -23,6 +23,7 @@
 
 gboolean is_gtk_blist_created();
 GdkPixbuf * get_buddy_icon();
+GdkPixbuf * get_buddy_icon_hover();
 const gchar * get_status_stock_id();
 
 #endif /* _PURPLE_H_ */

@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-10-05 20:43:05 gawen>
+   Time-stamp: <2010-10-06 19:40:13 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -41,6 +41,16 @@ GdkPixbuf * get_buddy_icon()
   blist = pidgin_blist_get_default_gtk_blist();
   statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
   return statusbox->buddy_icon;
+}
+
+GdkPixbuf * get_buddy_icon_hover()
+{
+  const PidginBuddyList *blist;
+  const PidginStatusBox *statusbox;
+
+  blist = pidgin_blist_get_default_gtk_blist();
+  statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
+  return statusbox->buddy_icon_hover;
 }
 
 const gchar * get_status_stock_id()

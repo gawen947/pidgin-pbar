@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-05 20:55:16 gawen>
+   Time-stamp: <2010-10-06 19:48:42 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -22,46 +22,6 @@
 #include "widget_gtk.h"
 #include "widget.h"
 #include "purple.h"
-
-static void colorshift(GdkPixbuf *dest, GdkPixbuf *src, int shift)
-{
-  /* TODO: redo */
-  gint i,j;
-  gint width, height, has_alpha, srcrowstride, destrowstride;
-  guchar *target_pixels;
-  guchar *orig_pixels;
-  guchar *pixsrc;
-  guchar *pixdest;
-  int val;
-  guchar r,g,b;
-
-  has_alpha = gdk_pixbuf_get_has_alpha(src);
-  width = gdk_pixbuf_get_width(src);
-  height = gdk_pixbuf_get_height(src);
-  srcrowstride = gdk_pixbuf_get_rowstride(src);
-  destrowstride = gdk_pixbuf_get_rowstride(dest);
-  target_pixels = gdk_pixbuf_get_pixels(dest);
-  orig_pixels = gdk_pixbuf_get_pixels(src);
-
-  for(i = 0 ; i < height ; i++) {
-    pixdest = target_pixels + i * destrowstride;
-    pixsrc  = orig_pixels + i * srcrowstride;
-    for(j = 0 ; j < width ; j++) {
-      r = *(pixsrc++);
-      g = *(pixsrc++);
-      b = *(pixsrc++);
-
-      val = r + shift;
-      *(pixdest++) = CLAMP(val, 0, 255);
-      val = g + shift;
-      *(pixdest++) = CLAMP(val, 0, 255);
-      val = b + shift;
-      *(pixdest++) = CLAMP(val, 0, 255);
-      if(has_alpha)
-        *(pixdest++) = *(pixsrc++);
-    }
-  }
-}
 
 static void set_buddy_icon_path(const gchar *path, gpointer data)
 {
@@ -91,8 +51,7 @@ void cb_buddy_icon_enter(GtkWidget *widget, gpointer data)
 
   GdkPixbuf *icon;
 
-  icon = get_buddy_icon();
-  colorshift(icon,icon,32);
+  icon = get_buddy_icon_hover();
   set_widget_icon(icon);
   pidgin_set_cursor(bar->event_box, GDK_HAND2);
 }
