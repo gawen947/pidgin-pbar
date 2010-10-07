@@ -35,4 +35,6 @@ void cb_pm_button_enter(GtkWidget *widget, gpointer data);
 void cb_pm_button_leave(GtkWidget *widget, gpointer data);
 void cb_pm_entry(GtkWidget *widget, gpointer data);
 
+void cb_status_button(GtkWidget *widget, gpointer data);
+
 #endif /* _WIDGET_GTK_H_ */

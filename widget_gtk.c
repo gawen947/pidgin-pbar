@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-07 18:20:56 gawen>
+   Time-stamp: <2010-10-07 19:24:15 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -234,4 +234,14 @@ void cb_pm_entry(GtkWidget *widget, gpointer data)
   gtk_widget_show(bar->pm_button);
 
   purple_debug_info(NAME, "personal message set to \"%s\".", pm);
+}
+
+void cb_status_button(GtkWidget *widget, gpointer data)
+{
+  g_return_if_fail(bar->installed);
+
+  GdkEventButton *event = (GdkEventButton *)gtk_get_current_event();
+
+  gtk_menu_popup(GTK_MENU(bar->status_menu), NULL, NULL, NULL, NULL,
+                 event->button, event->time);
 }

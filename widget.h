@@ -1,5 +1,5 @@
 /* File: widget.h
-   Time-stamp: <2010-10-06 19:37:32 gawen>
+   Time-stamp: <2010-10-07 19:10:05 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -26,6 +26,7 @@ struct widget {
   GtkWidget *icon;
   GtkWidget *event_box;
   GtkWidget *status;
+  GtkWidget *status_menu;
 
   /* nickname */
   GtkWidget *name_label;

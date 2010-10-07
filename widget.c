@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-06 21:33:40 gawen>
+   Time-stamp: <2010-10-07 19:09:29 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -43,7 +43,7 @@ void create_widget()
   bar->pm_entry    = gtk_entry_new();
   bar->hbox        = gtk_hbox_new(FALSE, 2);
   bar->event_box   = gtk_event_box_new();
-
+  bar->status_menu = gtk_menu_new();
 
   /* widgets that are not modified */
   GtkWidget *vbox = gtk_vbox_new(FALSE, 0);
@@ -79,7 +79,7 @@ void create_widget()
   gtk_box_pack_start(GTK_BOX(bar->hbox), vbox, TRUE, TRUE, 0);
 
   /* pack into buddy list */
-  PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
+  const PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
   gtk_box_pack_start(GTK_BOX(blist->vbox), bar->hbox, FALSE, TRUE, 2);
   gtk_box_reorder_child(GTK_BOX(blist->vbox), bar->hbox, 0);
 
@@ -106,6 +106,7 @@ void create_widget()
     { bar->pm_button, "leave", cb_pm_button_leave },
     { bar->pm_entry, "activate", cb_pm_entry },
     { bar->pm_entry, "focus-out-event", cb_pm_entry },
+    { bar->status, "clicked", cb_status_button },
     { NULL, NULL, NULL }
   }; register const struct g_signal *g_sig = g_signal_connections;
 
@@ -146,6 +147,7 @@ void destroy_widget()
   GList *l, *i;
 
   bar->installed = FALSE;
+  gtk_widget_destroy(bar->status_menu);
   l = gtk_container_get_children(GTK_CONTAINER(bar->hbox));
   for(i = l ; i ; i = i->next) {
     gtk_widget_destroy(i->data);
