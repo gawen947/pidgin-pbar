@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-07 20:38:06 gawen>
+   Time-stamp: <2010-10-07 21:30:21 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -249,6 +249,11 @@ void init_widget()
       */
 
       gtk_menu_shell_append(GTK_MENU_SHELL(bar->status_menu), menu_item);
+
+      g_signal_connect_swapped(menu_item, "activate",
+                               G_CALLBACK(cb_status_menu),
+                               (gpointer)status_type);
+
       gtk_widget_show(menu_item);
     }
   }

@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-07 19:24:52 gawen>
+   Time-stamp: <2010-10-07 21:42:16 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -244,4 +244,17 @@ void cb_status_button(GtkWidget *widget, gpointer data)
 
   gtk_menu_popup(GTK_MENU(bar->status_menu), NULL, NULL, NULL, NULL,
                  event->button, event->time);
+}
+
+void cb_status_menu(gpointer data)
+{
+  g_return_if_fail(bar->installed);
+
+  PurpleSavedStatus *status;
+  PurpleStatusType *status_type = (PurpleStatusType *)data;
+  PurpleStatusPrimitive type_prim = purple_status_type_get_primitive(status_type);
+
+  status = purple_savedstatus_get_current();
+  purple_savedstatus_set_type(status, type_prim);
+  purple_savedstatus_activate(status);
 }
