@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-07 19:29:01 gawen>
+   Time-stamp: <2010-10-07 20:38:06 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -199,7 +199,62 @@ void init_widget()
   stock  = get_status_stock_id();
   set_widget_status(stock);
 
-  /* statusbox hidding */
+  /* fill status menu */
+  PurpleAccount *account;
+  GList *accounts, *l;
+  GList *status_added = NULL, *i;
+  gboolean already_added;
+
+  accounts = purple_accounts_get_all_active();
+  if(!accounts) {
+    purple_debug_error(NAME, "cannot get active accounts list");
+    return;
+  }
+  for(l = accounts ; l ; l = l->next) {
+    GList *status_types, *k;
+    account      = l->data;
+    status_types = purple_account_get_status_types(account);
+    for(k = status_types ; k ; k = k->next) {
+      PurpleStatusType *status_type = (PurpleStatusType *)k->data;
+      PurpleStatusPrimitive prim;
+      const gchar *stock_id;
+      GtkWidget *menu_item;
+
+      if(!purple_status_type_is_user_settable(status_type) ||
+         purple_status_type_is_independent(status_type))
+        continue;
+
+      prim      = purple_status_type_get_primitive(status_type);
+      stock_id  = pidgin_stock_id_from_status_primitive(prim);
+
+      already_added = FALSE;
+      for(i = status_added ; i ; i = i->next) {
+        const gchar *sa_stock_id = (const gchar *)i->data;
+
+        if(!strcmp(sa_stock_id, stock_id))
+          already_added = TRUE;
+      }
+      if(already_added)
+        continue;
+
+      status_added = g_list_append(status_added, (gpointer)stock_id);
+      menu_item = gtk_image_menu_item_new_from_stock(stock_id, NULL);
+
+      /* use stock id or only image ? */
+      /*
+      icon      = gtk_image_new_from_stock(stock_id, GTK_ICON_SIZE_MENU);
+
+      gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menu_item), icon);
+      gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), "");
+      */
+
+      gtk_menu_shell_append(GTK_MENU_SHELL(bar->status_menu), menu_item);
+      gtk_widget_show(menu_item);
+    }
+  }
+  g_list_free(status_added);
+
+  /* statusbox hiding */
   state = purple_prefs_get_bool(PREF "/hide-statusbox");
   set_statusbox_visible(!state);
 }
