@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-07 21:30:21 gawen>
+   Time-stamp: <2010-10-08 00:41:24 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -217,8 +217,8 @@ void init_widget()
     for(k = status_types ; k ; k = k->next) {
       PurpleStatusType *status_type = (PurpleStatusType *)k->data;
       PurpleStatusPrimitive prim;
-      const gchar *stock_id;
-      GtkWidget *menu_item;
+      const gchar *stock_id, *status_name;
+      GtkWidget *menu_item, *icon;
 
       if(!purple_status_type_is_user_settable(status_type) ||
          purple_status_type_is_independent(status_type))
@@ -236,17 +236,14 @@ void init_widget()
       }
       if(already_added)
         continue;
-
       status_added = g_list_append(status_added, (gpointer)stock_id);
-      menu_item = gtk_image_menu_item_new_from_stock(stock_id, NULL);
 
-      /* use stock id or only image ? */
-      /*
-      icon      = gtk_image_new_from_stock(stock_id, GTK_ICON_SIZE_MENU);
+      menu_item    = gtk_image_menu_item_new_from_stock(stock_id, NULL);
+      icon         = gtk_image_new_from_stock(stock_id, GTK_ICON_SIZE_MENU);
+      status_name  = purple_status_type_get_name(status_type);
 
       gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menu_item), icon);
-      gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), "");
-      */
+      gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), status_name);
 
       gtk_menu_shell_append(GTK_MENU_SHELL(bar->status_menu), menu_item);
 

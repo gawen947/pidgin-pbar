@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-07 22:07:36 gawen>
+   Time-stamp: <2010-10-08 00:38:50 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
