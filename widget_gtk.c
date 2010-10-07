@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-07 21:42:16 gawen>
+   Time-stamp: <2010-10-07 22:07:36 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -253,8 +253,11 @@ void cb_status_menu(gpointer data)
   PurpleSavedStatus *status;
   PurpleStatusType *status_type = (PurpleStatusType *)data;
   PurpleStatusPrimitive type_prim = purple_status_type_get_primitive(status_type);
+  const gchar *pm;
 
+  pm = purple_prefs_get_string(PREF "/personal-message");
   status = purple_savedstatus_get_current();
   purple_savedstatus_set_type(status, type_prim);
+  purple_savedstatus_set_message(status, pm);
   purple_savedstatus_activate(status);
 }
