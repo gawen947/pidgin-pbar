@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-07 19:09:29 gawen>
+   Time-stamp: <2010-10-07 19:29:01 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -147,7 +147,15 @@ void destroy_widget()
   GList *l, *i;
 
   bar->installed = FALSE;
+
+  l = gtk_container_get_children(GTK_CONTAINER(bar->status_menu));
   gtk_widget_destroy(bar->status_menu);
+  for(i = l ; i ; i = i->next) {
+    gtk_widget_destroy(i->data);
+    i->data = NULL;
+  }
+  gtk_widget_destroy(bar->status_menu);
+
   l = gtk_container_get_children(GTK_CONTAINER(bar->hbox));
   for(i = l ; i ; i = i->next) {
     gtk_widget_destroy(i->data);
