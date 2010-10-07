@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-06 22:10:39 gawen>
+   Time-stamp: <2010-10-07 18:20:56 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -31,7 +31,8 @@ static void cb_icon_choose(const gchar *path, gpointer data)
   /* TODO: this introduce a bug :
      if buddy icon has changed using our chooser the icon widget won't
      be updated until hovered because buddy->icon is set through a
-     pref callback on buddyicon */
+     pref callback on buddyicon same bug appear when changing buddy
+     icon using pidgin's status box */
 }
 
 void cb_buddy_icon(GtkWidget *widget, gpointer data)
