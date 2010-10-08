@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-05 19:28:59 gawen>
+   Time-stamp: <2010-10-08 16:00:35 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -165,5 +165,5 @@ static void cb_hide_statusbox(GtkWidget *widget, gpointer data)
   purple_prefs_set_bool(PREF "/hide-statusbox", state);
   set_statusbox_visible(!state);
 
-  purple_debug_info(NAME, "status box state changed");
+  purple_debug_info(NAME, "status box state changed\n");
 }

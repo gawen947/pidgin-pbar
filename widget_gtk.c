@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-08 00:38:50 gawen>
+   Time-stamp: <2010-10-08 18:02:41 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -134,7 +134,7 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
   protocols = purple_plugins_get_protocols();
   accounts  = purple_accounts_get_all_active();
   if(!(protocols && accounts)) {
-    purple_debug_error(NAME, "cannot get protocol list or active accounts list");
+    purple_debug_error(NAME, "cannot get protocol list or active accounts list\n");
     return;
   }
 
@@ -168,7 +168,7 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
   gtk_widget_hide(bar->name_entry);
   gtk_widget_show(bar->name_button);
 
-  purple_debug_info(NAME, "nickname set to \"%s\".", name);
+  purple_debug_info(NAME, "nickname set to \"%s\"\n", name);
 }
 
 void cb_pm_button(GtkWidget *widget, gpointer data)
@@ -233,7 +233,7 @@ void cb_pm_entry(GtkWidget *widget, gpointer data)
   gtk_widget_hide(bar->pm_entry);
   gtk_widget_show(bar->pm_button);
 
-  purple_debug_info(NAME, "personal message set to \"%s\".", pm);
+  purple_debug_info(NAME, "personal message set to \"%s\"\n", pm);
 }
 
 void cb_status_button(GtkWidget *widget, gpointer data)
