@@ -221,7 +221,7 @@ void cb_pm_entry(GtkWidget *widget, gpointer data)
   purple_savedstatus_set_message(status, pm);
   purple_savedstatus_activate(status);
 
-  markup = purple_prefs_get_string(PREF "/nickname-markup");
+  markup = purple_prefs_get_string(PREF "/personal-message-markup");
   set_widget_pm(markup, pm);
 
   /* TODO: check if we need to take care of hover state */
