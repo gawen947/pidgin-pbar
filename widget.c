@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-08 00:41:24 gawen>
+   Time-stamp: <2010-10-10 02:56:32 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -119,6 +119,11 @@ void create_widget()
     { NULL, NULL, NULL }
   }; register const struct p_signal *purple_sig = purple_signal_connections;
 
+  const struct p_signal purple_prefs_signal_connections[] = {
+    { thisplugin, PIDGIN_PREFS_ROOT "/accounts/buddyicon", cb_buddy_icon_update },
+    { NULL, NULL, NULL }
+  }; register const struct p_signal *purple_prefs_sig = purple_prefs_signal_connections;
+
   for(; g_sig->widget ; g_sig++)
     g_signal_connect(G_OBJECT(g_sig->widget),
                      g_sig->signal,
@@ -130,6 +135,11 @@ void create_widget()
                           thisplugin,
                           PURPLE_CALLBACK(purple_sig->callback),
                           NULL);
+  for(; purple_prefs_sig->instance ; purple_prefs_sig++)
+    purple_prefs_connect_callback(purple_prefs_sig->instance,
+                                  purple_prefs_sig->signal,
+                                  PURPLE_PREFS_CALLBACK(purple_prefs_sig->callback),
+                                  NULL);
 
   /* show everything */
   gtk_widget_show_all(bar->hbox);

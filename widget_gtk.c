@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-08 18:24:24 gawen>
+   Time-stamp: <2010-10-10 02:53:38 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -28,11 +28,6 @@ static void cb_icon_choose(const gchar *path, gpointer data)
   g_return_if_fail(path);
 
   purple_prefs_set_path(PIDGIN_PREFS_ROOT "/accounts/buddyicon", path);
-  /* TODO: this introduce a bug :
-     if buddy icon has changed using our chooser the icon widget won't
-     be updated until hovered because buddy->icon is set through a
-     pref callback on buddyicon same bug appear when changing buddy
-     icon using pidgin's status box */
 }
 
 void cb_buddy_icon(GtkWidget *widget, gpointer data)
@@ -263,4 +258,15 @@ void cb_status_menu(gpointer data)
 
   purple_debug_info(NAME, "status set to \"%s\"\n",
                     purple_status_type_get_name(status_type));
+}
+
+void cb_buddy_icon_update(const char *name, PurplePrefType type,
+                          gconstpointer val, gpointer data)
+{
+  g_return_if_fail(bar->installed);
+
+  GdkPixbuf *icon;
+
+  icon = get_buddy_icon();
+  set_widget_icon(icon);
 }

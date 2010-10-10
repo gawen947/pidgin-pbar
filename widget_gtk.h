@@ -1,5 +1,5 @@
 /* File: widget_gtk.h
-   Time-stamp: <2010-09-26 01:11:22 gawen>
+   Time-stamp: <2010-10-10 02:49:58 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -24,6 +24,8 @@
 void cb_buddy_icon(GtkWidget *widget, gpointer data);
 void cb_buddy_icon_enter(GtkWidget *widget, gpointer data);
 void cb_buddy_icon_leave(GtkWidget *widget, gpointer data);
+void cb_buddy_icon_update(const char *name, PurplePrefType type,
+                          gconstpointer val, gpointer data);
 
 void cb_name_button(GtkWidget *widget, gpointer data);
 void cb_name_button_enter(GtkWidget *widget, gpointer data);
