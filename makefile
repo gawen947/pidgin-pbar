@@ -47,7 +47,7 @@ $(plugin): LIBS := $(PIDGIN_LIBS) $(GTK_LIBS) \
 							$(GOBJECT_LIBS) \
 
 # $(P)CC shows [CC] and the next line shows the nice output
-%.o:: %.c
+%.o:: %.c *.h
 	$(P)CC
 	$(Q)$(CC) -DCOMMIT="\"$(COMMIT)\"" $(CFLAGS) -Wp,-MMD,$(dir $@).$(notdir $@).d -o $@ -c $<
 
