@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-10 02:56:32 gawen>
+   Time-stamp: <2010-10-10 16:50:36 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -25,10 +25,14 @@
 #include "preferences.h"
 #include "purple.h"
 
-struct widget *bar = NULL;
+/* we only have one widget per plugin
+   but this might change in the future */
+struct widget *bar;
 
 void create_widget()
 {
+  /* this should occurs only once but
+     this way way we avoid memory leaks */
   if(!bar)
     bar = g_malloc(sizeof(struct widget));
 
@@ -158,6 +162,7 @@ void destroy_widget()
 
   bar->installed = FALSE;
 
+  /* destroy drop down status menu first */
   l = gtk_container_get_children(GTK_CONTAINER(bar->status_menu));
   gtk_widget_destroy(bar->status_menu);
   for(i = l ; i ; i = i->next) {
@@ -166,6 +171,7 @@ void destroy_widget()
   }
   gtk_widget_destroy(bar->status_menu);
 
+  /* destroy widget */
   l = gtk_container_get_children(GTK_CONTAINER(bar->hbox));
   for(i = l ; i ; i = i->next) {
     gtk_widget_destroy(i->data);
@@ -177,6 +183,7 @@ void destroy_widget()
   bar = NULL;
 }
 
+/* load preferences into our widget */
 void init_widget()
 {
   g_return_if_fail(bar->installed);

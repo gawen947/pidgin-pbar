@@ -1,5 +1,5 @@
 /* File: prefs.h
-   Time-stamp: <2010-10-05 01:18:50 gawen>
+   Time-stamp: <2010-10-10 16:34:13 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -25,9 +25,9 @@
 #include "widget.h"
 
 /* preferences */
-#define PREF "/plugins/gtk/" NAME
+#define PREF "/plugins/gtk/" NAME /* preference root */
 
-/* empty messages */
+/* empty messages to display at first installation */
 #define EMPTY_PM   N_("<Enter personal message here>")
 #define EMPTY_NAME N_("<Enter nickname here>")
 

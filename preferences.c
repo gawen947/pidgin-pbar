@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-08 16:00:35 gawen>
+   Time-stamp: <2010-10-10 16:32:38 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -21,6 +21,8 @@
 #include "preferences.h"
 #include "widget.h"
 
+/* callback for preferences setting which set preferences and
+   update interface when needed */
 static void cb_nickname_markup(GtkWidget *widget, gpointer data);
 static void cb_nickname_markup_hover(GtkWidget *widget, gpointer data);
 static void cb_personal_message_markup(GtkWidget *widget, gpointer data);
@@ -29,6 +31,7 @@ static void cb_hide_statusbox(GtkWidget *widget, gpointer data);
 
 void init_prefs()
 {
+  /* string preferences and default value */
   const struct prefs_string {
     const char *name;
     const char *value;
@@ -42,6 +45,7 @@ void init_prefs()
     { NULL, NULL }
   }; register const struct prefs_string *s = prefs_add_string;
 
+  /* boolean preferences and default value */
   const struct prefs_bool {
     const char *name;
     gboolean value;
@@ -50,6 +54,7 @@ void init_prefs()
     { NULL, FALSE }
   }; register const struct prefs_bool *b = prefs_add_bool;
 
+  /* add preferences */
   purple_prefs_add_none(PREF);
   for(; s->name ; s++)
     purple_prefs_add_string(s->name, s->value);
@@ -59,13 +64,12 @@ void init_prefs()
 
 GtkWidget * get_config_frame(PurplePlugin *plugin)
 {
-  struct widget {
+  /* entry widgets label, associated preference and callback */
+  const struct widget {
     const char *name;
     const char *prefs;
     void (*callback)(GtkWidget *, gpointer);
-  };
-
-  const struct widget entry[] = {
+  } entry[] = {
     { "Nickname markup", PREF "/nickname-markup", cb_nickname_markup },
     { "Nickname markup hover", PREF "/nickname-markup-hover", cb_nickname_markup_hover },
     { "Personal message markup", PREF "/personal-message-markup", cb_personal_message_markup },
@@ -73,17 +77,22 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     { NULL, NULL, NULL }
   }; register const struct widget *e = entry;
 
+  /* check button widgets label, associated preference and callback */
   const struct widget check_button[] = {
     { "Hide status box", PREF "/hide-statusbox", cb_hide_statusbox },
     { NULL, NULL, NULL }
   }; register const struct widget *cb = check_button;
 
+  /* create table */
   GtkWidget *table = gtk_table_new(((sizeof(entry) - 2) +
                                     sizeof(check_button) / 2 - 1) /
                                    sizeof(struct widget),
                                    2, FALSE);
+
+  /* load table and connect signals */
   int x = 0, y = 0;
   for(; e->name ; e++, y++) {
+    /* entry widgets */
     GtkWidget *widget_label  = gtk_label_new(e->name);
     GtkWidget *widget_entry  = gtk_entry_new();
     const gchar *prefs_value = purple_prefs_get_string(e->prefs);
@@ -96,6 +105,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     g_signal_connect(G_OBJECT(widget_entry), "focus-out-event", G_CALLBACK(e->callback),NULL);
   }
   for(; cb->name ; cb++, x = (x + 1) % 2, y++) {
+    /* check button widgets */
     GtkWidget *widget_cb = gtk_check_button_new_with_label(cb->name);
     gboolean prefs_value = purple_prefs_get_bool(cb->prefs);
 

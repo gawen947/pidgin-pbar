@@ -1,5 +1,5 @@
 /* File: pbar.h
-   Time-stamp: <2010-10-05 16:46:19 gawen>
+   Time-stamp: <2010-10-10 16:22:27 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -30,17 +30,18 @@
 #endif /* G_GNUC_NULL_TERMINATED */
 
 /* name */
-#define NAME               "pbar"
-#define DISP_NAME          "PBar"
-#define VERSION            "0.1-git"
+#define NAME               "pbar"    /* internal name */
+#define DISP_NAME          "PBar"    /* displayed name */
+#define VERSION            "0.1-git" /* current version */
 
 /* plugin information */
-#define PLUGIN_ID          "gtk-" NAME
+#define PLUGIN_ID          "gtk-" NAME   /* gtk plugin id */
 #define PLUGIN_NAME        N_(DISP_NAME)
 #ifndef COMMIT
 # define PLUGIN_VERSION    VERSION
 #else
-# define PLUGIN_VERSION    VERSION " (commit:" COMMIT ")"
+# define PLUGIN_VERSION    VERSION " (commit:" COMMIT ")" /* add git commit
+                                                             when available */
 #endif
 #define PLUGIN_SUMMARY     N_("Set alias and status globally")
 #define PLUGIN_DESCRIPTION N_("Display a toolbar to set alias " \

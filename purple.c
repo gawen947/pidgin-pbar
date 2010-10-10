@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-10-06 19:40:13 gawen>
+   Time-stamp: <2010-10-10 16:37:52 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -15,11 +15,13 @@
 
    You should have received a copy of the GNU General Public License
    along with this program. If not, see <http://www.gnu.org/licenses/>. */
+/* this file contains common functions for libpurple and pidgin */
 
 #include "common.h"
 
 #include "purple.h"
 
+/* check if default gtk blist is created */
 gboolean is_gtk_blist_created()
 {
   const PidginBuddyList *blist;
@@ -33,6 +35,7 @@ gboolean is_gtk_blist_created()
   return TRUE;
 }
 
+/* get buddy icon from statusbox widget */
 GdkPixbuf * get_buddy_icon()
 {
   const PidginBuddyList *blist;
@@ -43,6 +46,7 @@ GdkPixbuf * get_buddy_icon()
   return statusbox->buddy_icon;
 }
 
+/* get buddy icon hovered from statusbox widget */
 GdkPixbuf * get_buddy_icon_hover()
 {
   const PidginBuddyList *blist;
@@ -53,6 +57,7 @@ GdkPixbuf * get_buddy_icon_hover()
   return statusbox->buddy_icon_hover;
 }
 
+/* get current status stock id */
 const gchar * get_status_stock_id()
 {
   const PurpleSavedStatus *status;
@@ -62,4 +67,3 @@ const gchar * get_status_stock_id()
   prim   = purple_savedstatus_get_type(status);
   return pidgin_stock_id_from_status_primitive(prim);
 }
-

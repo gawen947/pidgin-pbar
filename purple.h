@@ -1,5 +1,5 @@
 /* File: purple.h
-   Time-stamp: <2010-10-05 20:45:26 gawen>
+   Time-stamp: <2010-10-10 16:40:42 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -21,7 +21,10 @@
 
 #include "common.h"
 
-#define PURPLE_PREFS_CALLBACK(func) ((PurplePrefCallback)func)
+/* not sure purple define that */
+#ifndef PURPLE_PREFS_CALLBACK
+# define PURPLE_PREFS_CALLBACK(func) ((PurplePrefCallback)func)
+#endif
 
 gboolean is_gtk_blist_created();
 GdkPixbuf * get_buddy_icon();

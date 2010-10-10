@@ -1,5 +1,5 @@
 /* File: pbar.c
-   Time-stamp: <2010-10-05 20:47:33 gawen>
+   Time-stamp: <2010-10-10 16:16:19 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -61,7 +61,10 @@ static PurplePluginInfo info = {
 
 PurplePlugin *thisplugin;
 
-static void cb_blist_created()
+/* we need this callback to catch
+   blist construction and install
+   widget when we may do so */
+static void cb_blist_created(GtkWidget *widget, gpointer data)
 {
   /* create widget and
      load preferences */
@@ -71,6 +74,10 @@ static void cb_blist_created()
 
 static gboolean plugin_load(PurplePlugin *plugin)
 {
+  /* connect construction signal only when needed
+     as when installing the plugin after launching
+     pidgin there is no need to wait for blist
+     creation */
   if(is_gtk_blist_created()) {
     /* create widget and
        load preferences */
@@ -92,6 +99,7 @@ static gboolean plugin_load(PurplePlugin *plugin)
 
 static gboolean plugin_unload(PurplePlugin *plugin)
 {
+  /* destroy widget and free memory */
   destroy_widget();
 
   /* restore statusbox */
