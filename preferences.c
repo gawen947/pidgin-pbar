@@ -70,16 +70,16 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     const char *prefs;
     void (*callback)(GtkWidget *, gpointer);
   } entry[] = {
-    { "Nickname markup", PREF "/nickname-markup", cb_nickname_markup },
-    { "Nickname markup hover", PREF "/nickname-markup-hover", cb_nickname_markup_hover },
-    { "Personal message markup", PREF "/personal-message-markup", cb_personal_message_markup },
-    { "Personal message markup hover", PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
+    { N_("Nickname markup"), PREF "/nickname-markup", cb_nickname_markup },
+    { N_("Nickname markup hover"), PREF "/nickname-markup-hover", cb_nickname_markup_hover },
+    { N_("Personal message markup"), PREF "/personal-message-markup", cb_personal_message_markup },
+    { N_("Personal message markup hover"), PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
     { NULL, NULL, NULL }
   }; register const struct widget *e = entry;
 
   /* check button widgets label, associated preference and callback */
   const struct widget check_button[] = {
-    { "Hide status box", PREF "/hide-statusbox", cb_hide_statusbox },
+    { N_("Hide status box"), PREF "/hide-statusbox", cb_hide_statusbox },
     { NULL, NULL, NULL }
   }; register const struct widget *cb = check_button;
 
