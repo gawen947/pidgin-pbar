@@ -23,6 +23,7 @@
 
 #include <string.h>
 #include <glib.h>
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include "pidginstock.h"
@@ -42,8 +43,5 @@
 #ifdef _WIN32
 # include "win32dep.h"
 #endif /* _WIN32 */
-
-/* dummy before i18n */
-#define N_(t) (t)
 
 #endif /* _COMMON_H_ */
