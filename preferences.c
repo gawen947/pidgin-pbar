@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-10 20:55:59 gawen>
+   Time-stamp: <2010-10-10 21:16:25 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -52,7 +52,7 @@ void init_prefs()
     gboolean value;
   } prefs_add_bool[] = {
     { PREF "/hide-statusbox", TRUE },
-    { PREF "/override-status", TRUE },
+    { PREF "/override-status", FALSE },
     { NULL, FALSE }
   }; register const struct prefs_bool *b = prefs_add_bool;
 
@@ -107,7 +107,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     g_signal_connect(G_OBJECT(widget_entry), "activate", G_CALLBACK(e->callback),NULL);
     g_signal_connect(G_OBJECT(widget_entry), "focus-out-event", G_CALLBACK(e->callback),NULL);
   }
-  for(; cb->name ; cb++, x = (x + 1) % 2, y++) {
+  for(; cb->name ; cb++, x = (x + 1) % 2) {
     /* check button widgets */
     GtkWidget *widget_cb = gtk_check_button_new_with_label(cb->name);
     gboolean prefs_value = purple_prefs_get_bool(cb->prefs);
@@ -115,6 +115,8 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget_cb), prefs_value);
     gtk_table_attach(GTK_TABLE(table), widget_cb, x, x+1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     g_signal_connect(G_OBJECT(widget_cb), "toggled", G_CALLBACK(cb->callback),NULL);
+    if(x % 2)
+      y++;
   }
 
   return table;
