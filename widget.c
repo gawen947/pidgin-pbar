@@ -326,7 +326,6 @@ void set_widget_status(const gchar *stock)
   GtkWidget *icon = gtk_image_new_from_stock(stock, GTK_ICON_SIZE_MENU);
   gtk_button_set_image(GTK_BUTTON(bar->status), icon);
   gtk_button_set_label(GTK_BUTTON(bar->status), "");
-  /* TODO: use the given stock message instead */
 }
 
 void set_widget_icon(GdkPixbuf *icon)

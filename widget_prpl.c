@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-10-06 20:10:07 gawen>
+   Time-stamp: <2010-10-10 21:10:42 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -25,7 +25,6 @@
 
 void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
 {
-  /* TODO: override pidgin status as an option */
   g_return_if_fail(bar->installed);
 
   PurpleSavedStatus *status;
@@ -33,11 +32,19 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
   const gchar *stock;
   const gchar *pm;
 
-  /* TODO: use callback parameters instead */
-  pm = purple_prefs_get_string(PREF "/personal-message");
   status = purple_savedstatus_get_current();
-  purple_savedstatus_set_message(status,pm);
-  purple_savedstatus_activate(status);
+  if(purple_prefs_get_bool(PREF "/override-status")) {
+    pm = purple_prefs_get_string(PREF "/personal-message");
+    purple_savedstatus_set_message(status,pm);
+    purple_savedstatus_activate(status);
+  }
+  else {
+    const gchar *markup;
+    markup = purple_prefs_get_string(PREF "/personal-message-markup");
+    pm = purple_savedstatus_get_message(status);
+    set_widget_pm(markup, pm);
+    purple_prefs_set_string(PREF "/personal-message", pm);
+  }
 
   prim = purple_savedstatus_get_type(status);
   stock = pidgin_stock_id_from_status_primitive(prim);

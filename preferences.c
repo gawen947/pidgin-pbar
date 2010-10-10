@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-10 16:32:38 gawen>
+   Time-stamp: <2010-10-10 20:55:59 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -28,6 +28,7 @@ static void cb_nickname_markup_hover(GtkWidget *widget, gpointer data);
 static void cb_personal_message_markup(GtkWidget *widget, gpointer data);
 static void cb_personal_message_markup_hover(GtkWidget *widget, gpointer data);
 static void cb_hide_statusbox(GtkWidget *widget, gpointer data);
+static void cb_override_status(GtkWidget *widget, gpointer data);
 
 void init_prefs()
 {
@@ -51,6 +52,7 @@ void init_prefs()
     gboolean value;
   } prefs_add_bool[] = {
     { PREF "/hide-statusbox", TRUE },
+    { PREF "/override-status", TRUE },
     { NULL, FALSE }
   }; register const struct prefs_bool *b = prefs_add_bool;
 
@@ -80,6 +82,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   /* check button widgets label, associated preference and callback */
   const struct widget check_button[] = {
     { N_("Hide status box"), PREF "/hide-statusbox", cb_hide_statusbox },
+    { N_("Override pidgin status"), PREF "/override-status", cb_override_status },
     { NULL, NULL, NULL }
   }; register const struct widget *cb = check_button;
 
@@ -176,4 +179,12 @@ static void cb_hide_statusbox(GtkWidget *widget, gpointer data)
   set_statusbox_visible(!state);
 
   purple_debug_info(NAME, "status box state changed\n");
+}
+
+static void cb_override_status(GtkWidget *widget, gpointer data)
+{
+  gboolean state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+  purple_prefs_set_bool(PREF "/override-status", state);
+
+  purple_debug_info(NAME, "override status state changed\n");
 }
