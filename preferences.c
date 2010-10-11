@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-10 21:16:25 gawen>
+   Time-stamp: <2010-10-11 17:37:20 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -56,12 +56,24 @@ void init_prefs()
     { NULL, FALSE }
   }; register const struct prefs_bool *b = prefs_add_bool;
 
+  /* integer preferences and default value */
+  const struct prefs_int {
+    const char *name;
+    int value;
+  } prefs_add_int[] = {
+    { PREF "/nickname-justify", JUSTIFY_LEFT },
+    { PREF "/personal-message-justify", JUSTIFY_LEFT },
+    { NULL, 0 }
+  }; register const struct prefs_int *i = prefs_add_int;
+
   /* add preferences */
   purple_prefs_add_none(PREF);
   for(; s->name ; s++)
     purple_prefs_add_string(s->name, s->value);
   for(; b->name ; b++)
     purple_prefs_add_bool(b->name, b->value);
+  for(; i->name ; i++)
+    purple_prefs_add_int(i->name, i->value);
 }
 
 GtkWidget * get_config_frame(PurplePlugin *plugin)

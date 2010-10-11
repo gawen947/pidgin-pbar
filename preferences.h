@@ -31,6 +31,9 @@
 #define EMPTY_PM   N_("<Enter personal message here>")
 #define EMPTY_NAME N_("<Enter nickname here>")
 
+/* justification */
+enum { JUSTIFY_LEFT, JUSTIFY_CENTER, JUSTIFY_RIGHT };
+
 void init_prefs();
 GtkWidget * get_config_frame(PurplePlugin *plugin);
 
