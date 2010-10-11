@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-11 17:37:20 gawen>
+   Time-stamp: <2010-10-11 19:26:43 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -29,6 +29,14 @@ static void cb_personal_message_markup(GtkWidget *widget, gpointer data);
 static void cb_personal_message_markup_hover(GtkWidget *widget, gpointer data);
 static void cb_hide_statusbox(GtkWidget *widget, gpointer data);
 static void cb_override_status(GtkWidget *widget, gpointer data);
+static void cb_nickname_justify(GtkWidget *widget, gpointer data);
+static void cb_personal_message_justify(GtkWidget *widget, gpointer data);
+
+/* integer alias for combo box */
+struct i_alias {
+  const char *alias;
+  int value;
+};
 
 void init_prefs()
 {
@@ -61,8 +69,8 @@ void init_prefs()
     const char *name;
     int value;
   } prefs_add_int[] = {
-    { PREF "/nickname-justify", JUSTIFY_LEFT },
-    { PREF "/personal-message-justify", JUSTIFY_LEFT },
+    { PREF "/nickname-justify", GTK_JUSTIFY_LEFT },
+    { PREF "/personal-message-justify", GTK_JUSTIFY_LEFT },
     { NULL, 0 }
   }; register const struct prefs_int *i = prefs_add_int;
 
@@ -78,6 +86,7 @@ void init_prefs()
 
 GtkWidget * get_config_frame(PurplePlugin *plugin)
 {
+
   /* entry widgets label, associated preference and callback */
   const struct widget {
     const char *name;
@@ -90,6 +99,27 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     { N_("Personal message markup hover"), PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
     { NULL, NULL, NULL }
   }; register const struct widget *e = entry;
+
+  /* alias we will use for combobox */
+  const struct i_alias alias_justify[] = {
+    { N_("Left"),   GTK_JUSTIFY_LEFT },
+    { N_("Center"), GTK_JUSTIFY_CENTER },
+    { N_("Right"),  GTK_JUSTIFY_RIGHT },
+    { N_("Fill"),   GTK_JUSTIFY_FILL },
+    { NULL, 0 }
+  };
+
+  /* combobox widgets label, associated preference, alias and callback */
+  const struct i_widget {
+    const char *name;
+    const char *prefs;
+    const struct i_alias *alias;
+    void (*callback)(GtkWidget *, gpointer);
+  } combobox[] = {
+    { N_("Justify nickname"), PREF "/nickname-justify", alias_justify, cb_nickname_justify },
+    { N_("Justify personal message"), PREF "/personal-message-justify", alias_justify, cb_personal_message_justify },
+    { NULL, NULL, NULL, NULL }
+  }; register const struct i_widget *cbx = combobox;
 
   /* check button widgets label, associated preference and callback */
   const struct widget check_button[] = {
@@ -118,6 +148,24 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     gtk_table_attach(GTK_TABLE(table), widget_entry, 1, 2, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     g_signal_connect(G_OBJECT(widget_entry), "activate", G_CALLBACK(e->callback),NULL);
     g_signal_connect(G_OBJECT(widget_entry), "focus-out-event", G_CALLBACK(e->callback),NULL);
+  }
+  for(; cbx->name ; cbx++, y++) {
+    /* combobox widgets */
+    GtkWidget *widget_label = gtk_label_new(cbx->name);
+    GtkWidget *widget_combo = gtk_combo_box_new_text();
+    int prefs_value         = purple_prefs_get_int(cbx->prefs);
+    const struct i_alias *j;
+    int i;
+
+    gtk_misc_set_alignment(GTK_MISC(widget_label), 0., .5);
+    gtk_table_attach(GTK_TABLE(table), widget_label, 0, 1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
+    gtk_table_attach(GTK_TABLE(table), widget_combo, 1, 2, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
+    for(i = 0, j = cbx->alias ; j->alias ; j++, i++) {
+      gtk_combo_box_append_text(GTK_COMBO_BOX(widget_combo), j->alias);
+      if(j->value == prefs_value)
+        gtk_combo_box_set_active(GTK_COMBO_BOX(widget_combo), i);
+    }
+    g_signal_connect(G_OBJECT(widget_combo), "changed", G_CALLBACK(cbx->callback), (gpointer)cbx->alias);
   }
   for(; cb->name ; cb++, x = (x + 1) % 2) {
     /* check button widgets */
@@ -201,4 +249,32 @@ static void cb_override_status(GtkWidget *widget, gpointer data)
   purple_prefs_set_bool(PREF "/override-status", state);
 
   purple_debug_info(NAME, "override status state changed\n");
+}
+
+static void cb_nickname_justify(GtkWidget *widget, gpointer data)
+{
+  const struct i_alias *j = (struct i_alias *)data;
+  const gchar *value = gtk_combo_box_get_active_text(GTK_COMBO_BOX(widget));
+
+  for(; j->alias ; j++) {
+    if(!strcmp(value, j->alias)) {
+      purple_prefs_set_int(PREF "/nickname-justify", j->value);
+      /* set_nickname_justify(j->value); */
+      return;
+    }
+  }
+}
+
+static void cb_personal_message_justify(GtkWidget *widget, gpointer data)
+{
+  const struct i_alias *j = (struct i_alias *)data;
+  const gchar *value = gtk_combo_box_get_active_text(GTK_COMBO_BOX(widget));
+
+  for(; j->alias ; j++) {
+    if(!strcmp(value, j->alias)) {
+      purple_prefs_set_int(PREF "/personal-message-justify", j->value);
+      /* set_pm_justify(j->value); */
+      return;
+    }
+  }
 }
