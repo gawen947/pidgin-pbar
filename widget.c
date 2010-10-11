@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-11 20:41:33 gawen>
+   Time-stamp: <2010-10-11 21:19:40 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -189,6 +189,7 @@ void init_widget()
   /* for nickname, personal message and status box */
   const gchar *markup, *value;
   gboolean state;
+  int jtype;
 
   /* for status */
   const gchar *stock;
@@ -196,12 +197,16 @@ void init_widget()
   /* nickname */
   markup = purple_prefs_get_string(PREF "/nickname-markup");
   value  = purple_prefs_get_string(PREF "/nickname");
+  jtype  = purple_prefs_get_int(PREF "/nickname-justify");
   set_widget_name(markup, value);
+  set_widget_name_justify(jtype);
 
   /* personal message */
   markup = purple_prefs_get_string(PREF "/personal-message-markup");
   value  = purple_prefs_get_string(PREF "/personal-message");
+  jtype  = purple_prefs_get_int(PREF "/personal-message-justify");
   set_widget_pm(markup, value);
+  set_widget_pm_justify(jtype);
 
   /* buddy icon */
   icon = get_buddy_icon();
