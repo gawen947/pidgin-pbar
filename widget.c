@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-10 16:50:36 gawen>
+   Time-stamp: <2010-10-11 19:39:56 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -54,8 +54,6 @@ void create_widget()
   GtkWidget *hbox1 = gtk_hbox_new(FALSE, 2);
 
   /* setup widgets */
-  gtk_label_set_justify(GTK_LABEL(bar->name_label), GTK_JUSTIFY_LEFT);
-  gtk_label_set_justify(GTK_LABEL(bar->pm_label), GTK_JUSTIFY_LEFT);
   gtk_button_set_relief(GTK_BUTTON(bar->name_button), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->pm_button), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->status), GTK_RELIEF_NONE);
@@ -65,9 +63,6 @@ void create_widget()
   gtk_widget_set_can_focus(bar->pm_button, FALSE);
   gtk_widget_set_can_focus(bar->status, FALSE);
   gtk_event_box_set_visible_window(GTK_EVENT_BOX(bar->event_box), FALSE);
-
-  /* setup widgets according preferences */
-  /* TODO: justify and relief from prefs */
 
   /* pack widgets */
   gtk_container_add(GTK_CONTAINER(bar->name_button), bar->name_label);
@@ -336,6 +331,21 @@ void set_widget_icon(GdkPixbuf *icon)
     gtk_image_set_from_pixbuf(GTK_IMAGE(bar->icon), icon);
   else
     gtk_image_set_from_stock(GTK_IMAGE(bar->icon), GTK_STOCK_MISSING_IMAGE, 48);
+}
+
+void set_widget_name_justify(GtkJustification jtype)
+{
+  g_return_if_fail(bar->installed);
+
+  gtk_label_set_justify(GTK_LABEL(bar->name_label), jtype);
+}
+
+void set_widget_pm_justify(GtkJustification jtype)
+{
+  g_return_if_fail(bar->installed);
+
+  //gtk_label_set_justify(GTK_LABEL(bar->pm_label), jtype);
+  gtk_misc_set_alignment(GTK_MISC(bar->pm_label), 1., .5);
 }
 
 void set_statusbox_visible(gboolean visible)

@@ -1,5 +1,5 @@
 /* File: widget.h
-   Time-stamp: <2010-10-07 19:10:05 gawen>
+   Time-stamp: <2010-10-11 19:39:32 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -54,6 +54,8 @@ void set_widget_name(const gchar *markup, const gchar *name);
 void set_widget_pm(const gchar *markup, const gchar *pm);
 void set_widget_status(const gchar *stock);
 void set_widget_icon(GdkPixbuf *icon);
+void set_widget_name_justify(GtkJustification jtype);
+void set_widget_pm_justify(GtkJustification jtype);
 void set_statusbox_visible(gboolean visible);
 gboolean get_widget_name_hover_state();
 gboolean get_widget_pm_hover_state();

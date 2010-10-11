@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-11 19:26:43 gawen>
+   Time-stamp: <2010-10-11 20:04:51 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -32,11 +32,19 @@ static void cb_override_status(GtkWidget *widget, gpointer data);
 static void cb_nickname_justify(GtkWidget *widget, gpointer data);
 static void cb_personal_message_justify(GtkWidget *widget, gpointer data);
 
-/* integer alias for combo box */
-struct i_alias {
+
+/* alias we will use for combobox */
+static const struct i_alias {
   const char *alias;
   int value;
+} alias_justify[] = {
+  { N_("Left"),   GTK_JUSTIFY_LEFT },
+  { N_("Center"), GTK_JUSTIFY_CENTER },
+  { N_("Right"),  GTK_JUSTIFY_RIGHT },
+  { N_("Fill"),   GTK_JUSTIFY_FILL },
+  { NULL, 0 }
 };
+
 
 void init_prefs()
 {
@@ -99,15 +107,6 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     { N_("Personal message markup hover"), PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
     { NULL, NULL, NULL }
   }; register const struct widget *e = entry;
-
-  /* alias we will use for combobox */
-  const struct i_alias alias_justify[] = {
-    { N_("Left"),   GTK_JUSTIFY_LEFT },
-    { N_("Center"), GTK_JUSTIFY_CENTER },
-    { N_("Right"),  GTK_JUSTIFY_RIGHT },
-    { N_("Fill"),   GTK_JUSTIFY_FILL },
-    { NULL, 0 }
-  };
 
   /* combobox widgets label, associated preference, alias and callback */
   const struct i_widget {
@@ -259,10 +258,12 @@ static void cb_nickname_justify(GtkWidget *widget, gpointer data)
   for(; j->alias ; j++) {
     if(!strcmp(value, j->alias)) {
       purple_prefs_set_int(PREF "/nickname-justify", j->value);
-      /* set_nickname_justify(j->value); */
-      return;
+      set_widget_name_justify(j->value);
+      break;
     }
   }
+
+  purple_debug_info(NAME, "nickname justification changed\n");
 }
 
 static void cb_personal_message_justify(GtkWidget *widget, gpointer data)
@@ -273,8 +274,10 @@ static void cb_personal_message_justify(GtkWidget *widget, gpointer data)
   for(; j->alias ; j++) {
     if(!strcmp(value, j->alias)) {
       purple_prefs_set_int(PREF "/personal-message-justify", j->value);
-      /* set_pm_justify(j->value); */
-      return;
+      set_widget_pm_justify(j->value);
+      break;
     }
   }
+
+  purple_debug_info(NAME, "personal message justification changed\n");
 }
