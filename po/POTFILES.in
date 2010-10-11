@@ -1,0 +1,13 @@
+pbar.c
+pbar.h
+preferences.c
+preferences.h
+widget.c
+widget.h
+widget_gtk.c
+widget_gtk.h
+widget_prpl.c
+widget_prpl.h
+purple.c
+purple.h
+common.h
