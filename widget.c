@@ -54,6 +54,8 @@ void create_widget()
   GtkWidget *hbox1 = gtk_hbox_new(FALSE, 2);
 
   /* setup widgets */
+  gtk_label_set_line_wrap(GTK_LABEL(bar->name_label), TRUE);
+  gtk_label_set_line_wrap(GTK_LABEL(bar->pm_label), TRUE);
   gtk_button_set_relief(GTK_BUTTON(bar->name_button), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->pm_button), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->status), GTK_RELIEF_NONE);
