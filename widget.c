@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-11 19:39:56 gawen>
+   Time-stamp: <2010-10-11 20:41:33 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -333,19 +333,42 @@ void set_widget_icon(GdkPixbuf *icon)
     gtk_image_set_from_stock(GTK_IMAGE(bar->icon), GTK_STOCK_MISSING_IMAGE, 48);
 }
 
-void set_widget_name_justify(GtkJustification jtype)
+/* convertion of int justification
+   to float justification for
+   gtk_misc_set_alignment */
+static float int_jtype_to_float_jtype(int justify)
 {
-  g_return_if_fail(bar->installed);
+  float ret = 0.; /* default to left */
 
-  gtk_label_set_justify(GTK_LABEL(bar->name_label), jtype);
+  switch(justify) {
+  case(JUSTIFY_LEFT):
+    ret = 0.;
+    break;
+  case(JUSTIFY_CENTER):
+    ret = .5;
+    break;
+  case(JUSTIFY_RIGHT):
+    ret = 1.;
+    break;
+  }
+
+  return ret;
 }
 
-void set_widget_pm_justify(GtkJustification jtype)
+void set_widget_name_justify(int justify)
 {
   g_return_if_fail(bar->installed);
 
-  //gtk_label_set_justify(GTK_LABEL(bar->pm_label), jtype);
-  gtk_misc_set_alignment(GTK_MISC(bar->pm_label), 1., .5);
+  float jtype = int_jtype_to_float_jtype(justify);
+  gtk_misc_set_alignment(GTK_MISC(bar->name_label), jtype, .5);
+}
+
+void set_widget_pm_justify(int justify)
+{
+  g_return_if_fail(bar->installed);
+
+  float jtype = int_jtype_to_float_jtype(justify);
+  gtk_misc_set_alignment(GTK_MISC(bar->pm_label), jtype, .5);
 }
 
 void set_statusbox_visible(gboolean visible)

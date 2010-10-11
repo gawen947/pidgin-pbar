@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-11 20:04:51 gawen>
+   Time-stamp: <2010-10-11 20:49:26 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -38,10 +38,9 @@ static const struct i_alias {
   const char *alias;
   int value;
 } alias_justify[] = {
-  { N_("Left"),   GTK_JUSTIFY_LEFT },
-  { N_("Center"), GTK_JUSTIFY_CENTER },
-  { N_("Right"),  GTK_JUSTIFY_RIGHT },
-  { N_("Fill"),   GTK_JUSTIFY_FILL },
+  { N_("Left"),   JUSTIFY_LEFT },
+  { N_("Center"), JUSTIFY_CENTER },
+  { N_("Right"),  JUSTIFY_RIGHT },
   { NULL, 0 }
 };
 
@@ -77,8 +76,8 @@ void init_prefs()
     const char *name;
     int value;
   } prefs_add_int[] = {
-    { PREF "/nickname-justify", GTK_JUSTIFY_LEFT },
-    { PREF "/personal-message-justify", GTK_JUSTIFY_LEFT },
+    { PREF "/nickname-justify", JUSTIFY_LEFT },
+    { PREF "/personal-message-justify", JUSTIFY_LEFT },
     { NULL, 0 }
   }; register const struct prefs_int *i = prefs_add_int;
 
@@ -94,7 +93,6 @@ void init_prefs()
 
 GtkWidget * get_config_frame(PurplePlugin *plugin)
 {
-
   /* entry widgets label, associated preference and callback */
   const struct widget {
     const char *name;
