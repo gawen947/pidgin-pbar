@@ -40,10 +40,10 @@ static PurplePluginInfo info = {
   NULL,
   PURPLE_PRIORITY_DEFAULT,
   PLUGIN_ID,
-  PLUGIN_NAME,
+  NULL,
   PLUGIN_VERSION,
-  PLUGIN_SUMMARY,
-  PLUGIN_DESCRIPTION,
+  NULL,
+  NULL,
   PLUGIN_AUTHOR,
   PLUGIN_WEBSITE,
   plugin_load,
@@ -113,6 +113,14 @@ static gboolean plugin_unload(PurplePlugin *plugin)
 static void init_plugin(PurplePlugin *plugin)
 {
   thisplugin = plugin;
+
+  bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+
+  /* translate things */
+  info.name        = _(PLUGIN_NAME);
+  info.summary     = _(PLUGIN_SUMMARY);
+  info.description = _(PLUGIN_DESCRIPTION);
 
   /* load or create preferences */
   init_prefs();

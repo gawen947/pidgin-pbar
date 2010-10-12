@@ -13,12 +13,10 @@ CFLAGS+=-O2 -Wall
 ifdef DEBUG
 CFLAGS+=-g
 endif
-ifdef NLS
-CFLAGS+=-DGETTEXT_PACKAGE="\"pidgin-pbar\""
-endif
 ifneq ($(COMMIT),UNKNOWN)
 CFLAGS+=-DCOMMIT="\"$(COMMIT)\""
 endif
+CFLAGS+=-DLOCALEDIR="\"$(LOCALEDIR)\""
 
 PREFIX=/usr/local
 LOCALEDIR=$(PREFIX)/share/locale
