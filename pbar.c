@@ -40,10 +40,10 @@ static PurplePluginInfo info = {
   NULL,
   PURPLE_PRIORITY_DEFAULT,
   PLUGIN_ID,
-  NULL,
+  NULL, /* defined later for NLS */
   PLUGIN_VERSION,
-  NULL,
-  NULL,
+  NULL, /* defined later for NLS */
+  NULL, /* defined later for NLS */
   PLUGIN_AUTHOR,
   PLUGIN_WEBSITE,
   plugin_load,
@@ -114,10 +114,12 @@ static void init_plugin(PurplePlugin *plugin)
 {
   thisplugin = plugin;
 
+#ifdef ENABLE_NLS
   bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+#endif /* ENABLE_NLS */
 
-  /* translate things */
+  /* translate name, summary and description */
   info.name        = _(PLUGIN_NAME);
   info.summary     = _(PLUGIN_SUMMARY);
   info.description = _(PLUGIN_DESCRIPTION);

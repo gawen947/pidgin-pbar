@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-11 21:19:40 gawen>
+   Time-stamp: <2010-10-12 15:39:52 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -299,6 +299,10 @@ void set_widget_name(const gchar *markup, const gchar *name)
 
   gchar *escaped_name, *new;
 
+  /* translate name if needed */
+  if(!strcmp(name, EMPTY_NAME))
+    name = _(EMPTY_NAME);
+
   escaped_name = g_markup_printf_escaped("%s", name);
   new = g_strreplace(markup, "%n", escaped_name);
   g_free(escaped_name);
@@ -312,6 +316,10 @@ void set_widget_pm(const gchar *markup, const gchar *pm)
   g_return_if_fail(bar->installed);
 
   gchar *escaped_pm, *new;
+
+  /* translate name if needed */
+  if(!strcmp(pm, EMPTY_PM))
+    pm = _(EMPTY_PM);
 
   escaped_pm = g_markup_printf_escaped("%s", pm);
   new = g_strreplace(markup, "%p", escaped_pm);

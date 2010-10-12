@@ -135,7 +135,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   int x = 0, y = 0;
   for(; e->name ; e++, y++) {
     /* entry widgets */
-    GtkWidget *widget_label  = gtk_label_new(e->name);
+    GtkWidget *widget_label  = gtk_label_new(_(e->name));
     GtkWidget *widget_entry  = gtk_entry_new();
     const gchar *prefs_value = purple_prefs_get_string(e->prefs);
 
@@ -148,7 +148,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   }
   for(; cbx->name ; cbx++, y++) {
     /* combobox widgets */
-    GtkWidget *widget_label = gtk_label_new(cbx->name);
+    GtkWidget *widget_label = gtk_label_new(_(cbx->name));
     GtkWidget *widget_combo = gtk_combo_box_new_text();
     int prefs_value         = purple_prefs_get_int(cbx->prefs);
     const struct i_alias *j;
@@ -166,7 +166,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   }
   for(; cb->name ; cb++, x = (x + 1) % 2) {
     /* check button widgets */
-    GtkWidget *widget_cb = gtk_check_button_new_with_label(cb->name);
+    GtkWidget *widget_cb = gtk_check_button_new_with_label(_(cb->name));
     gboolean prefs_value = purple_prefs_get_bool(cb->prefs);
 
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget_cb), prefs_value);

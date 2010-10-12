@@ -30,13 +30,13 @@
 #endif /* G_GNUC_NULL_TERMINATED */
 
 /* name */
-#define NAME               "pbar"    /* internal name */
-#define DISP_NAME          "PBar"    /* displayed name */
-#define VERSION            "0.1-git" /* current version */
+#define NAME               "pbar"     /* internal name */
+#define DISP_NAME          N_("PBar") /* displayed name */
+#define VERSION            "0.1-git"  /* current version */
 
 /* plugin information */
 #define PLUGIN_ID          "gtk-" NAME   /* gtk plugin id */
-#define PLUGIN_NAME        N_(DISP_NAME)
+#define PLUGIN_NAME        DISP_NAME
 #ifndef COMMIT
 # define PLUGIN_VERSION    VERSION
 #else
