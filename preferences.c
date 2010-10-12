@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-11 20:49:26 gawen>
+   Time-stamp: <2010-10-12 19:45:04 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -100,9 +100,9 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     void (*callback)(GtkWidget *, gpointer);
   } entry[] = {
     { N_("Nickname markup"), PREF "/nickname-markup", cb_nickname_markup },
-    { N_("Nickname markup hover"), PREF "/nickname-markup-hover", cb_nickname_markup_hover },
+    { N_("Nickname markup hovered"), PREF "/nickname-markup-hover", cb_nickname_markup_hover },
     { N_("Personal message markup"), PREF "/personal-message-markup", cb_personal_message_markup },
-    { N_("Personal message markup hover"), PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
+    { N_("Personal message markup hovered"), PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
     { NULL, NULL, NULL }
   }; register const struct widget *e = entry;
 
@@ -113,15 +113,15 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     const struct i_alias *alias;
     void (*callback)(GtkWidget *, gpointer);
   } combobox[] = {
-    { N_("Justify nickname"), PREF "/nickname-justify", alias_justify, cb_nickname_justify },
-    { N_("Justify personal message"), PREF "/personal-message-justify", alias_justify, cb_personal_message_justify },
+    { N_("Align nickname"), PREF "/nickname-justify", alias_justify, cb_nickname_justify },
+    { N_("Align personal message"), PREF "/personal-message-justify", alias_justify, cb_personal_message_justify },
     { NULL, NULL, NULL, NULL }
   }; register const struct i_widget *cbx = combobox;
 
   /* check button widgets label, associated preference and callback */
   const struct widget check_button[] = {
-    { N_("Hide status box"), PREF "/hide-statusbox", cb_hide_statusbox },
-    { N_("Override pidgin status"), PREF "/override-status", cb_override_status },
+    { N_("Hide pidgin's status box"), PREF "/hide-statusbox", cb_hide_statusbox },
+    { N_("Ignore pidgin's status changes"), PREF "/override-status", cb_override_status },
     { NULL, NULL, NULL }
   }; register const struct widget *cb = check_button;
 
