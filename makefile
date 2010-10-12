@@ -1,6 +1,11 @@
 CC=gcc
 RM=rm -f
 INSTALL=install
+INTLTOOL_UPDATE=intltool-update
+XGETTEXT=xgettext
+MSGFMT=msgfmt
+MKDIR=mkdir
+CP=cp
 
 COMMIT=$(shell ./hash.sh)
 
@@ -8,10 +13,15 @@ CFLAGS+=-O2 -Wall
 ifdef DEBUG
 CFLAGS+=-g
 endif
+ifdef NLS
+CFLAGS+=-DGETTEXT_PACKAGE="\"pidgin-pbar\""
+endif
 ifneq ($(COMMIT),UNKNOWN)
 CFLAGS+=-DCOMMIT="\"$(COMMIT)\""
 endif
 
+PREFIX=/usr/local
+LOCALEDIR=$(PREFIX)/share/locale
 PIDGIN_CFLAGS=`pkg-config --cflags pidgin purple`
 PIDGIN_LIBS=`pkg-config --libs pidgin purple`
 PIDGIN_PLUGINDIR=`pkg-config --variable=plugindir pidgin`
@@ -39,7 +49,8 @@ endif
 
 OBJS = pbar.o preferences.o widget.o widget_gtk.o widget_prpl.o purple.o
 
-all: $(plugin)
+
+binary: $(plugin)
 
 $(plugin): $(OBJS)
 $(plugin): CFLAGS := $(CFLAGS) $(PIDGIN_CFLAGS) \
@@ -59,12 +70,37 @@ $(plugin): LIBS := $(PIDGIN_LIBS) $(GTK_LIBS) \
 	$(P)SHLIB
 	$(Q)$(CC) -shared -o $@ $^ $(LIBS)
 
-clean:
+all: binary locales
+clean-binary:
 	$(RM) $(plugin) $(OBJS)
 
-install: $(plugin)
-	mkdir -p $(PIDGIN_PLUGINDIR)
-	$(INSTALL) $(plugin) $(PIDGIN_PLUGINDIR)
-
-uninstall:
+install-binary: $(plugin)
+	$(MKDIR) -p $(PIDGIN_PLUGINDIR)
+	$(INSTALL) -s $(plugin) $(PIDGIN_PLUGINDIR)
+uninstall-binary:
 	$(RM) $(PIDGIN_PLUGINDIR)/$(plugin)
+
+install: install-binary install-locales
+uninstall: uninstall-binary uninstall-locales
+clean: clean-binary clean-locales
+
+po/pbar.pot: po/POTFILES.in
+	$(XGETTEXT) --files-from $< --keyword=N_ -o $@ --no-wrap --no-location
+
+po/%.mo: po/%.po
+	$(MSGFMT) -c -o $@ $<
+
+clean-locales-%:
+	$(RM) po/$*.mo
+
+install-locales-%: po/%.mo
+	$(INSTALL) $< $(LOCALEDIR)/$*/LC_MESSAGES/pidgin-pbar.mo
+
+uninstall-locales-%:
+	$(RM) $(LOCALEDIR)/$*/LC_MESSAGES/pidgin-pbar.mo
+
+locales: po/fr.mo
+clean-locales: clean-locales-fr
+	$(RM) po/pbar.pot
+install-locales: install-locales-fr
+uninstall-locales: uninstall-locales-fr

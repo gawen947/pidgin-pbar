@@ -19,11 +19,14 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
+/* define for NLS */
+#define GETTEXT_PACKAGE "pidgin-pbar"
+
 /* common include for pidgin and gtk */
 
 #include <string.h>
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 
 #include "pidginstock.h"
