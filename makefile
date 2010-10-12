@@ -13,10 +13,12 @@ CFLAGS+=-O2 -Wall
 ifdef DEBUG
 CFLAGS+=-g
 endif
+ifndef DISABLE_NLS
+CFLAGS+=-DENABLE_NLS=1 -DLOCALEDIR="\"$(LOCALEDIR)\""
+endif
 ifneq ($(COMMIT),UNKNOWN)
 CFLAGS+=-DCOMMIT="\"$(COMMIT)\""
 endif
-CFLAGS+=-DLOCALEDIR="\"$(LOCALEDIR)\""
 
 PREFIX=/usr/local
 LOCALEDIR=$(PREFIX)/share/locale
