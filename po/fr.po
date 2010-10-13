@@ -1,0 +1,64 @@
+# Pidgin PBar French translation.
+# Copyright (C) 2010, David Hauweele <david.hauweele@gmail.com>
+# This file is distributed under the same license as the Pidgin PBar package.
+# David Hauweele <david.hauweele@gmail.com>, 2010 
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: fr\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-13 20:18+0200\n"
+"PO-Revision-Date: 2010-10-13 20:54+0200\n"
+"Last-Translator: David Hauweele <david.hauweele@gmail.com>\n"
+"Language-Team: French <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "PBar"
+msgstr "PBar"
+
+msgid "Changes nickname, personal message, icon and status for multiple accounts."
+msgstr "Changer le surnom, le message personnel, l'icône et l'état pour plusieurs comptes."
+
+msgid "Displays a toolbar to set your nickname, personal message, icon and status for multiple accounts at once."
+msgstr "Affiche une barre d'outils pour changer le surnom, le message personnel, l'icône et l'état pour plusieurs comptes en une fois."
+
+msgid "Left"
+msgstr "Gauche"
+
+msgid "Center"
+msgstr "Centre"
+
+msgid "Right"
+msgstr "Droite"
+
+msgid "Nickname markup"
+msgstr "Balise du surnom"
+
+msgid "Nickname markup hovered"
+msgstr "Balise du surnom survolé"
+
+msgid "Personal message markup"
+msgstr "Balise du message personnel"
+
+msgid "Personal message markup hovered"
+msgstr "Balise du message personnel survolé"
+
+msgid "Align nickname"
+msgstr "Aligner le surnom"
+
+msgid "Align personal message"
+msgstr "Aligner le message personnel"
+
+msgid "Hide pidgin's status box"
+msgstr "Cacher le sélecteur d'états de pidgin"
+
+msgid "Ignore pidgin's status changes"
+msgstr "Ignorer les changements d'états de pidgin"
+
+msgid "<Enter personal message here>"
+msgstr "<Entrez votre message personnel ici>"
+
+msgid "<Enter nickname here>"
+msgstr "<Entrez votre surnom ici>"
