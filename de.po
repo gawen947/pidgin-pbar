@@ -1,4 +1,4 @@
-#### Pidgin PBar German translation
+# Pidgin PBar German translation
 # Copyright (C) 2010, Marleen Bekaert <bekaert.marleen@gmail.com>
 # This file is distributed under the same license as the Pidgin PBar package.
 # Marleen Bekaert <bekaert.marleen@gmail.com>, 2010 
