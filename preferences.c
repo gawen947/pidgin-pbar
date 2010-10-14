@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-12 19:45:04 gawen>
+   Time-stamp: <2010-10-14 18:06:12 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -254,7 +254,7 @@ static void cb_nickname_justify(GtkWidget *widget, gpointer data)
   const gchar *value = gtk_combo_box_get_active_text(GTK_COMBO_BOX(widget));
 
   for(; j->alias ; j++) {
-    if(!strcmp(value, j->alias)) {
+    if(!strcmp(value, _(j->alias))) {
       purple_prefs_set_int(PREF "/nickname-justify", j->value);
       set_widget_name_justify(j->value);
       break;
@@ -270,7 +270,7 @@ static void cb_personal_message_justify(GtkWidget *widget, gpointer data)
   const gchar *value = gtk_combo_box_get_active_text(GTK_COMBO_BOX(widget));
 
   for(; j->alias ; j++) {
-    if(!strcmp(value, j->alias)) {
+    if(!strcmp(value, _(j->alias))) {
       purple_prefs_set_int(PREF "/personal-message-justify", j->value);
       set_widget_pm_justify(j->value);
       break;
