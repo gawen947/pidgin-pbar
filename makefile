@@ -24,6 +24,8 @@ ifndef DISABLE_NLS
 CFLAGS+=-DENABLE_NLS=1 -DLOCALEDIR="\"$(LOCALEDIR)\""
 endif
 
+VPATH:=po
+
 .PHONY: all clean
 
 all: pbar.so
@@ -35,8 +37,17 @@ pbar.so: $(OBJ)
 	$(CC) -Wp,-MMD,$*.d -c $(CFLAGS) -o $@ $< 
 
 clean:
+	$(RM) po/*.mo
 	$(RM) $(DEP)
 	$(RM) $(OBJ)
 	$(RM) pbar.so
 
+po/pbar.pot: po/POTFILES.in
+	$(XGETTEXT) --files-from $< --keyword=N_ -o $@ --no-wrap --no-location
+
+po/%.mo: po/%.po
+	$(MSGFMT) -c -o $@ $<
+
+
 -include $(DEP)
+
