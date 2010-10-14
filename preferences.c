@@ -158,7 +158,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     gtk_table_attach(GTK_TABLE(table), widget_label, 0, 1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     gtk_table_attach(GTK_TABLE(table), widget_combo, 1, 2, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     for(i = 0, j = cbx->alias ; j->alias ; j++, i++) {
-      gtk_combo_box_append_text(GTK_COMBO_BOX(widget_combo), j->alias);
+      gtk_combo_box_append_text(GTK_COMBO_BOX(widget_combo), _(j->alias));
       if(j->value == prefs_value)
         gtk_combo_box_set_active(GTK_COMBO_BOX(widget_combo), i);
     }
