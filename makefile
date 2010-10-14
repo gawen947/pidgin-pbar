@@ -6,6 +6,8 @@ LDFLAGS := $(shell pkg-config --libs pidgin purple gtk+-2.0 gobject-2.0)
 SRC  = $(wildcard *.c)
 OBJ  = $(foreach obj, $(SRC:.c=.o), $(notdir $(obj)))
 DEP  = $(SRC:.c=.d)
+POFILES  = $(wildcard *.po)
+CATALOGS = $(foreach cat, $(POFILES:.po=.mo), $(notdir $(cat)))
 
 PREFIX    ?= /usr/local
 LOCALEDIR ?= $(PREFIX)/share/locale
@@ -24,11 +26,9 @@ ifndef DISABLE_NLS
 CFLAGS+=-DENABLE_NLS=1 -DLOCALEDIR="\"$(LOCALEDIR)\""
 endif
 
-VPATH:=po
-
 .PHONY: all clean
 
-all: pbar.so
+all: pbar.so locales
 
 pbar.so: $(OBJ)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
@@ -37,17 +37,33 @@ pbar.so: $(OBJ)
 	$(CC) -Wp,-MMD,$*.d -c $(CFLAGS) -o $@ $< 
 
 clean:
-	$(RM) po/*.mo
 	$(RM) $(DEP)
 	$(RM) $(OBJ)
+	$(RM) $(CATALOGS)
+	$(RM) pbar.pot
 	$(RM) pbar.so
 
-po/pbar.pot: po/POTFILES.in
-	$(XGETTEXT) --files-from $< --keyword=N_ -o $@ --no-wrap --no-location
+install: install-locales
+	$(MKDIR) -p $(PLUGINDIR)
+	$(INSTALL_PROGRAM) pbar.so $(PLUGINDIR)
 
-po/%.mo: po/%.po
+uninstall: uninstall-locales
+	$(RM) $(PLUGINDIR)/pbar.so
+
+locales: $(CATALOGS)
+
+CAT_INST_PATH = $(foreach lang, $(POFILES:.po=), $(LOCALEDIR)/$(lang)/LC_MESSAGES/pidgin-pbar.mo)
+install-locales: $(CAT_INST_PATH)
+$(LOCALEDIR)/%/LC_MESSAGES/pidgin-pbar.mo: %.mo
+	$(INSTALL_DATA) $< $@
+uninstall-locales:
+	$(RM) $(CAT_INST_PATH)
+
+%.mo: %.po
 	$(MSGFMT) -c -o $@ $<
 
+pbar.pot: POTFILES.in
+	$(XGETTEXT) --files-from $< --keyword=N_ -o $@ --no-wrap --no-location
 
 -include $(DEP)
 
