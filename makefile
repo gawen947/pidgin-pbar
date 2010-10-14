@@ -1,6 +1,6 @@
 include commands.mk
 
-CFLAGS  := -std=c99 -O2 $(shell pkg-config --cflags pidgin purple gtk+-2.0 gobject-2.0) -fPIC -W -Wall -Wextra -pedantic
+CFLAGS  := -std=c99 -O2 $(shell pkg-config --cflags pidgin purple gtk+-2.0 gobject-2.0) -fPIC -Wall -pedantic
 LDFLAGS := $(shell pkg-config --libs pidgin purple gtk+-2.0 gobject-2.0)
 
 SRC  = $(wildcard *.c)
