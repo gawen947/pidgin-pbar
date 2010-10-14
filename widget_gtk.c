@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-10 02:53:38 gawen>
+   Time-stamp: <2010-10-15 01:46:34 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -22,6 +22,8 @@
 #include "widget_gtk.h"
 #include "widget.h"
 #include "purple.h"
+
+static void cb_dummy() {}
 
 static void cb_icon_choose(const gchar *path, gpointer data)
 {
@@ -151,7 +153,7 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
         /* set public alias accorded to protocol info */
         if(!strcmp(account_id, protocol_id)
            && info->set_public_alias)
-          info->set_public_alias(connection, name, NULL, NULL);
+          info->set_public_alias(connection, name, cb_dummy, cb_dummy);
       }
     }
   }
