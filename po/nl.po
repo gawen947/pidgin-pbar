@@ -1,0 +1,65 @@
+﻿# Pidgin PBar Dutch translation.
+# Copyright (C) 2010, Marleen Bekaert <bekaert.marleen@gmail.com>
+# This file is distributed under the same license as the Pidgin PBar package.
+# Marleen Bekaert <bekaert.marleen@gmail.com>, 2010 
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: nl\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-13 20:18+0200\n"
+"PO-Revision-Date: 2010-10-14 18:59+0200\n"
+"Last-Translator: Marleen Bekaert <bekaert.marleen@gmail.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "PBar"
+msgstr "PBar"
+
+msgid "Changes nickname, personal message, icon and status for multiple accounts."
+msgstr "Verandert de bijnaam, het persoonlijk bericht, de icoon en de status voor meerdere accounts."
+
+#,fuzzy
+msgid "Displays a toolbar to set your nickname, personal message, icon and status for multiple accounts."
+msgstr "Geeft de werkbalk om de bijnaam in te stellen, het persoonlijk bericht, de icoon en de status voor meerdere accounts."
+
+msgid "Left"
+msgstr "Links"
+
+msgid "Center"
+msgstr "Midden"
+
+msgid "Right"
+msgstr "Rechts"
+
+msgid "Nickname markup"
+msgstr "Baken van de bijnaam"
+
+msgid "Nickname markup hovered"
+msgstr "Overgezweefd bijnaam baken"
+
+msgid "Personal message markup"
+msgstr "Het baken van het persoonlijke bericht"
+
+msgid "Personal message markup hovered"
+msgstr "Overgezweefd persoonlijk bericht baken"
+
+msgid "Align nickname"
+msgstr "Bijnaam richten"
+
+msgid "Align personal message"
+msgstr "Personnlijk bericht richten"
+
+msgid "Hide pidgin's status box"
+msgstr "Pidgin status box verbergen"
+
+msgid "Ignore pidgin's status changes"
+msgstr "De veranderingen van de pidgin status negeren"
+
+msgid "<Enter personal message here>"
+msgstr "<Hier U persoonlijk bericht inbrengen>"
+
+msgid "<Enter nickname here>"
+msgstr "<Hier U bijnaam inbrengen>"
