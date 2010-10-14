@@ -24,11 +24,14 @@ endif
 
 ifndef DISABLE_NLS
 CFLAGS+=-DENABLE_NLS=1 -DLOCALEDIR="\"$(LOCALEDIR)\""
+locales:=locales
+install-locales:=install-locales
+uninstall-locales:=uninstall-locales
 endif
 
 .PHONY: all clean
 
-all: pbar.so locales
+all: pbar.so $(locales)
 
 pbar.so: $(OBJ)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
@@ -43,11 +46,11 @@ clean:
 	$(RM) pbar.pot
 	$(RM) pbar.so
 
-install: install-locales
+install: $(install-locales)
 	$(MKDIR) -p $(PLUGINDIR)
 	$(INSTALL_PROGRAM) pbar.so $(PLUGINDIR)
 
-uninstall: uninstall-locales
+uninstall: $(uninstall-locales)
 	$(RM) $(PLUGINDIR)/pbar.so
 
 locales: $(CATALOGS)
