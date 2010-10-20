@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-20 16:40:15 gawen>
+   Time-stamp: <2010-10-20 17:32:11 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -137,10 +137,35 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
     if(!purple_account_is_connected(account))
       continue;
     id = purple_account_get_protocol_id(account);
-    /* provide dummy callback since some
-       protocols don't check before calling */
-    purple_account_set_public_alias(account, name, cb_dummy,
-                                    cb_set_alias_failure);
+    /* exception for set_public_alias */
+    if(!strcmp(id, "prpl-jabber")) {
+      const gchar *usrname;
+      xmlnode *iq, *pubsub, *publish, *nicknode;
+
+      usrname = g_strdup_printf("%s%s",purple_account_get_username(account),
+                                "laptop");
+      iq = xmlnode_new("iq");
+      xmlnode_set_attrib(iq, "from", usrname);
+      xmlnode_set_attrib(iq, "type", "set");
+      xmlnode_set_attrib(iq, "id", "publ");
+
+      pubsub = xmlnode_new("pubsub");
+      xmlnode_set_attrib(pubsub, "xmlns", "http://jabber.org/protocol/pubsub");
+      publish = xmlnode_new("publish");
+      xmlnode_set_attrib(publish,"node","http://jabber.org/protocol/nick");
+      nicknode = xmlnode_new_child(xmlnode_new_child(publish, "item"), "nick");
+      xmlnode_set_namespace(nicknode, "http://jabber.org/protocol/nick");
+      xmlnode_insert_data(nicknode, name, -1);
+      xmlnode_insert_child(pubsub, publish);
+      xmlnode_insert_child(iq, pubsub);
+
+      jabber_iq_send(iq);
+    }
+    else
+      /* provide dummy callback since some
+         protocols don't check before calling */
+      purple_account_set_public_alias(account, name, cb_dummy,
+                                      cb_set_alias_failure);
   }
 
   markup = purple_prefs_get_string(PREF "/nickname-markup");
