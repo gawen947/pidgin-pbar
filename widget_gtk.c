@@ -1,7 +1,9 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-15 01:46:34 gawen>
+   Time-stamp: <2010-10-20 16:40:15 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
+   Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
+                           Wolter Hellmund <wolterh@gmail.com>
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,6 +26,14 @@
 #include "purple.h"
 
 static void cb_dummy() {}
+
+static void cb_set_alias_failure(PurpleAccount *account, const char *error)
+{
+  const gchar *id = purple_account_get_protocol_id(account);
+
+  purple_debug_info(NAME, "aliases not supported by \"%s\"\n", id);
+}
+
 
 static void cb_icon_choose(const gchar *path, gpointer data)
 {
@@ -115,53 +125,27 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  const gchar *name, *markup;
+  const gchar *name, *markup, *id;
   PurpleAccount *account;
-  PurplePlugin *protocol;
-  PurpleConnection *connection;
-  PurplePluginProtocolInfo *info;
-  GList *pa, *pp;
-  GList *protocols, *accounts;
-  const gchar *account_id, *protocol_id;
+  GList *accts;
 
   name = gtk_entry_get_text(GTK_ENTRY(widget));
   purple_prefs_set_string(PREF "/nickname", name);
 
-  /* get all supported protocols and active accounts */
-  protocols = purple_plugins_get_protocols();
-  accounts  = purple_accounts_get_all_active();
-  if(!(protocols && accounts)) {
-    purple_debug_error(NAME, "cannot get protocol list or active accounts list\n");
-    return;
-  }
-
-  /* ok! now set nickname for all connection! */
-  for(pa = accounts ; pa ; pa = pa->next) {
-    account = pa->data;
-    account_id = g_strdup(purple_account_get_protocol_id(account));
-
-    /* set nickname per protocol */
-    if(purple_account_is_connected(account)) {
-      connection = purple_account_get_connection(account);
-
-      /* check every protocols and plugins */
-      for(pp = protocols ; pp ; pp = pp->next) {
-        protocol = pp->data;
-        protocol_id = g_strdup(protocol->info->id);
-        info = PURPLE_PLUGIN_PROTOCOL_INFO(protocol);
-
-        /* set public alias accorded to protocol info */
-        if(!strcmp(account_id, protocol_id)
-           && info->set_public_alias)
-          info->set_public_alias(connection, name, cb_dummy, cb_dummy);
-      }
-    }
+  for(accts = purple_accounts_get_all_active(); accts ; accts = accts->next) {
+    account = accts->data;
+    if(!purple_account_is_connected(account))
+      continue;
+    id = purple_account_get_protocol_id(account);
+    /* provide dummy callback since some
+       protocols don't check before calling */
+    purple_account_set_public_alias(account, name, cb_dummy,
+                                    cb_set_alias_failure);
   }
 
   markup = purple_prefs_get_string(PREF "/nickname-markup");
   set_widget_name(markup, name);
 
-  /* TODO: check if we need to take care of hover state */
   gtk_widget_hide(bar->name_entry);
   gtk_widget_show(bar->name_button);
 
@@ -226,7 +210,6 @@ void cb_pm_entry(GtkWidget *widget, gpointer data)
   markup = purple_prefs_get_string(PREF "/personal-message-markup");
   set_widget_pm(markup, pm);
 
-  /* TODO: check if we need to take care of hover state */
   gtk_widget_hide(bar->pm_entry);
   gtk_widget_show(bar->pm_button);
 

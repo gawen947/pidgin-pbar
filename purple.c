@@ -1,7 +1,9 @@
 /* File: purple.c
-   Time-stamp: <2010-10-10 16:37:52 gawen>
+   Time-stamp: <2010-10-20 16:13:51 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
+   Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
+                           Wolter Hellmund <wolterh@gmail.com>
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
