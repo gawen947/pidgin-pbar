@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-20 17:32:11 gawen>
+   Time-stamp: <2010-10-20 18:13:41 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -139,15 +139,18 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
     id = purple_account_get_protocol_id(account);
     /* exception for set_public_alias */
     if(!strcmp(id, "prpl-jabber")) {
-      const gchar *usrname;
+      PurpleConnection *gc;
+      PurplePluginProtocolInfo *prpl_info;
+      const gchar *raw;
+      gchar *iq_id;
       xmlnode *iq, *pubsub, *publish, *nicknode;
 
-      usrname = g_strdup_printf("%s%s",purple_account_get_username(account),
-                                "laptop");
+      gc = account->gc;
+      prpl_info = PURPLE_PLUGIN_PROTOCOL_INFO(gc->prpl);
+      iq_id = g_strdup_printf("purple%x", g_random_int());
       iq = xmlnode_new("iq");
-      xmlnode_set_attrib(iq, "from", usrname);
       xmlnode_set_attrib(iq, "type", "set");
-      xmlnode_set_attrib(iq, "id", "publ");
+      xmlnode_set_attrib(iq, "id", iq_id);
 
       pubsub = xmlnode_new("pubsub");
       xmlnode_set_attrib(pubsub, "xmlns", "http://jabber.org/protocol/pubsub");
@@ -159,7 +162,10 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
       xmlnode_insert_child(pubsub, publish);
       xmlnode_insert_child(iq, pubsub);
 
-      jabber_iq_send(iq);
+      raw = xmlnode_to_formatted_str(iq, NULL);
+      if(prpl_info && prpl_info->send_raw)
+        prpl_info->send_raw(gc, raw, strlen(raw));
+      g_free(iq_id);
     }
     else
       /* provide dummy callback since some
