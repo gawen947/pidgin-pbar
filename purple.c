@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-10-21 18:04:26 gawen>
+   Time-stamp: <2010-10-21 18:42:04 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -81,16 +81,14 @@ void set_display_name(PurpleAccount *account, const gchar *name)
   const gchar *id;
 
   id = purple_account_get_protocol_id(account);
+
   /* exception for set_public_alias */
   if(!strcmp(id, "prpl-jabber")) {
     PurpleConnection *gc;
-    PurplePluginProtocolInfo *prpl_info;
-    const gchar *raw;
     gchar *iq_id;
     xmlnode *iq, *pubsub, *publish, *nicknode;
 
     gc = account->gc;
-    prpl_info = PURPLE_PLUGIN_PROTOCOL_INFO(gc->prpl);
     iq_id = g_strdup_printf("purple%x", g_random_int());
     iq = xmlnode_new("iq");
     xmlnode_set_attrib(iq, "type", "set");
@@ -106,9 +104,8 @@ void set_display_name(PurpleAccount *account, const gchar *name)
     xmlnode_insert_child(pubsub, publish);
     xmlnode_insert_child(iq, pubsub);
 
-    raw = xmlnode_to_formatted_str(iq, NULL);
-    if(prpl_info && prpl_info->send_raw)
-      prpl_info->send_raw(gc, raw, strlen(raw));
+    purple_signal_emit(purple_connection_get_prpl(gc),
+                       "jabber-sending-xmlnode", gc, &iq);
     g_free(iq_id);
   }
   else
