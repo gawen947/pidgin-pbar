@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-12 15:39:52 gawen>
+   Time-stamp: <2010-10-21 16:59:51 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -119,6 +119,7 @@ void create_widget()
     void *callback;
   } purple_signal_connections[] = {
     { purple_accounts_get_handle(), "account-status-changed", cb_status },
+    { purple_connections_get_handle(), "signed-on", cb_signed_on },
     { NULL, NULL, NULL }
   }; register const struct p_signal *purple_sig = purple_signal_connections;
 

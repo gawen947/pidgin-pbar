@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-20 18:13:41 gawen>
+   Time-stamp: <2010-10-21 18:07:13 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -24,16 +24,6 @@
 #include "widget_gtk.h"
 #include "widget.h"
 #include "purple.h"
-
-static void cb_dummy() {}
-
-static void cb_set_alias_failure(PurpleAccount *account, const char *error)
-{
-  const gchar *id = purple_account_get_protocol_id(account);
-
-  purple_debug_info(NAME, "aliases not supported by \"%s\"\n", id);
-}
-
 
 static void cb_icon_choose(const gchar *path, gpointer data)
 {
@@ -125,7 +115,7 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  const gchar *name, *markup, *id;
+  const gchar *name, *markup;
   PurpleAccount *account;
   GList *accts;
 
@@ -136,42 +126,7 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
     account = accts->data;
     if(!purple_account_is_connected(account))
       continue;
-    id = purple_account_get_protocol_id(account);
-    /* exception for set_public_alias */
-    if(!strcmp(id, "prpl-jabber")) {
-      PurpleConnection *gc;
-      PurplePluginProtocolInfo *prpl_info;
-      const gchar *raw;
-      gchar *iq_id;
-      xmlnode *iq, *pubsub, *publish, *nicknode;
-
-      gc = account->gc;
-      prpl_info = PURPLE_PLUGIN_PROTOCOL_INFO(gc->prpl);
-      iq_id = g_strdup_printf("purple%x", g_random_int());
-      iq = xmlnode_new("iq");
-      xmlnode_set_attrib(iq, "type", "set");
-      xmlnode_set_attrib(iq, "id", iq_id);
-
-      pubsub = xmlnode_new("pubsub");
-      xmlnode_set_attrib(pubsub, "xmlns", "http://jabber.org/protocol/pubsub");
-      publish = xmlnode_new("publish");
-      xmlnode_set_attrib(publish,"node","http://jabber.org/protocol/nick");
-      nicknode = xmlnode_new_child(xmlnode_new_child(publish, "item"), "nick");
-      xmlnode_set_namespace(nicknode, "http://jabber.org/protocol/nick");
-      xmlnode_insert_data(nicknode, name, -1);
-      xmlnode_insert_child(pubsub, publish);
-      xmlnode_insert_child(iq, pubsub);
-
-      raw = xmlnode_to_formatted_str(iq, NULL);
-      if(prpl_info && prpl_info->send_raw)
-        prpl_info->send_raw(gc, raw, strlen(raw));
-      g_free(iq_id);
-    }
-    else
-      /* provide dummy callback since some
-         protocols don't check before calling */
-      purple_account_set_public_alias(account, name, cb_dummy,
-                                      cb_set_alias_failure);
+    set_display_name(account, name);
   }
 
   markup = purple_prefs_get_string(PREF "/nickname-markup");
@@ -180,7 +135,7 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
   gtk_widget_hide(bar->name_entry);
   gtk_widget_show(bar->name_button);
 
-  purple_debug_info(NAME, "nickname set to \"%s\"\n", name);
+  purple_debug_info(NAME, "nickname changed to \"%s\" by user\n", name);
 }
 
 void cb_pm_button(GtkWidget *widget, gpointer data)
@@ -244,7 +199,7 @@ void cb_pm_entry(GtkWidget *widget, gpointer data)
   gtk_widget_hide(bar->pm_entry);
   gtk_widget_show(bar->pm_button);
 
-  purple_debug_info(NAME, "personal message set to \"%s\"\n", pm);
+  purple_debug_info(NAME, "personal message changed to \"%s\" by user\n", pm);
 }
 
 void cb_status_button(GtkWidget *widget, gpointer data)

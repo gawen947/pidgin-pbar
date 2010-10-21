@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-10-10 21:10:42 gawen>
+   Time-stamp: <2010-10-21 18:06:42 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -51,5 +51,18 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
   prim = purple_savedstatus_get_type(status);
   stock = pidgin_stock_id_from_status_primitive(prim);
   set_widget_status(stock);
+}
+
+void cb_signed_on(PurpleConnection *gc)
+{
+  const gchar *name;
+  PurpleAccount *account;
+
+  name = purple_prefs_get_string(PREF "/nickname");
+  account = purple_connection_get_account(gc);
+  set_display_name(account, name);
+
+  purple_debug_info(NAME, "nickname changed to \"%s\" by signed-on account\n",
+                    name);
 }
 
