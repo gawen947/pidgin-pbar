@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-21 18:07:13 gawen>
+   Time-stamp: <2010-10-24 17:30:31 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -131,11 +131,19 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
 
   markup = purple_prefs_get_string(PREF "/nickname-markup");
   set_widget_name(markup, name);
+  bar->name_entry_activated = TRUE;
 
   gtk_widget_hide(bar->name_entry);
   gtk_widget_show(bar->name_button);
 
   purple_debug_info(NAME, "nickname changed to \"%s\" by user\n", name);
+}
+
+void cb_name_entry_focus_out(GtkWidget *widget, gpointer data)
+{
+  if(!bar->name_entry_activated)
+    cb_name_entry(widget, data);
+  bar->name_entry_activated = FALSE;
 }
 
 void cb_pm_button(GtkWidget *widget, gpointer data)
@@ -195,11 +203,19 @@ void cb_pm_entry(GtkWidget *widget, gpointer data)
 
   markup = purple_prefs_get_string(PREF "/personal-message-markup");
   set_widget_pm(markup, pm);
-
+  bar->pm_entry_activated = TRUE;
+  
   gtk_widget_hide(bar->pm_entry);
   gtk_widget_show(bar->pm_button);
 
   purple_debug_info(NAME, "personal message changed to \"%s\" by user\n", pm);
+}
+
+void cb_pm_entry_focus_out(GtkWidget *widget, gpointer data)
+{
+  if(!bar->pm_entry_activated)
+    cb_pm_entry(widget, data);
+  bar->pm_entry_activated = FALSE;
 }
 
 void cb_status_button(GtkWidget *widget, gpointer data)

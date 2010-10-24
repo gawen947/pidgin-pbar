@@ -1,5 +1,5 @@
 /* File: widget_gtk.h
-   Time-stamp: <2010-10-10 02:49:58 gawen>
+   Time-stamp: <2010-10-24 17:30:00 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -33,11 +33,13 @@ void cb_name_button(GtkWidget *widget, gpointer data);
 void cb_name_button_enter(GtkWidget *widget, gpointer data);
 void cb_name_button_leave(GtkWidget *widget, gpointer data);
 void cb_name_entry(GtkWidget *widget, gpointer data);
+void cb_name_entry_focus_out(GtkWidget *widget, gpointer data);
 
 void cb_pm_button(GtkWidget *widget, gpointer data);
 void cb_pm_button_enter(GtkWidget *widget, gpointer data);
 void cb_pm_button_leave(GtkWidget *widget, gpointer data);
 void cb_pm_entry(GtkWidget *widget, gpointer data);
+void cb_pm_entry_focus_out(GtkWidget *widget, gpointer data);
 
 void cb_status_button(GtkWidget *widget, gpointer data);
 void cb_status_menu(gpointer data);

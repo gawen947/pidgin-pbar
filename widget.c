@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-21 16:59:51 gawen>
+   Time-stamp: <2010-10-24 17:32:52 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -89,6 +89,8 @@ void create_widget()
   /* setup initial states */
   bar->hover_name = FALSE;
   bar->hover_pm   = FALSE;
+  bar->name_entry_activated = FALSE;
+  bar->pm_entry_activated = FALSE;
 
   /* connect gtk and purple signals */
   const struct g_signal {
@@ -103,12 +105,12 @@ void create_widget()
     { bar->name_button, "enter", cb_name_button_enter },
     { bar->name_button, "leave", cb_name_button_leave },
     { bar->name_entry, "activate", cb_name_entry },
-    { bar->name_entry, "focus-out-event", cb_name_entry },
+    { bar->name_entry, "focus-out-event", cb_name_entry_focus_out },
     { bar->pm_button, "clicked", cb_pm_button },
     { bar->pm_button, "enter", cb_pm_button_enter },
     { bar->pm_button, "leave", cb_pm_button_leave },
     { bar->pm_entry, "activate", cb_pm_entry },
-    { bar->pm_entry, "focus-out-event", cb_pm_entry },
+    { bar->pm_entry, "focus-out-event", cb_pm_entry_focus_out },
     { bar->status, "clicked", cb_status_button },
     { NULL, NULL, NULL }
   }; register const struct g_signal *g_sig = g_signal_connections;
