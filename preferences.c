@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-14 18:06:12 gawen>
+   Time-stamp: <2010-10-26 18:08:39 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -60,6 +60,7 @@ void init_prefs()
     { PREF "/nickname-markup", "<b>%n</b>" },
     { PREF "/personal-message", EMPTY_PM },
     { PREF "/nickname", EMPTY_NAME},
+    { PREF "/mood", NULL },
     { NULL, NULL }
   }; register const struct prefs_string *s = prefs_add_string;
 

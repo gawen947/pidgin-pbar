@@ -239,7 +239,7 @@ void init_widget()
   set_widget_icon(icon);
 
   /* mood image */
-  current_mood = get_global_mood_status();
+  current_mood = purple_prefs_get_string(PREF "/mood");
   path = get_mood_icon_path(current_mood);
   set_widget_mood(path);
   g_free(path);

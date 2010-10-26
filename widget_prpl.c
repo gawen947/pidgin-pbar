@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-10-26 17:24:09 gawen>
+   Time-stamp: <2010-10-26 18:25:14 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -52,7 +52,7 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
   stock = pidgin_stock_id_from_status_primitive(prim);
   set_widget_status(stock);
 
-  current_mood = get_global_mood_status();
+  current_mood = purple_prefs_get_string(PREF "/mood");
   path = get_mood_icon_path(current_mood);
   set_widget_mood(path);
   g_free(path);
@@ -69,5 +69,13 @@ void cb_signed_on(PurpleConnection *gc)
 
   purple_debug_info(NAME, "nickname changed to \"%s\" by signed-on account\n",
                     name);
+
+  if(gc && gc->flags & PURPLE_CONNECTION_SUPPORT_MOODS) {
+    const gchar *mood = purple_prefs_get_string(PREF "/mood");
+    set_status_with_mood(account, mood);
+
+    purple_debug_info(NAME, "mood changed to \"%s\" by signed-on account\n",
+                      mood);
+  }
 }
 

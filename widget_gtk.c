@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-26 17:49:14 gawen>
+   Time-stamp: <2010-10-26 18:22:39 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -312,12 +312,13 @@ void cb_mood_menu(gpointer data)
       set_status_with_mood(account, mood->mood);
   }
 
+  purple_prefs_set_string(PREF "/mood", mood->mood);
   path = get_mood_icon_path(mood->mood);
   set_widget_mood(path);
   g_free(path);
 
-  purple_debug_info(NAME, "mood set to \"%s\"\n",
-                    mood->mood);
+  purple_debug_info(NAME, "mood changed to \"%s\" by user\n",
+                    mood->description);
 }
 
 void cb_buddy_icon_update(const char *name, PurplePrefType type,
