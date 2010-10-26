@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-26 19:10:30 gawen>
+   Time-stamp: <2010-10-26 22:09:01 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -75,11 +75,14 @@ void cb_name_button(GtkWidget *widget, gpointer data)
   g_return_if_fail(bar->installed);
 
   const gchar *name = purple_prefs_get_string(PREF "/nickname");
+
   if(!name || !strcmp(name, EMPTY_NAME))
     name = "";
 
   gtk_entry_set_text(GTK_ENTRY(bar->name_entry), name);
 
+  if(purple_prefs_get_bool(PREF "/compact"))
+    gtk_widget_hide(bar->pm_button);
   gtk_widget_hide(bar->name_button);
   gtk_widget_show(bar->name_entry);
 
@@ -134,6 +137,8 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
   set_widget_name(markup, name);
   bar->name_entry_activated = TRUE;
 
+  if(purple_prefs_get_bool(PREF "/compact"))
+    gtk_widget_show(bar->pm_button);
   gtk_widget_hide(bar->name_entry);
   gtk_widget_show(bar->name_button);
 
@@ -157,6 +162,8 @@ void cb_pm_button(GtkWidget *widget, gpointer data)
 
   gtk_entry_set_text(GTK_ENTRY(bar->pm_entry), pm);
 
+  if(purple_prefs_get_bool(PREF "/compact"))
+    gtk_widget_hide(bar->name_button);
   gtk_widget_hide(bar->pm_button);
   gtk_widget_show(bar->pm_entry);
 
@@ -208,6 +215,8 @@ void cb_pm_entry(GtkWidget *widget, gpointer data)
   set_widget_pm(markup, pm);
   bar->pm_entry_activated = TRUE;
 
+  if(purple_prefs_get_bool(PREF "/compact"))
+    gtk_widget_show(bar->name_button);
   gtk_widget_hide(bar->pm_entry);
   gtk_widget_show(bar->pm_button);
 
