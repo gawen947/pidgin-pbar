@@ -1,5 +1,5 @@
 /* File: widget.h
-   Time-stamp: <2010-10-26 14:08:01 gawen>
+   Time-stamp: <2010-10-26 14:43:13 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -64,6 +64,7 @@ void init_widget();
 void set_widget_name(const gchar *markup, const gchar *name);
 void set_widget_pm(const gchar *markup, const gchar *pm);
 void set_widget_status(const gchar *stock);
+void set_widget_mood(const gchar *path);
 void set_widget_icon(GdkPixbuf *icon);
 void set_widget_name_justify(int justify);
 void set_widget_pm_justify(int justify);

@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-10-21 18:42:04 gawen>
+   Time-stamp: <2010-10-26 14:48:03 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -73,6 +73,27 @@ const gchar * get_status_stock_id()
   status = purple_savedstatus_get_current();
   prim   = purple_savedstatus_get_type(status);
   return pidgin_stock_id_from_status_primitive(prim);
+}
+
+/* get mood icon path */
+gchar * get_mood_icon_path(const gchar *mood)
+{
+  gchar *path;
+
+  if(!strcmp(mood, "busy"))
+    path = g_build_filename(DATADIR, "pixmaps", "pidgin",
+                            "status", "16", "busy.png", NULL);
+  else if(strcmp(mood, "hiptop"))
+    path = g_build_filename(DATADIR, "pixmaps", "pidgin",
+                            "emblems", "16", "hiptop.png", NULL);
+  else {
+    char *filename = g_strdup_printf("%s.png", mood);
+    path = g_build_filename(DATADIR, "pixmaps", "pidgin",
+                            "emotes", "small", filename,NULL);
+    g_free(filename);
+  }
+
+  return path;
 }
 
 /* set display name for account */

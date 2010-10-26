@@ -32,6 +32,7 @@ gboolean is_gtk_blist_created();
 GdkPixbuf * get_buddy_icon();
 GdkPixbuf * get_buddy_icon_hover();
 const gchar * get_status_stock_id();
+gchar * get_mood_icon_path();
 void set_display_name(PurpleAccount *account, const gchar *name);
 
 #endif /* _PURPLE_H_ */

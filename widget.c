@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-26 14:16:40 gawen>
+   Time-stamp: <2010-10-26 14:42:27 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -355,6 +355,15 @@ void set_widget_status(const gchar *stock)
   GtkWidget *icon = gtk_image_new_from_stock(stock, GTK_ICON_SIZE_MENU);
   gtk_button_set_image(GTK_BUTTON(bar->status), icon);
   gtk_button_set_label(GTK_BUTTON(bar->status), "");
+}
+
+void set_widget_mood(const gchar *path)
+{
+  g_return_if_fail(bar->installed);
+
+  GtkWidget *mood = gtk_image_new_from_file(path);
+  gtk_button_set_image(GTK_BUTTON(bar->mood), mood);
+  gtk_button_set_label(GTK_BUTTON(bar->mood), "");
 }
 
 void set_widget_icon(GdkPixbuf *icon)
