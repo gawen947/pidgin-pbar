@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-26 15:58:53 gawen>
+   Time-stamp: <2010-10-26 17:01:48 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -250,9 +250,41 @@ void cb_status_menu(gpointer data)
 void cb_mood_button(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
+  PurpleMood *mood = get_global_moods();
+  GdkEventButton *event;
+  GList *l, *i;
+  gchar *path;
 
-  GdkEventButton *event = (GdkEventButton *)gtk_get_current_event();
+  /* destroy dop down mood menu and create a new one */
+  l = gtk_container_get_children(GTK_CONTAINER(bar->mood_menu));
+  for(i = l ; i ; i = i->next) {
+    gtk_widget_destroy(l->data);
+    l->data = NULL;
+  }
+  gtk_widget_destroy(bar->mood_menu);
+  bar->mood_menu = gtk_menu_new();
 
+
+  /* fill mood menu */
+  for( ; mood->mood ; mood++) {
+    GtkWidget *menu_item, *icon;
+
+    if(!mood->mood || !mood->description)
+      continue;
+
+    path = get_mood_icon_path(mood->mood);
+    icon = gtk_image_new_from_file(path);
+    menu_item = gtk_image_menu_item_new();
+    g_free(path);
+
+    gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menu_item), icon);
+    gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), _(mood->mood));
+    gtk_menu_shell_append(GTK_MENU_SHELL(bar->mood_menu), menu_item);
+
+    gtk_widget_show(menu_item);
+  }
+
+  event = (GdkEventButton *)gtk_get_current_event();
   gtk_menu_popup(GTK_MENU(bar->mood_menu), NULL, NULL, NULL, NULL,
                  event->button, event->time);
 }
