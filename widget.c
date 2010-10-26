@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-24 17:32:52 gawen>
+   Time-stamp: <2010-10-26 14:12:55 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -41,6 +41,7 @@ void create_widget()
   /* widgets that can possibly be modified along plugin's execution */
   bar->icon        = gtk_image_new();
   bar->status      = gtk_button_new_from_stock(NULL);
+  bar->mood        = gtk_button_new_from_stock(NULL);
   bar->name_label  = gtk_label_new(NULL);
   bar->name_button = gtk_button_new();
   bar->name_entry  = gtk_entry_new();
@@ -50,10 +51,12 @@ void create_widget()
   bar->hbox        = gtk_hbox_new(FALSE, 2);
   bar->event_box   = gtk_event_box_new();
   bar->status_menu = gtk_menu_new();
+  bar->mood_menu   = gtk_menu_new();
 
   /* widgets that are not modified */
   GtkWidget *vbox = gtk_vbox_new(FALSE, 0);
   GtkWidget *hbox1 = gtk_hbox_new(FALSE, 2);
+  GtkWidget *hbox2 = gtk_hbox_new(FALSE, 2);
 
   /* setup widgets */
   gtk_label_set_line_wrap(GTK_LABEL(bar->name_label), TRUE);
@@ -61,11 +64,13 @@ void create_widget()
   gtk_button_set_relief(GTK_BUTTON(bar->name_button), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->pm_button), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->status), GTK_RELIEF_NONE);
+  gtk_button_set_relief(GTK_BUTTON(bar->mood), GTK_RELIEF_NONE);
   gtk_button_set_alignment(GTK_BUTTON(bar->name_button), .01, .5);
   gtk_button_set_alignment(GTK_BUTTON(bar->pm_button), .01, .5);
   gtk_widget_set_can_focus(bar->name_button, FALSE);
   gtk_widget_set_can_focus(bar->pm_button, FALSE);
   gtk_widget_set_can_focus(bar->status, FALSE);
+  gtk_widget_set_can_focus(bar->mood, FALSE);
   gtk_event_box_set_visible_window(GTK_EVENT_BOX(bar->event_box), FALSE);
 
   /* pack widgets */
@@ -75,9 +80,11 @@ void create_widget()
   gtk_box_pack_start(GTK_BOX(hbox1), bar->name_button, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX(hbox1), bar->name_entry, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX(hbox1), bar->status, FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(hbox2), bar->pm_button, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(hbox2), bar->pm_entry, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(hbox2), bar->mood, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX(vbox), hbox1, TRUE, TRUE, 0);
-  gtk_box_pack_start(GTK_BOX(vbox), bar->pm_button, TRUE, TRUE, 0);
-  gtk_box_pack_start(GTK_BOX(vbox), bar->pm_entry, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(vbox), hbox2, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX(bar->hbox), bar->event_box, FALSE, FALSE, 5);
   gtk_box_pack_start(GTK_BOX(bar->hbox), vbox, TRUE, TRUE, 0);
 
