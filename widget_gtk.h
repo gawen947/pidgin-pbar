@@ -1,5 +1,5 @@
 /* File: widget_gtk.h
-   Time-stamp: <2010-10-24 17:30:00 gawen>
+   Time-stamp: <2010-10-26 15:59:45 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -43,5 +43,7 @@ void cb_pm_entry_focus_out(GtkWidget *widget, gpointer data);
 
 void cb_status_button(GtkWidget *widget, gpointer data);
 void cb_status_menu(gpointer data);
+
+void cb_mood_button(GtkWidget *widget, gpointer data);
 
 #endif /* _WIDGET_GTK_H_ */

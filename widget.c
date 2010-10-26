@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-26 15:55:01 gawen>
+   Time-stamp: <2010-10-26 15:57:18 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -119,6 +119,7 @@ void create_widget()
     { bar->pm_entry, "activate", cb_pm_entry },
     { bar->pm_entry, "focus-out-event", cb_pm_entry_focus_out },
     { bar->status, "clicked", cb_status_button },
+    { bar->mood, "clicked", cb_mood_button },
     { NULL, NULL, NULL }
   }; register const struct g_signal *g_sig = g_signal_connections;
 

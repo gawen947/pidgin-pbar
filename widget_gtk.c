@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-24 17:30:31 gawen>
+   Time-stamp: <2010-10-26 15:58:53 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -204,7 +204,7 @@ void cb_pm_entry(GtkWidget *widget, gpointer data)
   markup = purple_prefs_get_string(PREF "/personal-message-markup");
   set_widget_pm(markup, pm);
   bar->pm_entry_activated = TRUE;
-  
+
   gtk_widget_hide(bar->pm_entry);
   gtk_widget_show(bar->pm_button);
 
@@ -245,6 +245,16 @@ void cb_status_menu(gpointer data)
 
   purple_debug_info(NAME, "status set to \"%s\"\n",
                     purple_status_type_get_name(status_type));
+}
+
+void cb_mood_button(GtkWidget *widget, gpointer data)
+{
+  g_return_if_fail(bar->installed);
+
+  GdkEventButton *event = (GdkEventButton *)gtk_get_current_event();
+
+  gtk_menu_popup(GTK_MENU(bar->mood_menu), NULL, NULL, NULL, NULL,
+                 event->button, event->time);
 }
 
 void cb_buddy_icon_update(const char *name, PurplePrefType type,
