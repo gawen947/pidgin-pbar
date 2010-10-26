@@ -1,5 +1,5 @@
 /* File: widget.h
-   Time-stamp: <2010-10-26 14:43:13 gawen>
+   Time-stamp: <2010-10-27 01:13:30 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -54,6 +54,10 @@ struct widget {
      with focus-out-event */
   gboolean name_entry_activated;
   gboolean pm_entry_activated;
+
+  /* signals handlers and instance for disconnection */
+  GList *gtk_hnd;
+  GList *gtk_inst;
 };
 
 extern struct widget *bar;

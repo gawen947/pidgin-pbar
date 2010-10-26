@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-26 20:42:51 gawen>
+   Time-stamp: <2010-10-27 01:16:38 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -77,7 +77,7 @@ void create_widget()
   gboolean compact = purple_prefs_get_bool(PREF "/compact");
   gtk_container_add(GTK_CONTAINER(bar->name_button), bar->name_label);
   gtk_container_add(GTK_CONTAINER(bar->pm_button), bar->pm_label);
-  gtk_container_add(GTK_CONTAINER(bar->event_box),bar->icon);
+  gtk_container_add(GTK_CONTAINER(bar->event_box), bar->icon);
   if(compact) {
     gtk_box_pack_start(GTK_BOX(hbox1), bar->name_button, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox1), bar->name_entry, TRUE, TRUE, 0);
@@ -106,6 +106,8 @@ void create_widget()
   gtk_box_reorder_child(GTK_BOX(blist->vbox), bar->hbox, 0);
 
   /* setup initial states */
+  bar->gtk_hnd    = NULL;
+  bar->gtk_inst   = NULL;
   bar->hover_name = FALSE;
   bar->hover_pm   = FALSE;
   bar->name_entry_activated = FALSE;
@@ -146,19 +148,23 @@ void create_widget()
   }; register const struct p_signal *purple_sig = purple_signal_connections;
 
   const struct p_signal purple_prefs_signal_connections[] = {
-    { thisplugin, PIDGIN_PREFS_ROOT "/accounts/buddyicon", cb_buddy_icon_update },
+    { bar, PIDGIN_PREFS_ROOT "/accounts/buddyicon", cb_buddy_icon_update },
     { NULL, NULL, NULL }
   }; register const struct p_signal *purple_prefs_sig = purple_prefs_signal_connections;
 
-  for(; g_sig->widget ; g_sig++)
-    g_signal_connect(G_OBJECT(g_sig->widget),
-                     g_sig->signal,
-                     G_CALLBACK(g_sig->callback),
-                     NULL);
+  gulong handler_id;
+  for(; g_sig->widget ; g_sig++) {
+    handler_id = g_signal_connect(G_OBJECT(g_sig->widget),
+                                  g_sig->signal,
+                                  G_CALLBACK(g_sig->callback),
+                                  NULL);
+    bar->gtk_hnd  = g_list_append(bar->gtk_hnd, GINT_TO_POINTER(handler_id));
+    bar->gtk_inst = g_list_append(bar->gtk_inst, g_sig->widget);
+  }
   for(; purple_sig->instance ; purple_sig++)
     purple_signal_connect(purple_sig->instance,
                           purple_sig->signal,
-                          thisplugin,
+                          bar,
                           PURPLE_CALLBACK(purple_sig->callback),
                           NULL);
   for(; purple_prefs_sig->instance ; purple_prefs_sig++)
@@ -180,9 +186,19 @@ void destroy_widget()
 {
   g_return_if_fail(bar->installed);
 
-  GList *l, *i;
+  GList *l, *i, *j;
 
   bar->installed = FALSE;
+
+  /* disconnect purple and prefs signals */
+  purple_signals_disconnect_by_handle(bar);
+  purple_prefs_disconnect_by_handle(bar);
+
+  /* disconnect gtk signals */
+  for(i = bar->gtk_hnd, j = bar->gtk_inst ; i && j ; i = i->next, j = j->next)
+    g_signal_handler_disconnect(j->data, GPOINTER_TO_INT(i->data));
+  g_list_free(bar->gtk_hnd);
+  g_list_free(bar->gtk_inst);
 
   /* destroy drop down status menu */
   l = gtk_container_get_children(GTK_CONTAINER(bar->status_menu));
