@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-10-27 01:33:12 gawen>
+   Time-stamp: <2010-10-27 01:42:00 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -43,6 +43,8 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
     const gchar *markup;
     markup = purple_prefs_get_string(PREF "/personal-message-markup");
     pm = purple_savedstatus_get_message(status);
+    if(!pm)
+      pm = "";
     set_widget_pm(markup, pm);
     purple_prefs_set_string(PREF "/personal-message", pm);
     purple_debug_info(NAME, "personal message changed to \"%s\" by pidgin\n",
@@ -52,7 +54,6 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
   prim = purple_savedstatus_get_type(status);
   stock = pidgin_stock_id_from_status_primitive(prim);
   set_widget_status(stock);
-  purple_debug_info(NAME, "status changed by pidgin\n");
 }
 
 void cb_signed_on(PurpleConnection *gc)
