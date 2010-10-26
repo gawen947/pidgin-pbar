@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-10-21 18:06:42 gawen>
+   Time-stamp: <2010-10-26 17:24:09 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -31,8 +31,8 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
 
   PurpleSavedStatus *status;
   PurpleStatusPrimitive prim;
-  const gchar *stock;
-  const gchar *pm;
+  const gchar *stock, *pm, *current_mood;
+  gchar *path;
 
   status = purple_savedstatus_get_current();
   if(purple_prefs_get_bool(PREF "/override-status")) {
@@ -51,6 +51,11 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
   prim = purple_savedstatus_get_type(status);
   stock = pidgin_stock_id_from_status_primitive(prim);
   set_widget_status(stock);
+
+  current_mood = get_global_mood_status();
+  path = get_mood_icon_path(current_mood);
+  set_widget_mood(path);
+  g_free(path);
 }
 
 void cb_signed_on(PurpleConnection *gc)

@@ -45,5 +45,6 @@ void cb_status_button(GtkWidget *widget, gpointer data);
 void cb_status_menu(gpointer data);
 
 void cb_mood_button(GtkWidget *widget, gpointer data);
+void cb_mood_menu(gpointer data);
 
 #endif /* _WIDGET_GTK_H_ */

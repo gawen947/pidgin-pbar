@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-26 17:01:48 gawen>
+   Time-stamp: <2010-10-26 17:27:35 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -278,8 +278,12 @@ void cb_mood_button(GtkWidget *widget, gpointer data)
     g_free(path);
 
     gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menu_item), icon);
-    gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), _(mood->mood));
+    gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), _(mood->description));
     gtk_menu_shell_append(GTK_MENU_SHELL(bar->mood_menu), menu_item);
+
+    g_signal_connect_swapped(menu_item, "activate",
+                             G_CALLBACK(cb_mood_menu),
+                             (gpointer)mood);
 
     gtk_widget_show(menu_item);
   }
@@ -287,6 +291,30 @@ void cb_mood_button(GtkWidget *widget, gpointer data)
   event = (GdkEventButton *)gtk_get_current_event();
   gtk_menu_popup(GTK_MENU(bar->mood_menu), NULL, NULL, NULL, NULL,
                  event->button, event->time);
+}
+
+void cb_mood_menu(gpointer data)
+{
+  g_return_if_fail(bar->installed);
+
+  PurpleMood *mood = (PurpleMood *)data;
+  GList *accounts = purple_accounts_get_all_active();
+  gchar *path;
+
+  for(; accounts ; accounts = g_list_delete_link(accounts, accounts)) {
+    PurpleAccount *account = (PurpleAccount *)accounts->data;
+    PurpleConnection *gc = purple_account_get_connection(account);
+
+    if(gc && gc->flags & PURPLE_CONNECTION_SUPPORT_MOODS)
+      set_status_with_mood(account, mood->mood);
+  }
+
+  path = get_mood_icon_path(mood->mood);
+  set_widget_mood(path);
+  g_free(path);
+
+  purple_debug_info(NAME, "mood set to \"%s\"\n",
+                    mood->mood);
 }
 
 void cb_buddy_icon_update(const char *name, PurplePrefType type,

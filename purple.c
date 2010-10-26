@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-10-26 15:54:38 gawen>
+   Time-stamp: <2010-10-26 17:14:10 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -194,6 +194,17 @@ PurpleMood * get_global_moods()
   g_hash_table_destroy(mood_counts);
 
   return result;
+}
+
+/* update status with mood */
+void set_status_with_mood(PurpleAccount *account, const gchar *mood)
+{
+  if(mood && *mood)
+    purple_account_set_status(account, "mood", TRUE,
+                              PURPLE_MOOD_NAME, mood,
+                              NULL);
+  else
+    purple_account_set_status(account, "mood", FALSE, NULL);
 }
 
 /* set display name for account */
