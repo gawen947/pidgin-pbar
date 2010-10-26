@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-26 14:12:55 gawen>
+   Time-stamp: <2010-10-26 14:16:40 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -171,9 +171,16 @@ void destroy_widget()
 
   bar->installed = FALSE;
 
-  /* destroy drop down status menu first */
+  /* destroy drop down status menu */
   l = gtk_container_get_children(GTK_CONTAINER(bar->status_menu));
+  for(i = l ; i ; i = i->next) {
+    gtk_widget_destroy(i->data);
+    i->data = NULL;
+  }
   gtk_widget_destroy(bar->status_menu);
+
+  /* destroy drop down mood menu */
+  l = gtk_container_get_children(GTK_CONTAINER(bar->mood_menu));
   for(i = l ; i ; i = i->next) {
     gtk_widget_destroy(i->data);
     i->data = NULL;
