@@ -162,9 +162,8 @@ PurpleMood * get_global_moods()
           int mood_count = GPOINTER_TO_INT(g_hash_table_lookup(mood_counts,
                                                                mood->mood));
 
-          if(!g_hash_table_lookup(global_moods, mood->mood)) {
+          if(!g_hash_table_lookup(global_moods, mood->mood))
             g_hash_table_insert(global_moods, (gpointer)mood->mood, mood);
-          }
           g_hash_table_insert(mood_counts, (gpointer)mood->mood, GINT_TO_POINTER(mood_count + 1));
         }
 

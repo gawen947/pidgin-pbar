@@ -60,7 +60,7 @@ void init_prefs()
     { PREF "/nickname-markup", "<b>%n</b>" },
     { PREF "/personal-message", EMPTY_PM },
     { PREF "/nickname", EMPTY_NAME},
-    { PREF "/mood", NULL },
+    { PREF "/mood", "" },
     { NULL, NULL }
   }; register const struct prefs_string *s = prefs_add_string;
 

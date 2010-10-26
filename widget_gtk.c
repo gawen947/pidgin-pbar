@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-26 18:22:39 gawen>
+   Time-stamp: <2010-10-26 19:08:57 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -253,6 +253,8 @@ void cb_status_menu(gpointer data)
 void cb_mood_button(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
+  const gchar *empty_mood;
+  GtkWidget *menu_item, *icon;
   PurpleMood *mood = get_global_moods();
   GdkEventButton *event;
   GList *l, *i;
@@ -270,8 +272,6 @@ void cb_mood_button(GtkWidget *widget, gpointer data)
 
   /* fill mood menu */
   for( ; mood->mood ; mood++) {
-    GtkWidget *menu_item, *icon;
-
     if(!mood->mood || !mood->description)
       continue;
 
@@ -286,10 +286,24 @@ void cb_mood_button(GtkWidget *widget, gpointer data)
 
     g_signal_connect_swapped(menu_item, "activate",
                              G_CALLBACK(cb_mood_menu),
-                             (gpointer)mood);
+                             (gpointer)mood->mood);
 
     gtk_widget_show(menu_item);
   }
+
+  /* add empty mood */
+  empty_mood = "";
+  path       = get_mood_icon_path(empty_mood);
+  icon       = gtk_image_new_from_file(path);
+  menu_item  = gtk_image_menu_item_new();
+  g_free(path);
+  gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menu_item), icon);
+  gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), _("None"));
+  gtk_menu_shell_append(GTK_MENU_SHELL(bar->mood_menu), menu_item);
+  g_signal_connect_swapped(menu_item, "activate",
+                           G_CALLBACK(cb_mood_menu),
+                           (gpointer)empty_mood);
+  gtk_widget_show(menu_item);
 
   event = (GdkEventButton *)gtk_get_current_event();
   gtk_menu_popup(GTK_MENU(bar->mood_menu), NULL, NULL, NULL, NULL,
@@ -300,7 +314,7 @@ void cb_mood_menu(gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  PurpleMood *mood = (PurpleMood *)data;
+  const gchar *mood = (const gchar *)data;
   GList *accounts = purple_accounts_get_all_active();
   gchar *path;
 
@@ -309,16 +323,15 @@ void cb_mood_menu(gpointer data)
     PurpleConnection *gc = purple_account_get_connection(account);
 
     if(gc && gc->flags & PURPLE_CONNECTION_SUPPORT_MOODS)
-      set_status_with_mood(account, mood->mood);
+      set_status_with_mood(account, mood);
   }
 
-  purple_prefs_set_string(PREF "/mood", mood->mood);
-  path = get_mood_icon_path(mood->mood);
+  purple_prefs_set_string(PREF "/mood", mood);
+  path = get_mood_icon_path(mood);
   set_widget_mood(path);
   g_free(path);
 
-  purple_debug_info(NAME, "mood changed to \"%s\" by user\n",
-                    mood->description);
+  purple_debug_info(NAME, "mood changed to \"%s\" by user\n", mood);
 }
 
 void cb_buddy_icon_update(const char *name, PurplePrefType type,
