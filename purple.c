@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-10-26 14:48:03 gawen>
+   Time-stamp: <2010-10-26 15:00:37 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -94,6 +94,39 @@ gchar * get_mood_icon_path(const gchar *mood)
   }
 
   return path;
+}
+
+/* get current set mood for all mood-supporting accounts, or NULL if not set or
+   not set to the same on all */
+const gchar * get_global_mood_status()
+{
+  GList *accounts = purple_accounts_get_all_active();
+  const gchar *found_mood = NULL;
+
+  for(; accounts ; accounts = g_list_delete_link(accounts, accounts)) {
+    PurpleAccount *account = (PurpleAccount *)accounts->data;
+
+    if(purple_account_is_connected(account) &&
+       (purple_account_get_connection(account)->flags &
+        PURPLE_CONNECTION_SUPPORT_MOODS)) {
+      const gchar *curr_mood;
+      PurplePresence *presence;
+      PurpleStatus *status;
+      presence  = purple_account_get_presence(account);
+      status    = purple_presence_get_status(presence, "mood");
+      curr_mood = purple_status_get_attr_string(status, PURPLE_MOOD_NAME);
+
+      if(found_mood && !purple_strequal(curr_mood, found_mood)) {
+        /* found a different mood */
+        found_mood = NULL;
+        break;
+      }
+      else
+        found_mood = curr_mood;
+    }
+  }
+
+  return found_mood;
 }
 
 /* set display name for account */

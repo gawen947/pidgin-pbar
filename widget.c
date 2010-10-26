@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-26 14:42:27 gawen>
+   Time-stamp: <2010-10-26 14:52:57 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -215,6 +215,9 @@ void init_widget()
   /* for status */
   const gchar *stock;
 
+  /* for mood */
+  const gchar *mood, *path;
+
   /* nickname */
   markup = purple_prefs_get_string(PREF "/nickname-markup");
   value  = purple_prefs_get_string(PREF "/nickname");
@@ -232,6 +235,11 @@ void init_widget()
   /* buddy icon */
   icon = get_buddy_icon();
   set_widget_icon(icon);
+
+  /* mood image */
+  mood = get_global_mood_status();
+  path = get_mood_icon_path(mood);
+  set_widget_mood(path);
 
   /* status image */
   stock  = get_status_stock_id();
