@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-26 18:08:39 gawen>
+   Time-stamp: <2010-10-26 20:39:04 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -33,7 +33,7 @@ static void cb_hide_statusbox(GtkWidget *widget, gpointer data);
 static void cb_override_status(GtkWidget *widget, gpointer data);
 static void cb_nickname_justify(GtkWidget *widget, gpointer data);
 static void cb_personal_message_justify(GtkWidget *widget, gpointer data);
-
+static void cb_compact(GtkWidget *widget, gpointer data);
 
 /* alias we will use for combobox */
 static const struct i_alias {
@@ -71,6 +71,7 @@ void init_prefs()
   } prefs_add_bool[] = {
     { PREF "/hide-statusbox", TRUE },
     { PREF "/override-status", FALSE },
+    { PREF "/compact", FALSE },
     { NULL, FALSE }
   }; register const struct prefs_bool *b = prefs_add_bool;
 
@@ -125,6 +126,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   const struct widget check_button[] = {
     { N_("Hide pidgin's status box"), PREF "/hide-statusbox", cb_hide_statusbox },
     { N_("Ignore pidgin's status changes"), PREF "/override-status", cb_override_status },
+    { N_("Use a compact bar"), PREF "/compact", cb_compact },
     { NULL, NULL, NULL }
   }; register const struct widget *cb = check_button;
 
@@ -281,4 +283,17 @@ static void cb_personal_message_justify(GtkWidget *widget, gpointer data)
   }
 
   purple_debug_info(NAME, "personal message justification changed\n");
+}
+
+static void cb_compact(GtkWidget *widget, gpointer data)
+{
+  gboolean state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+  purple_prefs_set_bool(PREF "/compact", state);
+
+  /* recreate bar since we need to repack everything */
+  destroy_widget();
+  create_widget();
+  init_widget();
+
+  purple_debug_info(NAME, "compact state changed\n");
 }
