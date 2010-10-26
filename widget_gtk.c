@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-26 17:27:35 gawen>
+   Time-stamp: <2010-10-26 17:49:14 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -75,9 +75,10 @@ void cb_name_button(GtkWidget *widget, gpointer data)
   g_return_if_fail(bar->installed);
 
   const gchar *name = purple_prefs_get_string(PREF "/nickname");
+  if(!name || !strcmp(name, EMPTY_NAME))
+    name = "";
 
-  gtk_entry_set_text(GTK_ENTRY(bar->name_entry),
-                     strcmp(name, EMPTY_NAME) ? name : "");
+  gtk_entry_set_text(GTK_ENTRY(bar->name_entry), name);
 
   gtk_widget_hide(bar->name_button);
   gtk_widget_show(bar->name_entry);
@@ -151,8 +152,10 @@ void cb_pm_button(GtkWidget *widget, gpointer data)
   g_return_if_fail(bar->installed);
 
   const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
+  if(!pm || !strcmp(pm, EMPTY_PM))
+    pm = "";
 
-  gtk_entry_set_text(GTK_ENTRY(bar->pm_entry), strcmp(pm,EMPTY_PM) ? pm : "");
+  gtk_entry_set_text(GTK_ENTRY(bar->pm_entry), pm);
 
   gtk_widget_hide(bar->pm_button);
   gtk_widget_show(bar->pm_entry);

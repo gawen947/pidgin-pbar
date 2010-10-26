@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-26 16:31:49 gawen>
+   Time-stamp: <2010-10-26 17:40:35 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -325,7 +325,7 @@ static gchar * g_strreplace(const gchar *string, const gchar *old,
 
 void set_widget_name(const gchar *markup, const gchar *name)
 {
-  g_return_if_fail(bar->installed);
+  g_return_if_fail(markup && name && bar->installed);
 
   gchar *escaped_name, *new;
 
@@ -343,7 +343,7 @@ void set_widget_name(const gchar *markup, const gchar *name)
 
 void set_widget_pm(const gchar *markup, const gchar *pm)
 {
-  g_return_if_fail(bar->installed);
+  g_return_if_fail(markup && pm && bar->installed);
 
   gchar *escaped_pm, *new;
 
@@ -361,7 +361,7 @@ void set_widget_pm(const gchar *markup, const gchar *pm)
 
 void set_widget_status(const gchar *stock)
 {
-  g_return_if_fail(bar->installed);
+  g_return_if_fail(stock && bar->installed);
 
   GtkWidget *icon = gtk_image_new_from_stock(stock, GTK_ICON_SIZE_MENU);
   gtk_button_set_image(GTK_BUTTON(bar->status), icon);
@@ -370,7 +370,7 @@ void set_widget_status(const gchar *stock)
 
 void set_widget_mood(const gchar *path)
 {
-  g_return_if_fail(bar->installed);
+  g_return_if_fail(path && bar->installed);
 
   GtkWidget *mood = gtk_image_new_from_file(path);
   gtk_button_set_image(GTK_BUTTON(bar->mood), mood);
