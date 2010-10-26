@@ -33,6 +33,7 @@ GdkPixbuf * get_buddy_icon();
 GdkPixbuf * get_buddy_icon_hover();
 const gchar * get_status_stock_id();
 gchar * get_mood_icon_path();
+PurpleMood * get_global_moods();
 const gchar * get_global_mood_status();
 void set_display_name(PurpleAccount *account, const gchar *name);
 

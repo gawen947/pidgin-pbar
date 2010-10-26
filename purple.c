@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-10-26 15:23:07 gawen>
+   Time-stamp: <2010-10-26 15:54:38 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -25,6 +25,8 @@
 #include "purple.h"
 
 /* callbacks */
+static void cb_global_moods_for_each(gpointer key, gpointer value,
+                                     gpointer user_data);
 static void cb_set_alias_failure(PurpleAccount *account, const char *error);
 static void cb_dummy();
 
@@ -133,6 +135,67 @@ const gchar * get_global_mood_status()
   return found_mood;
 }
 
+/* get global moods */
+PurpleMood * get_global_moods()
+{
+  GHashTable *global_moods = g_hash_table_new_full(g_str_hash, g_str_equal,
+                                                   NULL, NULL);
+  GHashTable *mood_counts  = g_hash_table_new_full(g_str_hash, g_str_equal,
+                                                   NULL, NULL);
+
+  GList *accounts = purple_accounts_get_all_active();
+  PurpleMood *result = NULL;
+  GList *out_moods = NULL;
+  int i = 0;
+  int num_accounts = 0;
+
+  for(; accounts ; accounts = g_list_delete_link(accounts, accounts)) {
+    PurpleAccount *account = (PurpleAccount *)accounts->data;
+    if(purple_account_is_connected(account)) {
+      PurpleConnection *gc = purple_account_get_connection(account);
+      if(gc->flags & PURPLE_CONNECTION_SUPPORT_MOODS) {
+        PurplePluginProtocolInfo *prpl_info = PURPLE_PLUGIN_PROTOCOL_INFO(gc->prpl);
+        PurpleMood *mood = NULL;
+
+        for(mood = prpl_info->get_moods(account) ;
+            mood->mood ; mood++) {
+          int mood_count = GPOINTER_TO_INT(g_hash_table_lookup(mood_counts,
+                                                               mood->mood));
+
+          if(!g_hash_table_lookup(global_moods, mood->mood)) {
+            g_hash_table_insert(global_moods, (gpointer)mood->mood, mood);
+          }
+          g_hash_table_insert(mood_counts, (gpointer)mood->mood, GINT_TO_POINTER(mood_count + 1));
+        }
+
+        num_accounts++;
+      }
+    }
+  }
+
+  g_hash_table_foreach(global_moods, cb_global_moods_for_each, &out_moods);
+  result = g_new0(PurpleMood, g_hash_table_size(global_moods) + 1);
+
+  while(out_moods) {
+    PurpleMood *mood = (PurpleMood *)out_moods->data;
+    int in_num_accounts = GPOINTER_TO_INT(g_hash_table_lookup(mood_counts,
+                                                              mood->mood));
+
+    if(in_num_accounts == num_accounts) {
+      /* mood is present in all accounts supporting moods */
+      result[i].mood = mood->mood;
+      result[i].description = mood->description;
+      i++;
+    }
+    out_moods = g_list_delete_link(out_moods, out_moods);
+  }
+
+  g_hash_table_destroy(global_moods);
+  g_hash_table_destroy(mood_counts);
+
+  return result;
+}
+
 /* set display name for account */
 void set_display_name(PurpleAccount *account, const gchar *name)
 {
@@ -171,6 +234,15 @@ void set_display_name(PurpleAccount *account, const gchar *name)
        protocols don't check before calling */
     purple_account_set_public_alias(account, name, cb_dummy,
                                     cb_set_alias_failure);
+}
+
+static void cb_global_moods_for_each(gpointer key, gpointer value,
+                                     gpointer user_data)
+{
+  GList **out_moods = (GList **)user_data;
+  PurpleMood *mood = (PurpleMood *)value;
+
+  *out_moods = g_list_append(*out_moods, mood);
 }
 
 static void cb_set_alias_failure(PurpleAccount *account, const char *error)

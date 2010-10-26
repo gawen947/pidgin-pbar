@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-26 15:22:17 gawen>
+   Time-stamp: <2010-10-26 15:55:01 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -216,7 +216,8 @@ void init_widget()
   const gchar *stock;
 
   /* for mood */
-  const gchar *mood, *path;
+  const gchar *current_mood;
+  gchar *path;
 
   /* nickname */
   markup = purple_prefs_get_string(PREF "/nickname-markup");
@@ -237,9 +238,36 @@ void init_widget()
   set_widget_icon(icon);
 
   /* mood image */
-  mood = get_global_mood_status();
-  path = get_mood_icon_path(mood);
+  current_mood = get_global_mood_status();
+  path = get_mood_icon_path(current_mood);
   set_widget_mood(path);
+  g_free(path);
+
+  /* fill mood menu */
+  PurpleMood *mood = get_global_moods();
+
+  for( ; mood->mood ; mood++) {
+    GtkWidget *menu_item, *icon;
+
+    if(!mood->mood || !mood->description)
+      continue;
+
+    path = get_mood_icon_path(mood->mood);
+    icon = gtk_image_new_from_file(path);
+    menu_item = gtk_image_menu_item_new();
+    g_free(path);
+
+    gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menu_item), icon);
+    gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), _(mood->mood));
+    gtk_menu_shell_append(GTK_MENU_SHELL(bar->mood_menu), menu_item);
+
+/*
+    g_signal_connect_swapped(menu_item, "activate",
+                             G_CALLBACK(cb_status_menu),
+                             (gpointer)status_type);
+*/
+    gtk_widget_show(menu_item);
+  }
 
   /* status image */
   stock  = get_status_stock_id();
