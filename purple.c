@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-10-26 15:00:37 gawen>
+   Time-stamp: <2010-10-26 15:23:07 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -80,7 +80,11 @@ gchar * get_mood_icon_path(const gchar *mood)
 {
   gchar *path;
 
-  if(!strcmp(mood, "busy"))
+  /* FIXME: choose something else for "None" mood */
+  if(!mood)
+    path = g_build_filename(DATADIR, "pixmaps", "pidgin",
+                            "toolbar", "16", "emote-select.png", NULL);
+  else if(!strcmp(mood, "busy"))
     path = g_build_filename(DATADIR, "pixmaps", "pidgin",
                             "status", "16", "busy.png", NULL);
   else if(strcmp(mood, "hiptop"))

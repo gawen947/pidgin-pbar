@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-26 14:52:57 gawen>
+   Time-stamp: <2010-10-26 15:22:17 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -82,7 +82,7 @@ void create_widget()
   gtk_box_pack_start(GTK_BOX(hbox1), bar->status, FALSE, FALSE, 0);
   gtk_box_pack_start(GTK_BOX(hbox2), bar->pm_button, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX(hbox2), bar->pm_entry, TRUE, TRUE, 0);
-  gtk_box_pack_start(GTK_BOX(hbox2), bar->mood, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(hbox2), bar->mood, FALSE, FALSE, 0);
   gtk_box_pack_start(GTK_BOX(vbox), hbox1, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX(vbox), hbox2, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX(bar->hbox), bar->event_box, FALSE, FALSE, 5);
