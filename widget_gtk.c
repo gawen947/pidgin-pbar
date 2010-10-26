@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-26 22:09:01 gawen>
+   Time-stamp: <2010-10-27 01:26:53 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -255,7 +255,7 @@ void cb_status_menu(gpointer data)
   purple_savedstatus_set_message(status, pm);
   purple_savedstatus_activate(status);
 
-  purple_debug_info(NAME, "status set to \"%s\"\n",
+  purple_debug_info(NAME, "status changed to \"%s\" by user\n",
                     purple_status_type_get_name(status_type));
 }
 

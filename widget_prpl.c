@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-10-26 18:25:14 gawen>
+   Time-stamp: <2010-10-27 01:33:12 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -31,8 +31,7 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
 
   PurpleSavedStatus *status;
   PurpleStatusPrimitive prim;
-  const gchar *stock, *pm, *current_mood;
-  gchar *path;
+  const gchar *stock, *pm;
 
   status = purple_savedstatus_get_current();
   if(purple_prefs_get_bool(PREF "/override-status")) {
@@ -46,16 +45,14 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
     pm = purple_savedstatus_get_message(status);
     set_widget_pm(markup, pm);
     purple_prefs_set_string(PREF "/personal-message", pm);
+    purple_debug_info(NAME, "personal message changed to \"%s\" by pidgin\n",
+                      pm);
   }
 
   prim = purple_savedstatus_get_type(status);
   stock = pidgin_stock_id_from_status_primitive(prim);
   set_widget_status(stock);
-
-  current_mood = purple_prefs_get_string(PREF "/mood");
-  path = get_mood_icon_path(current_mood);
-  set_widget_mood(path);
-  g_free(path);
+  purple_debug_info(NAME, "status changed by pidgin\n");
 }
 
 void cb_signed_on(PurpleConnection *gc)
