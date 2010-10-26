@@ -12,6 +12,8 @@ CATALOGS = $(foreach cat, $(POFILES:.po=.mo), $(notdir $(cat)))
 PREFIX    ?= /usr/local
 LOCALEDIR ?= $(PREFIX)/share/locale
 PLUGINDIR ?= $(shell pkg-config --variable=plugindir pidgin)
+DATADIR   ?= $(shell pkg-config --variable=datadir pidgin)
+
 
 ifdef DEBUG
 CFLAGS += -ggdb
@@ -19,15 +21,17 @@ endif
 
 commit = $(shell ./hash.sh)
 ifneq ($(commit), UNKNOWN)
-CFLAGS+=-DCOMMIT="\"$(commit)\""
+CFLAGS += -DCOMMIT="\"$(commit)\""
 endif
 
 ifndef DISABLE_NLS
-CFLAGS+=-DENABLE_NLS=1 -DLOCALEDIR="\"$(LOCALEDIR)\""
-locales:=locales
-install-locales:=install-locales
-uninstall-locales:=uninstall-locales
+CFLAGS += -DENABLE_NLS=1 -DLOCALEDIR="\"$(LOCALEDIR)\""
+locales           := locales
+install-locales   := install-locales
+uninstall-locales := uninstall-locales
 endif
+
+CFLAGS += -DDATADIR="\"$(DATADIR)\""
 
 .PHONY: all clean
 
