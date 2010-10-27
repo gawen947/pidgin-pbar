@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-27 18:09:13 gawen>
+   Time-stamp: <2010-10-28 01:01:38 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -340,15 +340,4 @@ void cb_mood_menu(gpointer data)
   g_free(path);
 
   purple_debug_info(NAME, "mood changed to \"%s\" by user\n", mood);
-}
-
-void cb_buddy_icon_update(const char *name, PurplePrefType type,
-                          gconstpointer val, gpointer data)
-{
-  g_return_if_fail(bar->installed);
-
-  GdkPixbuf *icon;
-
-  icon = get_buddy_icon();
-  set_widget_icon(icon);
 }

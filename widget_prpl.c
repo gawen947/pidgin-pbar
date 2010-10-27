@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-10-27 01:51:42 gawen>
+   Time-stamp: <2010-10-28 01:01:30 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -75,3 +75,13 @@ void cb_signed_on(PurpleConnection *gc)
   }
 }
 
+void cb_buddy_icon_update(const char *name, PurplePrefType type,
+                          gconstpointer val, gpointer data)
+{
+  g_return_if_fail(bar->installed);
+
+  GdkPixbuf *icon;
+
+  icon = get_buddy_icon();
+  set_widget_icon(icon);
+}
