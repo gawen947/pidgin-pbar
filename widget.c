@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-27 18:35:03 gawen>
+   Time-stamp: <2010-10-27 18:46:42 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -246,6 +246,10 @@ void init_widget()
   /* for mood */
   const gchar *current_mood;
   gchar *path;
+
+  /* entry frame */
+  state = purple_prefs_get_bool(PREF "/frame-entry");
+  set_widget_entry_frame(state);
 
   /* nickname */
   markup = purple_prefs_get_string(PREF "/nickname-markup");
