@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-27 18:05:06 gawen>
+   Time-stamp: <2010-10-27 18:11:05 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -63,8 +63,6 @@ void create_widget()
   gtk_label_set_line_wrap(GTK_LABEL(bar->pm_label), TRUE);
   gtk_button_set_relief(GTK_BUTTON(bar->status), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->mood), GTK_RELIEF_NONE);
-  gtk_button_set_alignment(GTK_BUTTON(bar->name_eventbox), .01, .5);
-  gtk_button_set_alignment(GTK_BUTTON(bar->pm_eventbox), .01, .5);
   gtk_widget_set_can_focus(bar->name_eventbox, FALSE);
   gtk_widget_set_can_focus(bar->pm_eventbox, FALSE);
   gtk_widget_set_can_focus(bar->status, FALSE);
