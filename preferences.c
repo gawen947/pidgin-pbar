@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-10-27 17:55:28 gawen>
+   Time-stamp: <2010-10-27 18:42:51 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -55,9 +55,9 @@ void init_prefs()
     const char *name;
     const char *value;
   } prefs_add_string[] = {
-    { PREF "/personal-message-markup-hover", "<span color=\"darkgreen\"><small><i>%p</i></small></span>" },
-    { PREF "/personal-message-markup", "<small><i>%p</i></small>" },
-    { PREF "/nickname-markup-hover", "<span color=\"darkgreen\"><b>%n</b></span>" },
+    { PREF "/personal-message-markup-hover", "<span color=\"DarkOliveGreen4\"><small><i>%p</i></small></span>" },
+    { PREF "/personal-message-markup", "<small>%p</small>" },
+    { PREF "/nickname-markup-hover", "<span color=\"DarkOliveGreen4\"><b>%n</b></span>" },
     { PREF "/nickname-markup", "<b>%n</b>" },
     { PREF "/personal-message", EMPTY_PM },
     { PREF "/nickname", EMPTY_NAME},
