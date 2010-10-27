@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-27 17:55:21 gawen>
+   Time-stamp: <2010-10-27 18:05:06 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -39,19 +39,19 @@ void create_widget()
     bar = g_malloc(sizeof(struct widget));
 
   /* widgets that can possibly be modified along plugin's execution */
-  bar->icon        = gtk_image_new();
-  bar->status      = gtk_button_new_from_stock(NULL);
-  bar->mood        = gtk_button_new_from_stock(NULL);
-  bar->name_label  = gtk_label_new(NULL);
-  bar->name_button = gtk_event_box_new();
-  bar->name_entry  = gtk_entry_new();
-  bar->pm_label    = gtk_label_new(NULL);
-  bar->pm_button   = gtk_event_box_new();
-  bar->pm_entry    = gtk_entry_new();
-  bar->hbox        = gtk_hbox_new(FALSE, 2);
-  bar->event_box   = gtk_event_box_new();
-  bar->status_menu = gtk_menu_new();
-  bar->mood_menu   = gtk_menu_new();
+  bar->icon          = gtk_image_new();
+  bar->status        = gtk_button_new_from_stock(NULL);
+  bar->mood          = gtk_button_new_from_stock(NULL);
+  bar->name_label    = gtk_label_new(NULL);
+  bar->name_eventbox = gtk_event_box_new();
+  bar->name_entry    = gtk_entry_new();
+  bar->pm_label      = gtk_label_new(NULL);
+  bar->pm_eventbox   = gtk_event_box_new();
+  bar->pm_entry      = gtk_entry_new();
+  bar->hbox          = gtk_hbox_new(FALSE, 2);
+  bar->icon_eventbox = gtk_event_box_new();
+  bar->status_menu   = gtk_menu_new();
+  bar->mood_menu     = gtk_menu_new();
 
   /* widgets that are not modified */
   GtkWidget *vbox = gtk_vbox_new(FALSE, 0);
@@ -61,45 +61,43 @@ void create_widget()
   /* setup widgets */
   gtk_label_set_line_wrap(GTK_LABEL(bar->name_label), TRUE);
   gtk_label_set_line_wrap(GTK_LABEL(bar->pm_label), TRUE);
-  gtk_button_set_relief(GTK_BUTTON(bar->name_button), GTK_RELIEF_NONE);
-  gtk_button_set_relief(GTK_BUTTON(bar->pm_button), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->status), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->mood), GTK_RELIEF_NONE);
-  gtk_button_set_alignment(GTK_BUTTON(bar->name_button), .01, .5);
-  gtk_button_set_alignment(GTK_BUTTON(bar->pm_button), .01, .5);
-  gtk_widget_set_can_focus(bar->name_button, FALSE);
-  gtk_widget_set_can_focus(bar->pm_button, FALSE);
+  gtk_button_set_alignment(GTK_BUTTON(bar->name_eventbox), .01, .5);
+  gtk_button_set_alignment(GTK_BUTTON(bar->pm_eventbox), .01, .5);
+  gtk_widget_set_can_focus(bar->name_eventbox, FALSE);
+  gtk_widget_set_can_focus(bar->pm_eventbox, FALSE);
   gtk_widget_set_can_focus(bar->status, FALSE);
   gtk_widget_set_can_focus(bar->mood, FALSE);
-  gtk_event_box_set_visible_window(GTK_EVENT_BOX(bar->event_box), FALSE);
-  gtk_event_box_set_visible_window(GTK_EVENT_BOX(bar->name_button), FALSE);
-  gtk_event_box_set_visible_window(GTK_EVENT_BOX(bar->pm_button), FALSE);
+  gtk_event_box_set_visible_window(GTK_EVENT_BOX(bar->icon_eventbox), FALSE);
+  gtk_event_box_set_visible_window(GTK_EVENT_BOX(bar->name_eventbox), FALSE);
+  gtk_event_box_set_visible_window(GTK_EVENT_BOX(bar->pm_eventbox), FALSE);
 
   /* pack widgets */
   gboolean compact = purple_prefs_get_bool(PREF "/compact");
-  gtk_container_add(GTK_CONTAINER(bar->name_button), bar->name_label);
-  gtk_container_add(GTK_CONTAINER(bar->pm_button), bar->pm_label);
-  gtk_container_add(GTK_CONTAINER(bar->event_box), bar->icon);
+  gtk_container_add(GTK_CONTAINER(bar->name_eventbox), bar->name_label);
+  gtk_container_add(GTK_CONTAINER(bar->pm_eventbox), bar->pm_label);
+  gtk_container_add(GTK_CONTAINER(bar->icon_eventbox), bar->icon);
   if(compact) {
-    gtk_box_pack_start(GTK_BOX(hbox1), bar->name_button, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox1), bar->name_eventbox, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox1), bar->name_entry, TRUE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(hbox1), bar->pm_button, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox1), bar->pm_eventbox, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(hbox1), bar->pm_entry, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(hbox1), bar->mood, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox1), bar->status, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), hbox1, TRUE, TRUE, 0);
   }
   else {
-    gtk_box_pack_start(GTK_BOX(hbox1), bar->name_button, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox1), bar->name_eventbox, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(hbox1), bar->name_entry, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(hbox1), bar->status, FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(hbox2), bar->pm_button, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox2), bar->pm_eventbox, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(hbox2), bar->pm_entry, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(hbox2), bar->mood, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), hbox1, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), hbox2, TRUE, TRUE, 0);
   }
-  gtk_box_pack_start(GTK_BOX(bar->hbox), bar->event_box, FALSE, FALSE, 5);
+  gtk_box_pack_start(GTK_BOX(bar->hbox), bar->icon_eventbox, FALSE, FALSE, 5);
   gtk_box_pack_start(GTK_BOX(bar->hbox), vbox, TRUE, TRUE, 0);
 
   /* pack into buddy list */
@@ -121,17 +119,17 @@ void create_widget()
     const gchar *signal;
     void (*callback)(GtkWidget *, gpointer);
   } g_signal_connections[] = {
-    { bar->event_box, "button-press-event", cb_buddy_icon },
-    { bar->event_box, "enter-notify-event", cb_buddy_icon_enter },
-    { bar->event_box, "leave-notify-event", cb_buddy_icon_leave },
-    { bar->name_button, "button-press-event", cb_name_button },
-    { bar->name_button, "enter-notify-event", cb_name_button_enter },
-    { bar->name_button, "leave-notify-event", cb_name_button_leave },
+    { bar->icon_eventbox, "button-press-event", cb_buddy_icon },
+    { bar->icon_eventbox, "enter-notify-event", cb_buddy_icon_enter },
+    { bar->icon_eventbox, "leave-notify-event", cb_buddy_icon_leave },
+    { bar->name_eventbox, "button-press-event", cb_name },
+    { bar->name_eventbox, "enter-notify-event", cb_name_enter },
+    { bar->name_eventbox, "leave-notify-event", cb_name_leave },
     { bar->name_entry, "activate", cb_name_entry },
     { bar->name_entry, "focus-out-event", cb_name_entry_focus_out },
-    { bar->pm_button, "button-press-event", cb_pm_button },
-    { bar->pm_button, "enter-notify-event", cb_pm_button_enter },
-    { bar->pm_button, "leave-notify-event", cb_pm_button_leave },
+    { bar->pm_eventbox, "button-press-event", cb_pm },
+    { bar->pm_eventbox, "enter-notify-event", cb_pm_enter },
+    { bar->pm_eventbox, "leave-notify-event", cb_pm_leave },
     { bar->pm_entry, "activate", cb_pm_entry },
     { bar->pm_entry, "focus-out-event", cb_pm_entry_focus_out },
     { bar->status, "clicked", cb_status_button },

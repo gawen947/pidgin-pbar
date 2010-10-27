@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-27 01:26:53 gawen>
+   Time-stamp: <2010-10-27 18:09:13 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -56,7 +56,7 @@ void cb_buddy_icon_enter(GtkWidget *widget, gpointer data)
 
   icon = get_buddy_icon_hover();
   set_widget_icon(icon);
-  pidgin_set_cursor(bar->event_box, GDK_HAND2);
+  pidgin_set_cursor(bar->icon_eventbox, GDK_HAND2);
 }
 
 void cb_buddy_icon_leave(GtkWidget *widget, gpointer data)
@@ -67,10 +67,10 @@ void cb_buddy_icon_leave(GtkWidget *widget, gpointer data)
 
   icon = get_buddy_icon();
   set_widget_icon(icon);
-  pidgin_set_cursor(bar->event_box, GDK_ARROW);
+  pidgin_set_cursor(bar->icon_eventbox, GDK_ARROW);
 }
 
-void cb_name_button(GtkWidget *widget, gpointer data)
+void cb_name(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
@@ -82,14 +82,14 @@ void cb_name_button(GtkWidget *widget, gpointer data)
   gtk_entry_set_text(GTK_ENTRY(bar->name_entry), name);
 
   if(purple_prefs_get_bool(PREF "/compact"))
-    gtk_widget_hide(bar->pm_button);
-  gtk_widget_hide(bar->name_button);
+    gtk_widget_hide(bar->pm_eventbox);
+  gtk_widget_hide(bar->name_eventbox);
   gtk_widget_show(bar->name_entry);
 
   gtk_widget_grab_focus(bar->name_entry);
 }
 
-void cb_name_button_enter(GtkWidget *widget, gpointer data)
+void cb_name_enter(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
@@ -102,7 +102,7 @@ void cb_name_button_enter(GtkWidget *widget, gpointer data)
   set_widget_name(markup, name);
 }
 
-void cb_name_button_leave(GtkWidget *widget, gpointer data)
+void cb_name_leave(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
@@ -138,9 +138,9 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
   bar->name_entry_activated = TRUE;
 
   if(purple_prefs_get_bool(PREF "/compact"))
-    gtk_widget_show(bar->pm_button);
+    gtk_widget_show(bar->pm_eventbox);
   gtk_widget_hide(bar->name_entry);
-  gtk_widget_show(bar->name_button);
+  gtk_widget_show(bar->name_eventbox);
 
   purple_debug_info(NAME, "nickname changed to \"%s\" by user\n", name);
 }
@@ -152,7 +152,7 @@ void cb_name_entry_focus_out(GtkWidget *widget, gpointer data)
   bar->name_entry_activated = FALSE;
 }
 
-void cb_pm_button(GtkWidget *widget, gpointer data)
+void cb_pm(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
@@ -163,14 +163,14 @@ void cb_pm_button(GtkWidget *widget, gpointer data)
   gtk_entry_set_text(GTK_ENTRY(bar->pm_entry), pm);
 
   if(purple_prefs_get_bool(PREF "/compact"))
-    gtk_widget_hide(bar->name_button);
-  gtk_widget_hide(bar->pm_button);
+    gtk_widget_hide(bar->name_eventbox);
+  gtk_widget_hide(bar->pm_eventbox);
   gtk_widget_show(bar->pm_entry);
 
   gtk_widget_grab_focus(bar->pm_entry);
 }
 
-void cb_pm_button_enter(GtkWidget *widget, gpointer data)
+void cb_pm_enter(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
@@ -183,7 +183,7 @@ void cb_pm_button_enter(GtkWidget *widget, gpointer data)
   set_widget_pm(markup, pm);
 }
 
-void cb_pm_button_leave(GtkWidget *widget, gpointer data)
+void cb_pm_leave(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
@@ -216,9 +216,9 @@ void cb_pm_entry(GtkWidget *widget, gpointer data)
   bar->pm_entry_activated = TRUE;
 
   if(purple_prefs_get_bool(PREF "/compact"))
-    gtk_widget_show(bar->name_button);
+    gtk_widget_show(bar->name_eventbox);
   gtk_widget_hide(bar->pm_entry);
-  gtk_widget_show(bar->pm_button);
+  gtk_widget_show(bar->pm_eventbox);
 
   purple_debug_info(NAME, "personal message changed to \"%s\" by user\n", pm);
 }

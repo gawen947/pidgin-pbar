@@ -1,5 +1,5 @@
 /* File: widget_gtk.h
-   Time-stamp: <2010-10-26 15:59:45 gawen>
+   Time-stamp: <2010-10-27 18:06:39 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -29,15 +29,15 @@ void cb_buddy_icon_leave(GtkWidget *widget, gpointer data);
 void cb_buddy_icon_update(const char *name, PurplePrefType type,
                           gconstpointer val, gpointer data);
 
-void cb_name_button(GtkWidget *widget, gpointer data);
-void cb_name_button_enter(GtkWidget *widget, gpointer data);
-void cb_name_button_leave(GtkWidget *widget, gpointer data);
+void cb_name(GtkWidget *widget, gpointer data);
+void cb_name_enter(GtkWidget *widget, gpointer data);
+void cb_name_leave(GtkWidget *widget, gpointer data);
 void cb_name_entry(GtkWidget *widget, gpointer data);
 void cb_name_entry_focus_out(GtkWidget *widget, gpointer data);
 
-void cb_pm_button(GtkWidget *widget, gpointer data);
-void cb_pm_button_enter(GtkWidget *widget, gpointer data);
-void cb_pm_button_leave(GtkWidget *widget, gpointer data);
+void cb_pm(GtkWidget *widget, gpointer data);
+void cb_pm_enter(GtkWidget *widget, gpointer data);
+void cb_pm_leave(GtkWidget *widget, gpointer data);
 void cb_pm_entry(GtkWidget *widget, gpointer data);
 void cb_pm_entry_focus_out(GtkWidget *widget, gpointer data);
 
