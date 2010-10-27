@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-27 01:16:38 gawen>
+   Time-stamp: <2010-10-27 16:14:03 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -43,10 +43,10 @@ void create_widget()
   bar->status      = gtk_button_new_from_stock(NULL);
   bar->mood        = gtk_button_new_from_stock(NULL);
   bar->name_label  = gtk_label_new(NULL);
-  bar->name_button = gtk_button_new();
+  bar->name_button = gtk_event_box_new();
   bar->name_entry  = gtk_entry_new();
   bar->pm_label    = gtk_label_new(NULL);
-  bar->pm_button   = gtk_button_new();
+  bar->pm_button   = gtk_event_box_new();
   bar->pm_entry    = gtk_entry_new();
   bar->hbox        = gtk_hbox_new(FALSE, 2);
   bar->event_box   = gtk_event_box_new();
@@ -61,6 +61,8 @@ void create_widget()
   /* setup widgets */
   gtk_label_set_line_wrap(GTK_LABEL(bar->name_label), TRUE);
   gtk_label_set_line_wrap(GTK_LABEL(bar->pm_label), TRUE);
+  gtk_entry_set_has_frame(GTK_ENTRY(bar->name_entry), FALSE);
+  gtk_entry_set_has_frame(GTK_ENTRY(bar->pm_entry), FALSE);
   gtk_button_set_relief(GTK_BUTTON(bar->name_button), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->pm_button), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->status), GTK_RELIEF_NONE);
@@ -72,6 +74,8 @@ void create_widget()
   gtk_widget_set_can_focus(bar->status, FALSE);
   gtk_widget_set_can_focus(bar->mood, FALSE);
   gtk_event_box_set_visible_window(GTK_EVENT_BOX(bar->event_box), FALSE);
+  gtk_event_box_set_visible_window(GTK_EVENT_BOX(bar->name_button), FALSE);
+  gtk_event_box_set_visible_window(GTK_EVENT_BOX(bar->pm_button), FALSE);
 
   /* pack widgets */
   gboolean compact = purple_prefs_get_bool(PREF "/compact");
@@ -122,14 +126,14 @@ void create_widget()
     { bar->event_box, "button-press-event", cb_buddy_icon },
     { bar->event_box, "enter-notify-event", cb_buddy_icon_enter },
     { bar->event_box, "leave-notify-event", cb_buddy_icon_leave },
-    { bar->name_button, "clicked", cb_name_button },
-    { bar->name_button, "enter", cb_name_button_enter },
-    { bar->name_button, "leave", cb_name_button_leave },
+    { bar->name_button, "button-press-event", cb_name_button },
+    { bar->name_button, "enter-notify-event", cb_name_button_enter },
+    { bar->name_button, "leave-notify-event", cb_name_button_leave },
     { bar->name_entry, "activate", cb_name_entry },
     { bar->name_entry, "focus-out-event", cb_name_entry_focus_out },
-    { bar->pm_button, "clicked", cb_pm_button },
-    { bar->pm_button, "enter", cb_pm_button_enter },
-    { bar->pm_button, "leave", cb_pm_button_leave },
+    { bar->pm_button, "button-press-event", cb_pm_button },
+    { bar->pm_button, "enter-notify-event", cb_pm_button_enter },
+    { bar->pm_button, "leave-notify-event", cb_pm_button_leave },
     { bar->pm_entry, "activate", cb_pm_entry },
     { bar->pm_entry, "focus-out-event", cb_pm_entry_focus_out },
     { bar->status, "clicked", cb_status_button },
