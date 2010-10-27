@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-27 16:14:03 gawen>
+   Time-stamp: <2010-10-27 17:55:21 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -61,8 +61,6 @@ void create_widget()
   /* setup widgets */
   gtk_label_set_line_wrap(GTK_LABEL(bar->name_label), TRUE);
   gtk_label_set_line_wrap(GTK_LABEL(bar->pm_label), TRUE);
-  gtk_entry_set_has_frame(GTK_ENTRY(bar->name_entry), FALSE);
-  gtk_entry_set_has_frame(GTK_ENTRY(bar->pm_entry), FALSE);
   gtk_button_set_relief(GTK_BUTTON(bar->name_button), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->pm_button), GTK_RELIEF_NONE);
   gtk_button_set_relief(GTK_BUTTON(bar->status), GTK_RELIEF_NONE);
@@ -455,6 +453,14 @@ void set_widget_pm_justify(int justify)
 
   float jtype = int_jtype_to_float_jtype(justify);
   gtk_misc_set_alignment(GTK_MISC(bar->pm_label), jtype, .5);
+}
+
+void set_widget_entry_frame(gboolean use_frame)
+{
+  g_return_if_fail(bar->installed);
+
+  gtk_entry_set_has_frame(GTK_ENTRY(bar->name_entry), use_frame);
+  gtk_entry_set_has_frame(GTK_ENTRY(bar->pm_entry), use_frame);
 }
 
 void set_statusbox_visible(gboolean visible)
