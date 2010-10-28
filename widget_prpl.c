@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-10-28 01:01:30 gawen>
+   Time-stamp: <2010-10-28 17:04:25 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -84,4 +84,33 @@ void cb_buddy_icon_update(const char *name, PurplePrefType type,
 
   icon = get_buddy_icon();
   set_widget_icon(icon);
+}
+
+void cb_name_apply(PurpleAccount *account, const char *user_info)
+{
+  /* FIXME: move that use purple stuff */
+  g_return_if_fail(bar->installed);
+
+  GList *accts;
+  const gchar *markup;
+  const gchar *name = user_info;
+  purple_prefs_set_string(PREF "/nickname", name);
+
+  for(accts = purple_accounts_get_all_active(); accts ; accts = accts->next) {
+    account = accts->data;
+    if(!purple_account_is_connected(account))
+      continue;
+    set_display_name(account, name);
+  }
+
+  markup = purple_prefs_get_string(PREF "/nickname-markup");
+  set_widget_name(markup, name);
+  bar->name_entry_activated = TRUE;
+
+  if(purple_prefs_get_bool(PREF "/compact"))
+    gtk_widget_show(bar->pm_eventbox);
+  gtk_widget_hide(bar->name_entry);
+  gtk_widget_show(bar->name_eventbox);
+
+  purple_debug_info(NAME, "nickname changed to \"%s\" by user\n", name);
 }

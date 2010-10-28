@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-28 01:01:38 gawen>
+   Time-stamp: <2010-10-28 17:03:07 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -21,9 +21,12 @@
 #include "common.h"
 
 #include "preferences.h"
+#include "widget_prpl.h"
 #include "widget_gtk.h"
 #include "widget.h"
 #include "purple.h"
+
+static void cb_dummy(GtkWidget *widget, gpointer data) {}
 
 static void cb_icon_choose(const gchar *path, gpointer data)
 {
@@ -74,19 +77,44 @@ void cb_name(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
+  GdkEventButton *event;
   const gchar *name = purple_prefs_get_string(PREF "/nickname");
 
   if(!name || !strcmp(name, EMPTY_NAME))
     name = "";
 
-  gtk_entry_set_text(GTK_ENTRY(bar->name_entry), name);
+  event = (GdkEventButton *)gtk_get_current_event();
 
-  if(purple_prefs_get_bool(PREF "/compact"))
-    gtk_widget_hide(bar->pm_eventbox);
-  gtk_widget_hide(bar->name_eventbox);
-  gtk_widget_show(bar->name_entry);
+  /* left click */
+  if(event->button == 1) {
+    gtk_entry_set_text(GTK_ENTRY(bar->name_entry), name);
 
-  gtk_widget_grab_focus(bar->name_entry);
+    if(purple_prefs_get_bool(PREF "/compact"))
+      gtk_widget_hide(bar->pm_eventbox);
+    gtk_widget_hide(bar->name_eventbox);
+    gtk_widget_show(bar->name_entry);
+
+    gtk_widget_grab_focus(bar->name_entry);
+  }
+  /* middle and right click */
+  else {
+    purple_request_input(thisplugin,
+                         _("Change nickname"),
+                         _("You may change your nickname here"),
+                         _("Press apply when you're ok or cancel ortherwize"),
+                         name,
+                         FALSE,
+                         FALSE,
+                         NULL,
+                         _("Change nickname"),
+                         G_CALLBACK(cb_name_apply), /* cb_name_apply */
+                         _("Cancel"),
+                         G_CALLBACK(cb_dummy), /* cb_name_cancel */
+                         NULL,
+                         NULL,
+                         NULL,
+                         NULL);
+  }
 }
 
 void cb_name_enter(GtkWidget *widget, gpointer data)

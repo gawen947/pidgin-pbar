@@ -23,6 +23,7 @@
 
 #include "common.h"
 
+void cb_name_apply(PurpleAccount *account, const char *user_info);
 void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new);
 void cb_signed_on(PurpleConnection *gc);
 void cb_buddy_icon_update(const char *name, PurplePrefType type,
