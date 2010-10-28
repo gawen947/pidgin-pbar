@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-28 17:03:07 gawen>
+   Time-stamp: <2010-10-28 19:39:23 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -148,21 +148,14 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
   g_return_if_fail(bar->installed);
 
   const gchar *name, *markup;
-  PurpleAccount *account;
-  GList *accts;
 
   name = gtk_entry_get_text(GTK_ENTRY(widget));
-  purple_prefs_set_string(PREF "/nickname", name);
-
-  for(accts = purple_accounts_get_all_active(); accts ; accts = accts->next) {
-    account = accts->data;
-    if(!purple_account_is_connected(account))
-      continue;
-    set_display_name(account, name);
-  }
-
   markup = purple_prefs_get_string(PREF "/nickname-markup");
   set_widget_name(markup, name);
+
+  purple_prefs_set_string(PREF "/nickname", name);
+  set_display_name_all(name);
+
   bar->name_entry_activated = TRUE;
 
   if(purple_prefs_get_bool(PREF "/compact"))

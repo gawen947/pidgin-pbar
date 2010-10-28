@@ -1,5 +1,5 @@
 /* File: purple.h
-   Time-stamp: <2010-10-26 19:16:49 gawen>
+   Time-stamp: <2010-10-28 19:17:09 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -36,5 +36,6 @@ gchar * get_mood_icon_path();
 PurpleMood * get_global_moods();
 void set_status_with_mood(PurpleAccount *account, const gchar *mood);
 void set_display_name(PurpleAccount *account, const gchar *name);
+void set_display_name_all(const gchar *name);
 
 #endif /* _PURPLE_H_ */

@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-10-26 19:16:26 gawen>
+   Time-stamp: <2010-10-28 19:26:54 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -211,6 +211,21 @@ void set_display_name(PurpleAccount *account, const gchar *name)
        protocols don't check before calling */
     purple_account_set_public_alias(account, name, cb_dummy,
                                     cb_set_alias_failure);
+}
+
+/* set display name for all connected accounts */
+void set_display_name_all(const char *name)
+{
+  GList *accts;
+
+  for(accts = purple_accounts_get_all_active() ; accts ; accts = accts->next) {
+    PurpleAccount *account;
+
+    account = accts->data;
+    if(!purple_account_is_connected(account))
+      continue;
+    set_display_name(account, name);
+  }
 }
 
 static void cb_global_moods_for_each(gpointer key, gpointer value,
