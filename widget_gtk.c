@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-28 19:39:23 gawen>
+   Time-stamp: <2010-10-28 20:44:06 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -25,8 +25,6 @@
 #include "widget_gtk.h"
 #include "widget.h"
 #include "purple.h"
-
-static void cb_dummy(GtkWidget *widget, gpointer data) {}
 
 static void cb_icon_choose(const gchar *path, gpointer data)
 {
@@ -86,7 +84,7 @@ void cb_name(GtkWidget *widget, gpointer data)
   event = (GdkEventButton *)gtk_get_current_event();
 
   /* left click */
-  if(event->button == 1) {
+  if(event->button == 1 && !bar->name_dialog) {
     gtk_entry_set_text(GTK_ENTRY(bar->name_entry), name);
 
     if(purple_prefs_get_bool(PREF "/compact"))
@@ -97,7 +95,7 @@ void cb_name(GtkWidget *widget, gpointer data)
     gtk_widget_grab_focus(bar->name_entry);
   }
   /* middle and right click */
-  else {
+  else if(!bar->name_dialog) {
     purple_request_input(thisplugin,
                          _("Change nickname"),
                          _("You may change your nickname here"),
@@ -107,13 +105,14 @@ void cb_name(GtkWidget *widget, gpointer data)
                          FALSE,
                          NULL,
                          _("Change nickname"),
-                         G_CALLBACK(cb_name_apply), /* cb_name_apply */
+                         G_CALLBACK(cb_name_apply),
                          _("Cancel"),
-                         G_CALLBACK(cb_dummy), /* cb_name_cancel */
+                         G_CALLBACK(cb_name_cancel),
                          NULL,
                          NULL,
                          NULL,
                          NULL);
+    bar->name_dialog = TRUE;
   }
 }
 

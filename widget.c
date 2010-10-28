@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-27 18:46:42 gawen>
+   Time-stamp: <2010-10-28 20:25:18 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -110,7 +110,9 @@ void create_widget()
   bar->hover_name = FALSE;
   bar->hover_pm   = FALSE;
   bar->name_entry_activated = FALSE;
-  bar->pm_entry_activated = FALSE;
+  bar->pm_entry_activated   = FALSE;
+  bar->name_dialog = FALSE;
+  bar->pm_dialog   = FALSE;
 
   /* connect gtk and purple signals */
   const struct g_signal {

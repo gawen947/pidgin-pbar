@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-10-28 19:21:44 gawen>
+   Time-stamp: <2010-10-28 20:20:11 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -99,5 +99,14 @@ void cb_name_apply(PurpleAccount *account, const char *user_info)
   purple_prefs_set_string(PREF "/nickname", name);
   set_display_name_all(name);
 
+  bar->name_dialog = FALSE;
+
   purple_debug_info(NAME, "nickname changed to \"%s\" by user\n", name);
+}
+
+void cb_name_cancel(PurpleAccount *account, const char *user_info)
+{
+  g_return_if_fail(bar->installed);
+
+  bar->name_dialog = FALSE;
 }
