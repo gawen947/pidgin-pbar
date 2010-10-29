@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-29 17:23:42 gawen>
+   Time-stamp: <2010-10-29 23:21:52 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -177,7 +177,7 @@ void cb_pm(GtkWidget *widget, gpointer data)
   g_return_if_fail(bar->installed);
 
   GdkEventButton *event;
-  const gchar *pm = purple_prefs_get_string(PREF "/pesronal-message");
+  const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
 
   if(!pm || !strcmp(pm, EMPTY_PM))
     pm = "";
@@ -185,7 +185,7 @@ void cb_pm(GtkWidget *widget, gpointer data)
   event = (GdkEventButton *)gtk_get_current_event();
 
 
-  if(event->button == 1 && !bar->name_dialog) {
+  if(event->button == 1 && !bar->pm_dialog) {
     gtk_entry_set_text(GTK_ENTRY(bar->pm_entry), pm);
 
     if(purple_prefs_get_bool(PREF "/compact"))
