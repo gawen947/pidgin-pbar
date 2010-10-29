@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-29 23:21:52 gawen>
+   Time-stamp: <2010-10-30 01:23:17 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -208,7 +208,7 @@ void cb_pm(GtkWidget *widget, gpointer data)
                          _("Apply"),
                          G_CALLBACK(cb_pm_apply),
                          _("Cancel"),
-                         G_CALLBACK(cb_name_cancel),
+                         G_CALLBACK(cb_pm_cancel),
                          NULL,
                          NULL,
                          NULL,
