@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-10-28 19:26:54 gawen>
+   Time-stamp: <2010-10-29 18:41:39 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -226,6 +226,16 @@ void set_display_name_all(const char *name)
       continue;
     set_display_name(account, name);
   }
+}
+
+/* set status message for current away status */
+void set_status_message(const gchar *sm)
+{
+  PurpleSavedStatus *status;
+
+  status = purple_savedstatus_get_current();
+  purple_savedstatus_set_message(status, sm);
+  purple_savedstatus_activate(status);
 }
 
 static void cb_global_moods_for_each(gpointer key, gpointer value,

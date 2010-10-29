@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-10-28 20:20:11 gawen>
+   Time-stamp: <2010-10-29 17:46:06 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -109,4 +109,31 @@ void cb_name_cancel(PurpleAccount *account, const char *user_info)
   g_return_if_fail(bar->installed);
 
   bar->name_dialog = FALSE;
+}
+
+void cb_pm_apply(PurpleAccount *account, const char *user_info)
+{
+  g_return_if_fail(bar->installed);
+
+  const gchar *markup, *pm;
+
+  pm = user_info;
+  markup = purple_prefs_get_string(PREF "/personal-message");
+  set_widget_pm(markup, pm);
+
+  purple_prefs_set_string(PREF "/personal-message", pm);
+
+  /* only status message supported now */
+  set_status_message(pm);
+
+  bar->pm_dialog = FALSE;
+
+  purple_debug_info(NAME, "personal message changed to \"%s\" by user\n", pm);
+}
+
+void cb_pm_cancel(PurpleAccount *account, const char *user_info)
+{
+  g_return_if_fail(bar->installed);
+
+  bar->pm_dialog = FALSE;
 }

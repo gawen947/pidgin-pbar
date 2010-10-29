@@ -1,5 +1,5 @@
 /* File: widget_prpl.h
-   Time-stamp: <2010-10-28 20:22:13 gawen>
+   Time-stamp: <2010-10-29 18:48:17 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -25,6 +25,8 @@
 
 void cb_name_apply(PurpleAccount *account, const char *user_info);
 void cb_name_cancel(PurpleAccount *account, const char *user_info);
+void cb_pm_apply(PurpleAccount *account, const char *user_info);
+void cb_pm_cancel(PurpleAccount *account, const char *user_info);
 void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new);
 void cb_signed_on(PurpleConnection *gc);
 void cb_buddy_icon_update(const char *name, PurplePrefType type,

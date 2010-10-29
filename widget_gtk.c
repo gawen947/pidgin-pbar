@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-28 20:44:06 gawen>
+   Time-stamp: <2010-10-29 17:23:42 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -104,7 +104,7 @@ void cb_name(GtkWidget *widget, gpointer data)
                          FALSE,
                          FALSE,
                          NULL,
-                         _("Change nickname"),
+                         _("Apply"),
                          G_CALLBACK(cb_name_apply),
                          _("Cancel"),
                          G_CALLBACK(cb_name_cancel),
@@ -176,18 +176,45 @@ void cb_pm(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
+  GdkEventButton *event;
+  const gchar *pm = purple_prefs_get_string(PREF "/pesronal-message");
+
   if(!pm || !strcmp(pm, EMPTY_PM))
     pm = "";
 
-  gtk_entry_set_text(GTK_ENTRY(bar->pm_entry), pm);
+  event = (GdkEventButton *)gtk_get_current_event();
 
-  if(purple_prefs_get_bool(PREF "/compact"))
-    gtk_widget_hide(bar->name_eventbox);
-  gtk_widget_hide(bar->pm_eventbox);
-  gtk_widget_show(bar->pm_entry);
 
-  gtk_widget_grab_focus(bar->pm_entry);
+  if(event->button == 1 && !bar->name_dialog) {
+    gtk_entry_set_text(GTK_ENTRY(bar->pm_entry), pm);
+
+    if(purple_prefs_get_bool(PREF "/compact"))
+      gtk_widget_hide(bar->name_eventbox);
+    gtk_widget_hide(bar->pm_eventbox);
+    gtk_widget_show(bar->pm_entry);
+
+    gtk_widget_grab_focus(bar->pm_entry);
+  }
+  else if(!bar->pm_dialog) {
+    purple_request_input(thisplugin,
+                         _("Change personal message"),
+                         _("You may cange your personal message here"),
+                         _("Note that this change will apply for either status "
+                           "message or currently playing"),
+                         pm,
+                         FALSE,
+                         FALSE,
+                         NULL,
+                         _("Apply"),
+                         G_CALLBACK(cb_pm_apply),
+                         _("Cancel"),
+                         G_CALLBACK(cb_name_cancel),
+                         NULL,
+                         NULL,
+                         NULL,
+                         NULL);
+    bar->pm_dialog = TRUE;
+  }
 }
 
 void cb_pm_enter(GtkWidget *widget, gpointer data)
