@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-30 01:23:17 gawen>
+   Time-stamp: <2010-10-30 12:48:52 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -76,6 +76,7 @@ void cb_name(GtkWidget *widget, gpointer data)
   g_return_if_fail(bar->installed);
 
   GdkEventButton *event;
+  gboolean left_click;
   const gchar *name = purple_prefs_get_string(PREF "/nickname");
 
   if(!name || !strcmp(name, EMPTY_NAME))
@@ -83,8 +84,10 @@ void cb_name(GtkWidget *widget, gpointer data)
 
   event = (GdkEventButton *)gtk_get_current_event();
 
-  /* left click */
-  if(event->button == 1 && !bar->name_dialog) {
+  left_click = (event->button == 1);
+  left_click = purple_prefs_get_bool(PREF "/left-entry") ? left_click : !left_click;
+
+  if(left_click && !bar->name_dialog) {
     gtk_entry_set_text(GTK_ENTRY(bar->name_entry), name);
 
     if(purple_prefs_get_bool(PREF "/compact"))
@@ -94,7 +97,6 @@ void cb_name(GtkWidget *widget, gpointer data)
 
     gtk_widget_grab_focus(bar->name_entry);
   }
-  /* middle and right click */
   else if(!bar->name_dialog) {
     purple_request_input(thisplugin,
                          _("Change nickname"),
@@ -177,6 +179,7 @@ void cb_pm(GtkWidget *widget, gpointer data)
   g_return_if_fail(bar->installed);
 
   GdkEventButton *event;
+  gboolean left_click;
   const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
 
   if(!pm || !strcmp(pm, EMPTY_PM))
@@ -184,8 +187,10 @@ void cb_pm(GtkWidget *widget, gpointer data)
 
   event = (GdkEventButton *)gtk_get_current_event();
 
+  left_click = (event->button == 1);
+  left_click = purple_prefs_get_bool(PREF "/left-entry") ? left_click : !left_click;
 
-  if(event->button == 1 && !bar->pm_dialog) {
+  if(left_click && !bar->pm_dialog) {
     gtk_entry_set_text(GTK_ENTRY(bar->pm_entry), pm);
 
     if(purple_prefs_get_bool(PREF "/compact"))
