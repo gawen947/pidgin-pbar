@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-06 02:48:45 gawen>
+   Time-stamp: <2010-11-06 03:10:06 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -72,6 +72,9 @@ void init_prefs()
     { PREF "/nickname-markup-hover", "<span color=\"DarkOliveGreen4\"><b>%n</b></span>" },
     { PREF "/nickname-markup", "<b>%n</b>" },
     { PREF "/personal-message", EMPTY_PM },
+    { PREF "/status-message", EMPTY_SM },
+    { PREF "/mood-message", EMPTY_MM },
+    { PREF "/song-message", EMPTY_SONG },
     { PREF "/nickname", EMPTY_NAME},
     { PREF "/mood", "" },
     { NULL, NULL }

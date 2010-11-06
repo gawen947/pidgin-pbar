@@ -1,5 +1,5 @@
 /* File: prefs.h
-   Time-stamp: <2010-11-06 02:47:07 gawen>
+   Time-stamp: <2010-11-06 03:08:51 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -31,6 +31,9 @@
 
 /* empty messages to display at first installation */
 #define EMPTY_PM   N_("<Enter personal message here>")
+#define EMPTY_SM   N_("<Enter status message here>")
+#define EMPTY_MM   N_("<Enter mood message here>")
+#define EMPTY_SONG N_("<Enter song here>")
 #define EMPTY_NAME N_("<Enter nickname here>")
 
 /* justification */
