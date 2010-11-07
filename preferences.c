@@ -53,9 +53,9 @@ static const struct i_alias alias_pm[] = {
   { N_("Status"),          PM_STATUS },
   { N_("Mood"),            PM_MOOD },
   { N_("Song"),            PM_SONG },
-  { N_("Status and mood"), PM_STATUSANDMOOD },
-  { N_("Status and song"), PM_STATUSANDSONG },
-  { N_("Mood and song"),   PM_MOODANDSONG },
+  { N_("Status and mood"), PM_STATUS & PM_MOOD },
+  { N_("Status and song"), PM_STATUS & PM_SONG },
+  { N_("Mood and song"),   PM_MOOD   & PM_SONG },
   { N_("All"),             PM_ALL },
   { NULL, 0 }
 };

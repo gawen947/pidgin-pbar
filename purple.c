@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-10-29 18:41:39 gawen>
+   Time-stamp: <2010-11-07 17:06:04 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -165,12 +165,23 @@ PurpleMood * get_global_moods()
 /* update status with mood */
 void set_status_with_mood(PurpleAccount *account, const gchar *mood)
 {
-  if(mood && *mood)
-    purple_account_set_status(account, "mood", TRUE,
-                              PURPLE_MOOD_NAME, mood,
-                              NULL);
-  else
-    purple_account_set_status(account, "mood", FALSE, NULL);
+  purple_account_set_status(account, "mood", TRUE,
+                            PURPLE_MOOD_NAME, mood, NULL);
+}
+
+/* set mood message for current mood */
+void set_mood_message(PurpleAccount *account, const gchar *text)
+{
+  purple_account_set_status(account, "mood", TRUE,
+                            PURPLE_MOOD_COMMENT, text, NULL);
+}
+
+/* update status with song */
+void set_song_message(PurpleAccount *account, const gchar *song)
+{
+  /* do everything else too */
+  purple_account_set_status(account, "tune", TRUE,
+                            PURPLE_TUNE_TITLE, song, NULL);
 }
 
 /* set display name for account */

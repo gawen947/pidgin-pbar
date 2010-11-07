@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-10-30 12:48:52 gawen>
+   Time-stamp: <2010-11-07 17:22:51 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -253,15 +253,12 @@ void cb_pm_entry(GtkWidget *widget, gpointer data)
   g_return_if_fail(bar->installed);
 
   const gchar *pm, *markup;
-  PurpleSavedStatus *status;
 
   pm = gtk_entry_get_text(GTK_ENTRY(widget));
   purple_prefs_set_string(PREF "/personal-message", pm);
 
   /* set personal message for all protocols */
-  status = purple_savedstatus_get_current();
-  purple_savedstatus_set_message(status, pm);
-  purple_savedstatus_activate(status);
+  set_status_message(pm);
 
   markup = purple_prefs_get_string(PREF "/personal-message-markup");
   set_widget_pm(markup, pm);
