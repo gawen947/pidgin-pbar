@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-07 17:22:51 gawen>
+   Time-stamp: <2010-11-10 00:53:24 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -106,7 +106,7 @@ void cb_name(GtkWidget *widget, gpointer data)
                          FALSE,
                          FALSE,
                          NULL,
-                         _("Apply"),
+                         _("OK"),
                          G_CALLBACK(cb_name_apply),
                          _("Cancel"),
                          G_CALLBACK(cb_name_cancel),
@@ -180,10 +180,6 @@ void cb_pm(GtkWidget *widget, gpointer data)
 
   GdkEventButton *event;
   gboolean left_click;
-  const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
-
-  if(!pm || !strcmp(pm, EMPTY_PM))
-    pm = "";
 
   event = (GdkEventButton *)gtk_get_current_event();
 
@@ -191,6 +187,11 @@ void cb_pm(GtkWidget *widget, gpointer data)
   left_click = purple_prefs_get_bool(PREF "/left-entry") ? left_click : !left_click;
 
   if(left_click && !bar->pm_dialog) {
+    const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
+
+    if(!pm || !strcmp(pm, EMPTY_PM))
+      pm = "";
+
     gtk_entry_set_text(GTK_ENTRY(bar->pm_entry), pm);
 
     if(purple_prefs_get_bool(PREF "/compact"))
@@ -201,23 +202,57 @@ void cb_pm(GtkWidget *widget, gpointer data)
     gtk_widget_grab_focus(bar->pm_entry);
   }
   else if(!bar->pm_dialog) {
-    purple_request_input(thisplugin,
-                         _("Change personal message"),
-                         _("You may cange your personal message here"),
-                         _("Note that this change will apply for either status "
-                           "message or currently playing"),
-                         pm,
-                         FALSE,
-                         FALSE,
-                         NULL,
-                         _("Apply"),
-                         G_CALLBACK(cb_pm_apply),
-                         _("Cancel"),
-                         G_CALLBACK(cb_pm_cancel),
-                         NULL,
-                         NULL,
-                         NULL,
-                         NULL);
+    PurpleRequestFields *fields;
+    PurpleRequestFieldGroup *group;
+    PurpleRequestField *field;
+
+    const struct s_field {
+      const gchar *text;
+      const gchar *pref;
+      const gchar *default_pref;
+    } s_fields[] = {
+      { N_("Personal message"), PREF "/personal-message" },
+      { N_("Mood message"), PREF "/mood-message" },
+      { N_("Song title"), PREF "/tune-title" },
+      { N_("Song artist"), PREF "/tune-artist" },
+      { N_("Song album"), PREF "/tune-album" },
+      { N_("Song genre"), PREF "/tune-genre" },
+      { N_("Song comment"), PREF "/tune-comment" },
+      { N_("Song track"), PREF "/tune-track" },
+      { N_("Song time"), PREF "/tune-time" },
+      { N_("Song year"), PREF "/tune-year" },
+      { N_("Song URL"), PREF "/tune-url" },
+      { N_("Song full"), PREF "/tune-full" },
+      { N_("Game name"), PREF "/game-message" },
+      { N_("Office app name"), PREF "/office-message" },
+      { NULL, NULL, NULL }
+    }; register const struct s_field *sf = s_fields;
+
+    fields = purple_request_fields_new();
+    group = purple_request_field_group_new(NULL);
+    purple_request_fields_add_group(fields, group);
+
+    for(; sf->text ;  sf++) {
+      const gchar *message = purple_prefs_get_string(sf->pref);
+
+      field = purple_request_field_string_new(sf->pref,
+                                              _(sf->text),
+                                              message,
+                                              FALSE);
+      purple_request_field_set_required(field, FALSE);
+      purple_request_field_group_add_field(group, field);
+    }
+
+    purple_request_fields(thisplugin,
+                          _("Change status message"),
+                          _("Test string here"),
+                          _("Please enter your personal message here"),
+                          fields,
+                          _("OK"),
+                          G_CALLBACK(cb_pm_apply),
+                          _("Cancel"),
+                          G_CALLBACK(cb_pm_cancel),
+                          NULL, NULL, NULL, NULL);
     bar->pm_dialog = TRUE;
   }
 }

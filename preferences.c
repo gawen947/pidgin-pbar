@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-06 03:10:06 gawen>
+   Time-stamp: <2010-11-10 00:41:21 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -72,10 +72,20 @@ void init_prefs()
     { PREF "/nickname-markup-hover", "<span color=\"DarkOliveGreen4\"><b>%n</b></span>" },
     { PREF "/nickname-markup", "<b>%n</b>" },
     { PREF "/personal-message", EMPTY_PM },
-    { PREF "/status-message", EMPTY_SM },
-    { PREF "/mood-message", EMPTY_MM },
-    { PREF "/song-message", EMPTY_SONG },
+    { PREF "/tune-title", EMPTY_TITLE },
+    { PREF "/tune-artist", EMPTY_ARTIST },
+    { PREF "/tune-album", EMPTY_ALBUM },
+    { PREF "/tune-genre", EMPTY_GENRE },
+    { PREF "/tune-comment", EMPTY_COMMENT },
+    { PREF "/tune-track", EMPTY_TRACK },
+    { PREF "/tune-time", EMPTY_TIME },
+    { PREF "/tune-year", EMPTY_YEAR },
+    { PREF "/tune-url", EMPTY_URL },
+    { PREF "/tune-full", EMPTY_FULL },
+    { PREF "/game-message", EMPTY_GAME },
+    { PREF "/office-message", EMPTY_OFFICE },
     { PREF "/nickname", EMPTY_NAME},
+    { PREF "/mood-message", EMPTY_MOOD },
     { PREF "/mood", "" },
     { NULL, NULL }
   }; register const struct prefs_string *s = prefs_add_string;

@@ -1,5 +1,5 @@
 /* File: prefs.h
-   Time-stamp: <2010-11-07 12:27:22 gawen>
+   Time-stamp: <2010-11-09 21:47:25 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -30,11 +30,21 @@
 #define PREF "/plugins/gtk/" NAME /* preference root */
 
 /* empty messages to display at first installation */
-#define EMPTY_PM   N_("<Enter personal message here>")
-#define EMPTY_SM   N_("<Enter status message here>")
-#define EMPTY_MM   N_("<Enter mood message here>")
-#define EMPTY_SONG N_("<Enter song here>")
-#define EMPTY_NAME N_("<Enter nickname here>")
+#define EMPTY_NAME    N_("<Enter nickname here>")
+#define EMPTY_PM      N_("<Enter personal message here>")
+#define EMPTY_TITLE   N_("<Enter song title here>")
+#define EMPTY_ARTIST  N_("<Enter song artist here>")
+#define EMPTY_ALBUM   N_("<Enter song album here>")
+#define EMPTY_GENRE   N_("<Enter song genre here>")
+#define EMPTY_COMMENT N_("<Enter song comment here>")
+#define EMPTY_TRACK   N_("<Enter song track here>")
+#define EMPTY_TIME    N_("<Enter song time here>")
+#define EMPTY_YEAR    N_("<Enter song year here>")
+#define EMPTY_URL     N_("<Enter song URL here>")
+#define EMPTY_FULL    N_("<Enter full song here>")
+#define EMPTY_GAME    N_("<Enter game name here>")
+#define EMPTY_OFFICE  N_("<Enter office app. here")
+#define EMPTY_MOOD    N_("<Enter mood message here>")
 
 /* justification */
 enum { JUSTIFY_LEFT, JUSTIFY_CENTER, JUSTIFY_RIGHT };
