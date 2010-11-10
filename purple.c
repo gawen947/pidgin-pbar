@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-11-07 17:06:04 gawen>
+   Time-stamp: <2010-11-10 01:18:42 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -169,19 +169,26 @@ void set_status_with_mood(PurpleAccount *account, const gchar *mood)
                             PURPLE_MOOD_NAME, mood, NULL);
 }
 
-/* set mood message for current mood */
-void set_mood_message(PurpleAccount *account, const gchar *text)
+/* set exclusive for all account */
+void set_status_all(const gchar *status_id, GList *attrs)
 {
-  purple_account_set_status(account, "mood", TRUE,
-                            PURPLE_MOOD_COMMENT, text, NULL);
-}
+  GList *accts;
 
-/* update status with song */
-void set_song_message(PurpleAccount *account, const gchar *song)
-{
-  /* do everything else too */
-  purple_account_set_status(account, "tune", TRUE,
-                            PURPLE_TUNE_TITLE, song, NULL);
+  /* empty status id mean we set personal message */
+  if(!status_id) {
+    const gchar *pm = attrs->data;
+    set_status_message(pm);
+    return;
+  }
+
+  for(accts = purple_accounts_get_all_active() ; accts ; accts = accts->next) {
+    PurpleAccount *account;
+
+    account = accts->data;
+    if(!purple_account_is_connected(account))
+      continue;
+    purple_account_set_status_list(account, status_id, TRUE, attrs);
+  }
 }
 
 /* set display name for account */
@@ -239,13 +246,13 @@ void set_display_name_all(const char *name)
   }
 }
 
-/* set status message for current away status */
-void set_status_message(const gchar *sm)
+/* set status message (personal message) */
+void set_status_message(const gchar *pm)
 {
   PurpleSavedStatus *status;
 
   status = purple_savedstatus_get_current();
-  purple_savedstatus_set_message(status, sm);
+  purple_savedstatus_set_message(status, pm);
   purple_savedstatus_activate(status);
 }
 
