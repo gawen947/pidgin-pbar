@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-11-10 01:18:42 gawen>
+   Time-stamp: <2010-11-10 01:25:35 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -174,8 +174,13 @@ void set_status_all(const gchar *status_id, GList *attrs)
 {
   GList *accts;
 
-  /* empty status id mean we set personal message */
-  if(!status_id) {
+  /* empty list means we have nothing to do */
+  if(!attrs)
+    return;
+  /* empty status id means we are setting personal message
+     so we use the first node for that
+     FIXME: perhaps we don't need that anymore */
+  else if(!status_id) {
     const gchar *pm = attrs->data;
     set_status_message(pm);
     return;
