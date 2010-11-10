@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-11-10 01:33:06 gawen>
+   Time-stamp: <2010-11-10 02:58:14 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -111,27 +111,74 @@ void cb_name_cancel(PurpleAccount *account, const char *user_info)
   bar->name_dialog = FALSE;
 }
 
-
 void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
 {
   g_return_if_fail(bar->installed);
 
-  GList *attrs;
-  const gchar *markup, *pm;
+  /* attrs */
+  GList *a_pm = NULL;
+  GList *a_tune = NULL;
+  GList *a_mood = NULL;
 
-  pm = purple_request_fields_get_string(fields, PREF "/personal-message");
-  markup = purple_prefs_get_string(PREF "/personal-message");
+  /* just to update widget */
+  const gchar *pm = purple_request_fields_get_string(fields, PREF "/personal-message");
+  const gchar *markup = purple_prefs_get_string(PREF "/personal-message-markup");
   set_widget_pm(markup, pm);
 
-  purple_prefs_set_string(PREF "/personal-message", pm);
+  const struct r_field {
+    const gchar *id;
+    const gchar *attr;
+    const gchar *empty;
+    GList **list;
+  } r_fields[] = {
+    { PREF "/personal-message", NULL, EMPTY_PM, &a_pm },
+    { PREF "/mood-message", PURPLE_MOOD_COMMENT, EMPTY_MOOD, &a_mood },
+    { PREF "/tune-title", PURPLE_TUNE_TITLE, EMPTY_TITLE, &a_tune },
+    { PREF "/tune-artist", PURPLE_TUNE_ARTIST, EMPTY_ARTIST, &a_tune },
+    { PREF "/tune-album", PURPLE_TUNE_ALBUM, EMPTY_ALBUM, &a_tune },
+    { PREF "/tune-genre", PURPLE_TUNE_GENRE, EMPTY_GENRE, &a_tune },
+    { PREF "/tune-comment", PURPLE_TUNE_COMMENT, EMPTY_COMMENT, &a_tune },
+    { PREF "/tune-track", PURPLE_TUNE_TRACK, EMPTY_TRACK, &a_tune },
+    { PREF "/tune-time", PURPLE_TUNE_TIME, EMPTY_TIME, &a_tune },
+    { PREF "/tune-year", PURPLE_TUNE_YEAR, EMPTY_YEAR, &a_tune },
+    { PREF "/tune-url", PURPLE_TUNE_URL, EMPTY_URL, &a_tune },
+    { PREF "/tune-full", PURPLE_TUNE_FULL, EMPTY_FULL, &a_tune },
+    /* from msn-pecan */
+    { PREF "/game-message", "game", EMPTY_GAME, &a_tune },
+    { PREF "/office-message", "office", EMPTY_OFFICE, &a_tune },
+    { NULL, NULL, NULL, NULL }
+  }; const register struct r_field *rf = r_fields;
 
-  /* only status message supported now
-     but use the new function for that */
-  attrs = g_list_append(NULL, (gpointer)pm);
-  set_status_all(NULL, attrs);
+  for(; rf->id ; rf++) {
+    const gchar *value = purple_request_fields_get_string(fields, rf->id);
+
+    if(!strcmp(value, _(rf->empty)))
+      value = "";
+    else
+      purple_prefs_set_string(rf->id, value);
+
+    *(rf->list) = g_list_append(*(rf->list), (gpointer)rf->attr);
+    *(rf->list) = g_list_append(*(rf->list), (gpointer)value);
+  }
+
+  const struct status_list {
+    const gchar *status_id;
+    GList *list;
+  } status[] = {
+    { NULL, a_pm },
+    { "tune", a_tune },
+    { "mood", a_mood },
+    { NULL, NULL }
+  }; register const struct status_list *s = status;
+
+  for(; s->list ; s++) {
+    set_status_all(s->status_id, s->list);
+    g_list_free(s->list);
+  }
 
   bar->pm_dialog = FALSE;
 
+  /* FIXME: change that ! */
   purple_debug_info(NAME, "personal message changed to \"%s\" by user\n", pm);
 }
 

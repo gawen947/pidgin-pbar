@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-10 00:53:24 gawen>
+   Time-stamp: <2010-11-10 02:16:14 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -209,7 +209,6 @@ void cb_pm(GtkWidget *widget, gpointer data)
     const struct s_field {
       const gchar *text;
       const gchar *pref;
-      const gchar *default_pref;
     } s_fields[] = {
       { N_("Personal message"), PREF "/personal-message" },
       { N_("Mood message"), PREF "/mood-message" },
@@ -225,16 +224,17 @@ void cb_pm(GtkWidget *widget, gpointer data)
       { N_("Song full"), PREF "/tune-full" },
       { N_("Game name"), PREF "/game-message" },
       { N_("Office app name"), PREF "/office-message" },
-      { NULL, NULL, NULL }
+      { NULL, NULL }
     }; register const struct s_field *sf = s_fields;
 
     fields = purple_request_fields_new();
     group = purple_request_field_group_new(NULL);
     purple_request_fields_add_group(fields, group);
 
-    for(; sf->text ;  sf++) {
+    for(; sf->text ; sf++) {
       const gchar *message = purple_prefs_get_string(sf->pref);
 
+      /* FIXME: translate message when needed (EMPTY_MESSAGE) */
       field = purple_request_field_string_new(sf->pref,
                                               _(sf->text),
                                               message,
