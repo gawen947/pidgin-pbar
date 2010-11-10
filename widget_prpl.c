@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-11-08 18:55:19 gawen>
+   Time-stamp: <2010-11-10 01:33:06 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -116,16 +116,19 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
 {
   g_return_if_fail(bar->installed);
 
+  GList *attrs;
   const gchar *markup, *pm;
 
-  pm = purple_request_fields_get_string(fields, "pm");
+  pm = purple_request_fields_get_string(fields, PREF "/personal-message");
   markup = purple_prefs_get_string(PREF "/personal-message");
   set_widget_pm(markup, pm);
 
   purple_prefs_set_string(PREF "/personal-message", pm);
 
-  /* only status message supported now */
-  set_status_message(pm);
+  /* only status message supported now
+     but use the new function for that */
+  attrs = g_list_append(NULL, (gpointer)pm);
+  set_status_all(NULL, attrs);
 
   bar->pm_dialog = FALSE;
 
