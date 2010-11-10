@@ -169,7 +169,7 @@ void set_status_with_mood(PurpleAccount *account, const gchar *mood)
                             PURPLE_MOOD_NAME, mood, NULL);
 }
 
-/* set exclusive for all account */
+/* set exclusive status for all account */
 void set_status_all(const gchar *status_id, GList *attrs)
 {
   GList *accts;
