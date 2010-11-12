@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-11-13 00:24:10 gawen>
+   Time-stamp: <2010-11-13 00:28:27 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -135,14 +135,6 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
     { PREF "/tune-title", PURPLE_TUNE_TITLE, &a_tune },
     { PREF "/tune-artist", PURPLE_TUNE_ARTIST, &a_tune },
     { PREF "/tune-album", PURPLE_TUNE_ALBUM, &a_tune },
-    { PREF "/tune-genre", PURPLE_TUNE_GENRE, &a_tune },
-    { PREF "/tune-comment", PURPLE_TUNE_COMMENT, &a_tune },
-    { PREF "/tune-track", PURPLE_TUNE_TRACK, &a_tune },
-    { PREF "/tune-time", PURPLE_TUNE_TIME, &a_tune },
-    { PREF "/tune-year", PURPLE_TUNE_YEAR, &a_tune },
-    { PREF "/tune-url", PURPLE_TUNE_URL, &a_tune },
-    { PREF "/tune-full", PURPLE_TUNE_FULL, &a_tune },
-    /* from msn-pecan */
     { PREF "/game-message", "game", &a_tune },
     { PREF "/office-message", "office", &a_tune },
     { NULL, NULL, NULL }

@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-13 00:20:48 gawen>
+   Time-stamp: <2010-11-13 00:28:24 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -215,13 +215,6 @@ void cb_pm(GtkWidget *widget, gpointer data)
       { N_("Song title"), PREF "/tune-title" },
       { N_("Song artist"), PREF "/tune-artist" },
       { N_("Song album"), PREF "/tune-album" },
-      { N_("Song genre"), PREF "/tune-genre" },
-      { N_("Song comment"), PREF "/tune-comment" },
-      { N_("Song track"), PREF "/tune-track" },
-      { N_("Song time"), PREF "/tune-time" },
-      { N_("Song year"), PREF "/tune-year" },
-      { N_("Song URL"), PREF "/tune-url" },
-      { N_("Song full"), PREF "/tune-full" },
       { N_("Game name"), PREF "/game-message" },
       { N_("Office app name"), PREF "/office-message" },
       { NULL, NULL }

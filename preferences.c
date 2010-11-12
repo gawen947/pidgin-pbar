@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-12 23:47:13 gawen>
+   Time-stamp: <2010-11-13 00:29:03 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -75,13 +75,6 @@ void init_prefs()
     { PREF "/tune-title", "" },
     { PREF "/tune-artist", "" },
     { PREF "/tune-album", "" },
-    { PREF "/tune-genre", "" },
-    { PREF "/tune-comment", "" },
-    { PREF "/tune-track", "" },
-    { PREF "/tune-time", "" },
-    { PREF "/tune-year", "" },
-    { PREF "/tune-url", "" },
-    { PREF "/tune-full", "" },
     { PREF "/game-message", "" },
     { PREF "/office-message", "" },
     { PREF "/nickname", EMPTY_NAME },
