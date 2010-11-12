@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-11-12 23:18:49 gawen>
+   Time-stamp: <2010-11-13 00:24:10 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -152,6 +152,9 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
     const gchar *value = purple_request_fields_get_string(fields, rf->id);
 
     purple_prefs_set_string(rf->id, value);
+
+    if(value && !strcmp(value, ""))
+      value = NULL;
 
     *(rf->list) = g_list_append(*(rf->list), (gpointer)rf->attr);
     *(rf->list) = g_list_append(*(rf->list), (gpointer)value);
