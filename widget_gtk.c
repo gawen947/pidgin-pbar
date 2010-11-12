@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-10 02:16:14 gawen>
+   Time-stamp: <2010-11-12 23:44:50 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -180,14 +180,15 @@ void cb_pm(GtkWidget *widget, gpointer data)
 
   GdkEventButton *event;
   gboolean left_click;
+  const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
 
   event = (GdkEventButton *)gtk_get_current_event();
 
   left_click = (event->button == 1);
   left_click = purple_prefs_get_bool(PREF "/left-entry") ? left_click : !left_click;
 
+
   if(left_click && !bar->pm_dialog) {
-    const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
 
     if(!pm || !strcmp(pm, EMPTY_PM))
       pm = "";
@@ -210,7 +211,6 @@ void cb_pm(GtkWidget *widget, gpointer data)
       const gchar *text;
       const gchar *pref;
     } s_fields[] = {
-      { N_("Personal message"), PREF "/personal-message" },
       { N_("Mood message"), PREF "/mood-message" },
       { N_("Song title"), PREF "/tune-title" },
       { N_("Song artist"), PREF "/tune-artist" },
@@ -231,12 +231,17 @@ void cb_pm(GtkWidget *widget, gpointer data)
     group = purple_request_field_group_new(NULL);
     purple_request_fields_add_group(fields, group);
 
+    field = purple_request_field_string_new(PREF "/personal-message",
+                                            _("Personal message"),
+                                            pm,
+                                            FALSE);
+    purple_request_field_set_required(field, FALSE);
+    purple_request_field_group_add_field(group, field);
     for(; sf->text ; sf++) {
       const gchar *message = purple_prefs_get_string(sf->pref);
 
-      /* FIXME: translate message when needed (EMPTY_MESSAGE) */
       field = purple_request_field_string_new(sf->pref,
-                                              _(sf->text),
+                                              sf->text,
                                               message,
                                               FALSE);
       purple_request_field_set_required(field, FALSE);

@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-11-12 14:46:19 gawen>
+   Time-stamp: <2010-11-12 23:18:49 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -116,46 +116,41 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
   g_return_if_fail(bar->installed);
 
   /* attrs */
-  GList *a_pm = NULL;
   GList *a_tune = NULL;
   GList *a_mood = NULL;
 
   /* just to update widget */
   const gchar *pm = purple_request_fields_get_string(fields, PREF "/personal-message");
   const gchar *markup = purple_prefs_get_string(PREF "/personal-message-markup");
+
+  set_status_message(pm);
   set_widget_pm(markup, pm);
 
   const struct r_field {
     const gchar *id;
     const gchar *attr;
-    const gchar *empty;
     GList **list;
   } r_fields[] = {
-    { PREF "/personal-message", NULL, EMPTY_PM, &a_pm },
-    { PREF "/mood-message", PURPLE_MOOD_COMMENT, EMPTY_MOOD, &a_mood },
-    { PREF "/tune-title", PURPLE_TUNE_TITLE, EMPTY_TITLE, &a_tune },
-    { PREF "/tune-artist", PURPLE_TUNE_ARTIST, EMPTY_ARTIST, &a_tune },
-    { PREF "/tune-album", PURPLE_TUNE_ALBUM, EMPTY_ALBUM, &a_tune },
-    { PREF "/tune-genre", PURPLE_TUNE_GENRE, EMPTY_GENRE, &a_tune },
-    { PREF "/tune-comment", PURPLE_TUNE_COMMENT, EMPTY_COMMENT, &a_tune },
-    { PREF "/tune-track", PURPLE_TUNE_TRACK, EMPTY_TRACK, &a_tune },
-    { PREF "/tune-time", PURPLE_TUNE_TIME, EMPTY_TIME, &a_tune },
-    { PREF "/tune-year", PURPLE_TUNE_YEAR, EMPTY_YEAR, &a_tune },
-    { PREF "/tune-url", PURPLE_TUNE_URL, EMPTY_URL, &a_tune },
-    { PREF "/tune-full", PURPLE_TUNE_FULL, EMPTY_FULL, &a_tune },
+    { PREF "/mood-message", PURPLE_MOOD_COMMENT, &a_mood },
+    { PREF "/tune-title", PURPLE_TUNE_TITLE, &a_tune },
+    { PREF "/tune-artist", PURPLE_TUNE_ARTIST, &a_tune },
+    { PREF "/tune-album", PURPLE_TUNE_ALBUM, &a_tune },
+    { PREF "/tune-genre", PURPLE_TUNE_GENRE, &a_tune },
+    { PREF "/tune-comment", PURPLE_TUNE_COMMENT, &a_tune },
+    { PREF "/tune-track", PURPLE_TUNE_TRACK, &a_tune },
+    { PREF "/tune-time", PURPLE_TUNE_TIME, &a_tune },
+    { PREF "/tune-year", PURPLE_TUNE_YEAR, &a_tune },
+    { PREF "/tune-url", PURPLE_TUNE_URL, &a_tune },
+    { PREF "/tune-full", PURPLE_TUNE_FULL, &a_tune },
     /* from msn-pecan */
-    { PREF "/game-message", "game", EMPTY_GAME, &a_tune },
-    { PREF "/office-message", "office", EMPTY_OFFICE, &a_tune },
-    { NULL, NULL, NULL, NULL }
+    { PREF "/game-message", "game", &a_tune },
+    { PREF "/office-message", "office", &a_tune },
+    { NULL, NULL, NULL }
   }; const register struct r_field *rf = r_fields;
 
   for(; rf->id ; rf++) {
     const gchar *value = purple_request_fields_get_string(fields, rf->id);
 
-    if(!value)
-      value = "";
-    else if(!strcmp(value, _(rf->empty)))
-      continue;
     purple_prefs_set_string(rf->id, value);
 
     *(rf->list) = g_list_append(*(rf->list), (gpointer)rf->attr);
@@ -167,7 +162,6 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
     GList *list;
     gboolean cont;
   } status[] = {
-    { NULL, a_pm, TRUE },
     { "tune", a_tune, TRUE },
     { "mood", a_mood, TRUE },
     { NULL, NULL, FALSE}
