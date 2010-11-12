@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-11-10 02:58:14 gawen>
+   Time-stamp: <2010-11-12 14:46:19 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -152,10 +152,11 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
   for(; rf->id ; rf++) {
     const gchar *value = purple_request_fields_get_string(fields, rf->id);
 
-    if(!strcmp(value, _(rf->empty)))
+    if(!value)
       value = "";
-    else
-      purple_prefs_set_string(rf->id, value);
+    else if(!strcmp(value, _(rf->empty)))
+      continue;
+    purple_prefs_set_string(rf->id, value);
 
     *(rf->list) = g_list_append(*(rf->list), (gpointer)rf->attr);
     *(rf->list) = g_list_append(*(rf->list), (gpointer)value);
@@ -164,14 +165,15 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
   const struct status_list {
     const gchar *status_id;
     GList *list;
+    gboolean cont;
   } status[] = {
-    { NULL, a_pm },
-    { "tune", a_tune },
-    { "mood", a_mood },
-    { NULL, NULL }
+    { NULL, a_pm, TRUE },
+    { "tune", a_tune, TRUE },
+    { "mood", a_mood, TRUE },
+    { NULL, NULL, FALSE}
   }; register const struct status_list *s = status;
 
-  for(; s->list ; s++) {
+  for(; s->cont ; s++) {
     set_status_all(s->status_id, s->list);
     g_list_free(s->list);
   }

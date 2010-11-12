@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-11-10 03:00:43 gawen>
+   Time-stamp: <2010-11-10 03:06:48 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
