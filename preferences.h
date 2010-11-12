@@ -1,5 +1,5 @@
 /* File: prefs.h
-   Time-stamp: <2010-11-12 23:48:34 gawen>
+   Time-stamp: <2010-11-13 00:32:49 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -35,13 +35,6 @@
 
 /* justification */
 enum { JUSTIFY_LEFT, JUSTIFY_CENTER, JUSTIFY_RIGHT };
-
-/* pm type */
-enum { PM_NONE,
-       PM_STATUS,
-       PM_MOOD,
-       PM_SONG,
-       PM_ALL = (PM_STATUS & PM_MOOD & PM_SONG) };
 
 void init_prefs();
 GtkWidget * get_config_frame(PurplePlugin *plugin);

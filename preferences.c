@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-13 00:29:03 gawen>
+   Time-stamp: <2010-11-13 00:32:19 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -36,7 +36,6 @@ static void cb_personal_message_justify(GtkWidget *widget, gpointer data);
 static void cb_compact(GtkWidget *widget, gpointer data);
 static void cb_frame_entry(GtkWidget *widget, gpointer data);
 static void cb_left_entry(GtkWidget *widget, gpointer data);
-static void cb_personal_message_type(GtkWidget *widget, gpointer data);
 
 /* alias we will use for combobox */
 static const struct i_alias {
@@ -46,17 +45,6 @@ static const struct i_alias {
   { N_("Left"),   JUSTIFY_LEFT },
   { N_("Center"), JUSTIFY_CENTER },
   { N_("Right"),  JUSTIFY_RIGHT },
-  { NULL, 0 }
-};
-static const struct i_alias alias_pm[] = {
-  { N_("None"),            PM_NONE },
-  { N_("Status"),          PM_STATUS },
-  { N_("Mood"),            PM_MOOD },
-  { N_("Song"),            PM_SONG },
-  { N_("Status and mood"), PM_STATUS & PM_MOOD },
-  { N_("Status and song"), PM_STATUS & PM_SONG },
-  { N_("Mood and song"),   PM_MOOD   & PM_SONG },
-  { N_("All"),             PM_ALL },
   { NULL, 0 }
 };
 
@@ -101,7 +89,6 @@ void init_prefs()
     const char *name;
     int value;
   } prefs_add_int[] = {
-    { PREF "/personal-message-type", PM_STATUS },
     { PREF "/nickname-justify", JUSTIFY_LEFT },
     { PREF "/personal-message-justify", JUSTIFY_LEFT },
     { NULL, 0 }
@@ -141,7 +128,6 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   } combobox[] = {
     { N_("Align nickname"), PREF "/nickname-justify", alias_justify, cb_nickname_justify },
     { N_("Align personal message"), PREF "/personal-message-justify", alias_justify, cb_personal_message_justify },
-    { N_("Personal message type"), PREF "/personal-message-type", alias_pm, cb_personal_message_type },
     { NULL, NULL, NULL, NULL }
   }; register const struct i_widget *cbx = combobox;
 
@@ -339,19 +325,4 @@ static void cb_left_entry(GtkWidget *widget, gpointer data)
   purple_prefs_set_bool(PREF "/left-entry", state);
 
   purple_debug_info(NAME, "left entry state changed\n");
-}
-
-static void cb_personal_message_type(GtkWidget *widget, gpointer data)
-{
-  const struct i_alias *j = (struct i_alias *)data;
-  const gchar *value = gtk_combo_box_get_active_text(GTK_COMBO_BOX(widget));
-
-  for(; j->alias ; j++) {
-    if(!strcmp(value, _(j->alias))) {
-      purple_prefs_set_int(PREF "/personal-message-type", j->value);
-      break;
-    }
-  }
-
-  purple_debug_info(NAME, "personal message type changed\n");
 }
