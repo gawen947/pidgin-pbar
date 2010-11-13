@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-13 16:36:40 gawen>
+   Time-stamp: <2010-11-13 19:15:44 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -37,6 +37,7 @@ static void cb_compact(GtkWidget *widget, gpointer data);
 static void cb_frame_entry(GtkWidget *widget, gpointer data);
 static void cb_left_entry(GtkWidget *widget, gpointer data);
 static void cb_reset_attrs(GtkWidget *widget, gpointer data);
+static void cb_widget_position(GtkWidget *widget, gpointer data);
 
 /* alias we will use for combobox */
 static const struct i_alias {
@@ -46,6 +47,13 @@ static const struct i_alias {
   { N_("Left"),   JUSTIFY_LEFT },
   { N_("Center"), JUSTIFY_CENTER },
   { N_("Right"),  JUSTIFY_RIGHT },
+  { NULL, 0 }
+};
+
+/* widget position in the buddy list */
+static const struct i_alias alias_position[] = {
+  { N_("Top"),     POSITION_TOP },
+  { N_("Bottom"),  POSITION_BOTTOM },
   { NULL, 0 }
 };
 
@@ -93,6 +101,7 @@ void init_prefs()
   } prefs_add_int[] = {
     { PREF "/nickname-justify", JUSTIFY_LEFT },
     { PREF "/personal-message-justify", JUSTIFY_LEFT },
+    { PREF "/widget-position", POSITION_TOP },
     { NULL, 0 }
   }; register const struct prefs_int *i = prefs_add_int;
 
@@ -130,6 +139,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   } combobox[] = {
     { N_("Align nickname"), PREF "/nickname-justify", alias_justify, cb_nickname_justify },
     { N_("Align personal message"), PREF "/personal-message-justify", alias_justify, cb_personal_message_justify },
+    { N_("Widget position in the buddy list"), PREF "/widget-position", alias_position, cb_widget_position },
     { NULL, NULL, NULL, NULL }
   }; register const struct i_widget *cbx = combobox;
 
@@ -338,4 +348,24 @@ static void cb_reset_attrs(GtkWidget *widget, gpointer data)
   set_widget_entry_frame(state);
 
   purple_debug_info(NAME, "reset attributes state changed\n");
+}
+
+static void cb_widget_position(GtkWidget *widget, gpointer data)
+{
+  const struct i_alias *j = (struct i_alias *)data;
+  const gchar *value = gtk_combo_box_get_active_text(GTK_COMBO_BOX(widget));
+
+  for(; j->alias ; j++) {
+    if(!strcmp(value, _(j->alias))) {
+      purple_prefs_set_int(PREF "/widget-position", j->value);
+
+      /* recreate bar since we need to repack everything */
+      destroy_widget();
+      create_widget();
+      init_widget();
+      break;
+    }
+  }
+
+  purple_debug_info(NAME, "personal message justification changed\n");
 }

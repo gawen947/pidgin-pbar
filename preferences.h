@@ -1,5 +1,5 @@
 /* File: prefs.h
-   Time-stamp: <2010-11-13 00:32:49 gawen>
+   Time-stamp: <2010-11-13 19:03:27 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -33,8 +33,9 @@
 #define EMPTY_NAME    N_("<Enter nickname here>")
 #define EMPTY_PM      N_("<Enter personal message here>")
 
-/* justification */
+/* justification and alignment */
 enum { JUSTIFY_LEFT, JUSTIFY_CENTER, JUSTIFY_RIGHT };
+enum { POSITION_TOP, POSITION_BOTTOM };
 
 void init_prefs();
 GtkWidget * get_config_frame(PurplePlugin *plugin);

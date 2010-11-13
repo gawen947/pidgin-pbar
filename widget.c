@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-10-29 17:15:08 gawen>
+   Time-stamp: <2010-11-13 19:13:05 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -100,8 +100,18 @@ void create_widget()
   gtk_box_pack_start(GTK_BOX(bar->hbox), vbox, TRUE, TRUE, 0);
 
   /* pack into buddy list */
+  void (*gtk_box_pack)(GtkBox *, GtkWidget *, gboolean, gboolean, guint) = gtk_box_pack_start;
+  int position = purple_prefs_get_int(PREF "/widget-position");
   const PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
-  gtk_box_pack_start(GTK_BOX(blist->vbox), bar->hbox, FALSE, TRUE, 2);
+  switch(position) {
+  case(POSITION_TOP):
+    gtk_box_pack = gtk_box_pack_start;
+    break;
+  case(POSITION_BOTTOM):
+    gtk_box_pack = gtk_box_pack_end;
+    break;
+  };
+  gtk_box_pack(GTK_BOX(blist->vbox), bar->hbox, FALSE, TRUE, 2);
   gtk_box_reorder_child(GTK_BOX(blist->vbox), bar->hbox, 0);
 
   /* setup initial states */
