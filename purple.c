@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-11-10 03:06:48 gawen>
+   Time-stamp: <2010-11-13 01:05:40 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -177,13 +177,6 @@ void set_status_all(const gchar *status_id, GList *attrs)
   /* empty list means we have nothing to do */
   if(!attrs)
     return;
-  /* empty status id means we are setting personal message
-     so we use the first attribute for that */
-  else if(!status_id) {
-    const gchar *pm = attrs->next->data;
-    set_status_message(pm);
-    return;
-  }
 
   for(accts = purple_accounts_get_all_active() ; accts ; accts = accts->next) {
     PurpleAccount *account;
