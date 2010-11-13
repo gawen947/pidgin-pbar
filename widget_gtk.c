@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-13 18:16:02 gawen>
+   Time-stamp: <2010-11-13 20:21:10 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -76,7 +76,7 @@ void cb_name(GtkWidget *widget, gpointer data)
   g_return_if_fail(bar->installed);
 
   GdkEventButton *event;
-  gboolean left_click;
+  gboolean swap;
   const gchar *name = purple_prefs_get_string(PREF "/nickname");
 
   if(!name || !strcmp(name, EMPTY_NAME))
@@ -84,10 +84,10 @@ void cb_name(GtkWidget *widget, gpointer data)
 
   event = (GdkEventButton *)gtk_get_current_event();
 
-  left_click = (event->button == 1);
-  left_click = purple_prefs_get_bool(PREF "/left-entry") ? left_click : !left_click;
+  swap = (event->button == 1);
+  swap = purple_prefs_get_bool(PREF "/swap-click") ? !swap : swap;
 
-  if(left_click && !bar->name_dialog) {
+  if(swap && !bar->name_dialog) {
     gtk_entry_set_text(GTK_ENTRY(bar->name_entry), name);
 
     if(purple_prefs_get_bool(PREF "/compact"))
@@ -179,16 +179,16 @@ void cb_pm(GtkWidget *widget, gpointer data)
   g_return_if_fail(bar->installed);
 
   GdkEventButton *event;
-  gboolean left_click;
+  gboolean swap;
   const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
 
   event = (GdkEventButton *)gtk_get_current_event();
 
-  left_click = (event->button == 1);
-  left_click = purple_prefs_get_bool(PREF "/left-entry") ? left_click : !left_click;
+  swap = (event->button == 1);
+  swap = purple_prefs_get_bool(PREF "/swap-click") ? !swap : swap;
 
 
-  if(left_click && !bar->pm_dialog) {
+  if(swap && !bar->pm_dialog) {
 
     if(!pm || !strcmp(pm, EMPTY_PM))
       pm = "";

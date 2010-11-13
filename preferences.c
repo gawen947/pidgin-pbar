@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-13 19:15:44 gawen>
+   Time-stamp: <2010-11-13 20:17:53 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -35,7 +35,7 @@ static void cb_nickname_justify(GtkWidget *widget, gpointer data);
 static void cb_personal_message_justify(GtkWidget *widget, gpointer data);
 static void cb_compact(GtkWidget *widget, gpointer data);
 static void cb_frame_entry(GtkWidget *widget, gpointer data);
-static void cb_left_entry(GtkWidget *widget, gpointer data);
+static void cb_swap_click(GtkWidget *widget, gpointer data);
 static void cb_reset_attrs(GtkWidget *widget, gpointer data);
 static void cb_widget_position(GtkWidget *widget, gpointer data);
 
@@ -88,7 +88,7 @@ void init_prefs()
     { PREF "/hide-statusbox", TRUE },
     { PREF "/override-status", FALSE },
     { PREF "/frame-entry", TRUE },
-    { PREF "/left-entry", TRUE },
+    { PREF "/swap-click", FALSE },
     { PREF "/reset-attrs", FALSE },
     { PREF "/compact", FALSE },
     { NULL, FALSE }
@@ -148,7 +148,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     { N_("Hide pidgin's status box"), PREF "/hide-statusbox", cb_hide_statusbox },
     { N_("Ignore pidgin's status changes"), PREF "/override-status", cb_override_status },
     { N_("Use a frame for entry"), PREF "/frame-entry", cb_frame_entry },
-    { N_("Entry on left click"), PREF "/left-entry", cb_left_entry },
+    { N_("Swap left and right click"), PREF "/swap-click", cb_swap_click },
     { N_("Use a compact bar"), PREF "/compact", cb_compact },
     { N_("Reset attributes"), PREF "/reset-attrs", cb_reset_attrs },
     { NULL, NULL, NULL }
@@ -332,12 +332,12 @@ static void cb_frame_entry(GtkWidget *widget, gpointer data)
   purple_debug_info(NAME, "frame entry state changed\n");
 }
 
-static void cb_left_entry(GtkWidget *widget, gpointer data)
+static void cb_swap_click(GtkWidget *widget, gpointer data)
 {
   gboolean state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-  purple_prefs_set_bool(PREF "/left-entry", state);
+  purple_prefs_set_bool(PREF "/swap-click", state);
 
-  purple_debug_info(NAME, "left entry state changed\n");
+  purple_debug_info(NAME, "swap click state changed\n");
 }
 
 static void cb_reset_attrs(GtkWidget *widget, gpointer data)
