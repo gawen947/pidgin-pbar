@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-13 21:39:06 gawen>
+   Time-stamp: <2010-11-13 22:07:00 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -99,7 +99,7 @@ void cb_name(GtkWidget *widget, gpointer data)
   }
   else if(!bar->name_dialog) {
     const gchar *title  = N_("Change nickname");
-    const gchar *desc   = N_("You may change your nickname here");
+    const gchar *desc   = N_("Enter your nickname here.");
     const gchar *ok     = N_("OK");
     const gchar *cancel = N_("Cancel");
     purple_request_input(thisplugin,
@@ -216,18 +216,18 @@ void cb_pm(GtkWidget *widget, gpointer data)
       const gchar *pref;
     } groups[] = {
       { N_("Mood message"), PREF "/mood-message" },
-      { N_("Song parameter"), NULL },
+      { N_("Current song"), NULL },
       { N_("Song title"), PREF "/tune-title" },
       { N_("Song artist"), PREF "/tune-artist" },
       { N_("Song album"), PREF "/tune-album" },
-      { N_("MSN extra"), NULL },
+      { N_("MSN pecan extra attributes"), NULL },
       { N_("Game name"), PREF "/game-message" },
       { N_("Office app name"), PREF "/office-message" },
       { NULL, NULL },
       { NULL, NULL }
     }; register const struct s_field *g = groups;
 
-    const gchar *group_title = N_("Personal message and mood");
+    const gchar *group_title = N_("Status and mood message");
     const gchar *pm_desc     = N_("Personal message");
 
     fields = purple_request_fields_new();
@@ -260,8 +260,8 @@ void cb_pm(GtkWidget *widget, gpointer data)
       purple_request_fields_add_group(fields, group);
     }
 
-    const gchar *title  = N_("Change status message");
-    const gchar *desc   = N_("Please enter your personal message here");
+    const gchar *title  = N_("Change status messages");
+    const gchar *desc   = N_("Enter status messages here.");
     const gchar *ok     = N_("OK");
     const gchar *cancel = N_("Cancel");
     purple_request_fields(thisplugin,
