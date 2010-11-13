@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-13 22:51:12 gawen>
+   Time-stamp: <2010-11-14 00:26:48 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -100,8 +100,9 @@ void cb_name(GtkWidget *widget, gpointer data)
   else if(!bar->name_dialog) {
     purple_request_input(thisplugin,
                          _("Change nickname"),
-                         NULL,
-                         _("Enter your nickname here."),
+                         _("Enter your nickname here..."),
+                         _("This will change your nickname "
+                           "for every account which supports it."),
                          name,
                          FALSE,
                          FALSE,
@@ -255,8 +256,10 @@ void cb_pm(GtkWidget *widget, gpointer data)
 
     purple_request_fields(thisplugin,
                           _("Change status messages"),
-                          NULL,
-                          _("Enter status messages here."),
+                          _("Enter status message..."),
+                          _("This will change some status messages for every "
+                            "account which supports it, please be advised "
+                            "that some are incompatible between them."),
                           fields,
                           _("OK"),
                           G_CALLBACK(cb_pm_apply),

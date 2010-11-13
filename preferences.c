@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-13 20:17:53 gawen>
+   Time-stamp: <2010-11-14 00:38:01 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -146,11 +146,11 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   /* check button widgets label, associated preference and callback */
   const struct widget check_button[] = {
     { N_("Hide pidgin's status box"), PREF "/hide-statusbox", cb_hide_statusbox },
-    { N_("Ignore pidgin's status changes"), PREF "/override-status", cb_override_status },
+    { N_("Ignore status changes"), PREF "/override-status", cb_override_status },
     { N_("Use a frame for entry"), PREF "/frame-entry", cb_frame_entry },
     { N_("Swap left and right click"), PREF "/swap-click", cb_swap_click },
     { N_("Use a compact bar"), PREF "/compact", cb_compact },
-    { N_("Reset attributes"), PREF "/reset-attrs", cb_reset_attrs },
+    { N_("Reset status messages"), PREF "/reset-attrs", cb_reset_attrs },
     { NULL, NULL, NULL }
   }; register const struct widget *cb = check_button;
 
