@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-13 00:32:19 gawen>
+   Time-stamp: <2010-11-13 16:36:40 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -36,6 +36,7 @@ static void cb_personal_message_justify(GtkWidget *widget, gpointer data);
 static void cb_compact(GtkWidget *widget, gpointer data);
 static void cb_frame_entry(GtkWidget *widget, gpointer data);
 static void cb_left_entry(GtkWidget *widget, gpointer data);
+static void cb_reset_attrs(GtkWidget *widget, gpointer data);
 
 /* alias we will use for combobox */
 static const struct i_alias {
@@ -80,6 +81,7 @@ void init_prefs()
     { PREF "/override-status", FALSE },
     { PREF "/frame-entry", TRUE },
     { PREF "/left-entry", TRUE },
+    { PREF "/reset-attrs", FALSE },
     { PREF "/compact", FALSE },
     { NULL, FALSE }
   }; register const struct prefs_bool *b = prefs_add_bool;
@@ -138,6 +140,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     { N_("Use a frame for entry"), PREF "/frame-entry", cb_frame_entry },
     { N_("Entry on left click"), PREF "/left-entry", cb_left_entry },
     { N_("Use a compact bar"), PREF "/compact", cb_compact },
+    { N_("Reset attributes"), PREF "/reset-attrs", cb_reset_attrs },
     { NULL, NULL, NULL }
   }; register const struct widget *cb = check_button;
 
@@ -325,4 +328,14 @@ static void cb_left_entry(GtkWidget *widget, gpointer data)
   purple_prefs_set_bool(PREF "/left-entry", state);
 
   purple_debug_info(NAME, "left entry state changed\n");
+}
+
+static void cb_reset_attrs(GtkWidget *widget, gpointer data)
+{
+  gboolean state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+  purple_prefs_set_bool(PREF "/reset-attrs", state);
+
+  set_widget_entry_frame(state);
+
+  purple_debug_info(NAME, "reset attributes state changed\n");
 }

@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-11-13 01:19:12 gawen>
+   Time-stamp: <2010-11-13 16:32:06 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -93,7 +93,12 @@ void cb_signed_on(PurpleConnection *gc)
   }; const register struct attrs *a = attrs;
 
   for(; a->pref ; a++) {
-    const gchar *value = purple_prefs_get_string(a->pref);
+    const gchar *value;
+
+    if(purple_prefs_get_bool(PREF "/reset-attrs"))
+      value = NULL;
+    else
+      value = purple_prefs_get_string(a->pref);
 
     if(value && !strcmp(value, ""))
       value = NULL;
@@ -187,7 +192,8 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
   for(; rf->id ; rf++) {
     const gchar *value = purple_request_fields_get_string(fields, rf->id);
 
-    purple_prefs_set_string(rf->id, value);
+    if(!purple_prefs_get_bool(PREF "/reset-attrs"))
+      purple_prefs_set_string(rf->id, value);
 
     if(value && !strcmp(value, ""))
       value = NULL;

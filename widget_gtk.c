@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-13 00:28:24 gawen>
+   Time-stamp: <2010-11-13 16:30:50 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -231,8 +231,12 @@ void cb_pm(GtkWidget *widget, gpointer data)
     purple_request_field_set_required(field, FALSE);
     purple_request_field_group_add_field(group, field);
     for(; sf->text ; sf++) {
-      const gchar *message = purple_prefs_get_string(sf->pref);
+      const gchar *message;
 
+      if(purple_prefs_get_bool(PREF "/reset-attrs"))
+        message = "";
+      else
+        message = purple_prefs_get_string(sf->pref);
       field = purple_request_field_string_new(sf->pref,
                                               sf->text,
                                               message,
