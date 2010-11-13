@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-13 16:30:50 gawen>
+   Time-stamp: <2010-11-13 18:16:02 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -210,18 +210,21 @@ void cb_pm(GtkWidget *widget, gpointer data)
     const struct s_field {
       const gchar *text;
       const gchar *pref;
-    } s_fields[] = {
+    } groups[] = {
       { N_("Mood message"), PREF "/mood-message" },
+      { N_("Song parameter"), NULL },
       { N_("Song title"), PREF "/tune-title" },
       { N_("Song artist"), PREF "/tune-artist" },
       { N_("Song album"), PREF "/tune-album" },
+      { N_("MSN extra"), NULL },
       { N_("Game name"), PREF "/game-message" },
       { N_("Office app name"), PREF "/office-message" },
+      { NULL, NULL },
       { NULL, NULL }
-    }; register const struct s_field *sf = s_fields;
+    }; register const struct s_field *g = groups;
 
     fields = purple_request_fields_new();
-    group = purple_request_field_group_new(NULL);
+    group = purple_request_field_group_new("Personal message and mood");
     purple_request_fields_add_group(fields, group);
 
     field = purple_request_field_string_new(PREF "/personal-message",
@@ -230,19 +233,24 @@ void cb_pm(GtkWidget *widget, gpointer data)
                                             FALSE);
     purple_request_field_set_required(field, FALSE);
     purple_request_field_group_add_field(group, field);
-    for(; sf->text ; sf++) {
-      const gchar *message;
 
-      if(purple_prefs_get_bool(PREF "/reset-attrs"))
-        message = "";
-      else
-        message = purple_prefs_get_string(sf->pref);
-      field = purple_request_field_string_new(sf->pref,
-                                              sf->text,
-                                              message,
-                                              FALSE);
-      purple_request_field_set_required(field, FALSE);
-      purple_request_field_group_add_field(group, field);
+    for(; g->pref ; g++) {
+      for(; g->pref ; g++) {
+        const gchar *message;
+
+        if(purple_prefs_get_bool(PREF "/reset-attrs"))
+          message = "";
+        else
+          message = purple_prefs_get_string(g->pref);
+        field = purple_request_field_string_new(g->pref,
+                                                g->text,
+                                                message,
+                                                FALSE);
+        purple_request_field_set_required(field, FALSE);
+        purple_request_field_group_add_field(group, field);
+      }
+      group = purple_request_field_group_new(_(g->text));
+      purple_request_fields_add_group(fields, group);
     }
 
     purple_request_fields(thisplugin,
