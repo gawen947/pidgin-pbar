@@ -47,7 +47,7 @@ clean:
 	$(RM) $(DEP)
 	$(RM) $(OBJ)
 	$(RM) $(CATALOGS)
-	$(RM) pbar.pot
+	$(RM) messages.pot
 	$(RM) pbar.so
 
 install: $(install-locales)
@@ -69,8 +69,8 @@ uninstall-locales:
 %.mo: %.po
 	$(MSGFMT) -c -o $@ $<
 
-pbar.pot: POTFILES.in
-	$(XGETTEXT) --files-from $< --keyword=N_ -o $@ --no-wrap --no-location
+messages.pot: POTFILES.in
+	$(XGETTEXT) --no-wrap -m -c --files-from $< --keyword --keyword=_ --keyword=N_ -o $@
 
 -include $(DEP)
 

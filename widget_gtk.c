@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-13 22:07:00 gawen>
+   Time-stamp: <2010-11-13 22:51:12 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -98,21 +98,17 @@ void cb_name(GtkWidget *widget, gpointer data)
     gtk_widget_grab_focus(bar->name_entry);
   }
   else if(!bar->name_dialog) {
-    const gchar *title  = N_("Change nickname");
-    const gchar *desc   = N_("Enter your nickname here.");
-    const gchar *ok     = N_("OK");
-    const gchar *cancel = N_("Cancel");
     purple_request_input(thisplugin,
-                         _(title),
+                         _("Change nickname"),
                          NULL,
-                         _(desc),
+                         _("Enter your nickname here."),
                          name,
                          FALSE,
                          FALSE,
                          NULL,
-                         _(ok),
+                         _("OK"),
                          G_CALLBACK(cb_name_apply),
-                         _(cancel),
+                         _("Cancel"),
                          G_CALLBACK(cb_name_cancel),
                          NULL,
                          NULL,
@@ -227,15 +223,12 @@ void cb_pm(GtkWidget *widget, gpointer data)
       { NULL, NULL }
     }; register const struct s_field *g = groups;
 
-    const gchar *group_title = N_("Status and mood message");
-    const gchar *pm_desc     = N_("Personal message");
-
     fields = purple_request_fields_new();
-    group = purple_request_field_group_new(_(group_title));
+    group = purple_request_field_group_new(_("Status and mood message"));
     purple_request_fields_add_group(fields, group);
 
     field = purple_request_field_string_new(PREF "/personal-message",
-                                            _(pm_desc),
+                                            _("Personal message"),
                                             _(pm),
                                             FALSE);
     purple_request_field_set_required(field, FALSE);
@@ -260,18 +253,14 @@ void cb_pm(GtkWidget *widget, gpointer data)
       purple_request_fields_add_group(fields, group);
     }
 
-    const gchar *title  = N_("Change status messages");
-    const gchar *desc   = N_("Enter status messages here.");
-    const gchar *ok     = N_("OK");
-    const gchar *cancel = N_("Cancel");
     purple_request_fields(thisplugin,
-                          _(title),
+                          _("Change status messages"),
                           NULL,
-                          _(desc),
+                          _("Enter status messages here."),
                           fields,
-                          _(ok),
+                          _("OK"),
                           G_CALLBACK(cb_pm_apply),
-                          _(cancel),
+                          _("Cancel"),
                           G_CALLBACK(cb_pm_cancel),
                           NULL, NULL, NULL, NULL);
     bar->pm_dialog = TRUE;
@@ -390,8 +379,7 @@ void cb_mood_button(GtkWidget *widget, gpointer data)
   menu_item  = gtk_image_menu_item_new();
   g_free(path);
   gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menu_item), icon);
-  const gchar *none = N_("None");
-  gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), _(none));
+  gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), _("None"));
   gtk_menu_shell_append(GTK_MENU_SHELL(bar->mood_menu), menu_item);
   g_signal_connect_swapped(menu_item, "activate",
                            G_CALLBACK(cb_mood_menu),
