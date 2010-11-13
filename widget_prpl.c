@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-11-13 00:28:27 gawen>
+   Time-stamp: <2010-11-13 01:19:12 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -73,6 +73,51 @@ void cb_signed_on(PurpleConnection *gc)
     purple_debug_info(NAME, "mood changed to \"%s\" by signed-on account\n",
                       mood);
   }
+
+  /* load tune and stuff */
+  GList *a_tune = NULL;
+  GList *a_mood = NULL;
+
+  const struct attrs {
+    const gchar *pref;
+    const gchar *attr;
+    GList **list;
+  } attrs[] = {
+    { PREF "/mood-message", PURPLE_MOOD_COMMENT, &a_mood },
+    { PREF "/tune-title", PURPLE_TUNE_TITLE, &a_tune },
+    { PREF "/tune-artist", PURPLE_TUNE_ARTIST, &a_tune },
+    { PREF "/tune-album", PURPLE_TUNE_ALBUM, &a_tune },
+    { PREF "/game-message", "game", &a_tune },
+    { PREF "/office-message", "office", &a_tune },
+    { NULL, NULL, NULL }
+  }; const register struct attrs *a = attrs;
+
+  for(; a->pref ; a++) {
+    const gchar *value = purple_prefs_get_string(a->pref);
+
+    if(value && !strcmp(value, ""))
+      value = NULL;
+
+    *(a->list) = g_list_append(*(a->list), (gpointer)a->attr);
+    *(a->list) = g_list_append(*(a->list), (gpointer)value);
+  }
+
+  const struct status_list {
+    const gchar *status_id;
+    GList *list;
+    gboolean cont;
+  } status[] = {
+    { "tune", a_tune, TRUE },
+    { "mood", a_mood, TRUE },
+    { NULL, NULL, FALSE}
+  }; register const struct status_list *s = status;
+
+  for(; s->cont ; s++) {
+    purple_account_set_status_list(account, s->status_id, TRUE, s->list);
+    g_list_free(s->list);
+  }
+
+  /* FIXME: debug info */
 }
 
 void cb_buddy_icon_update(const char *name, PurplePrefType type,
@@ -122,7 +167,6 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
   /* just to update widget */
   const gchar *pm = purple_request_fields_get_string(fields, PREF "/personal-message");
   const gchar *markup = purple_prefs_get_string(PREF "/personal-message-markup");
-
   set_status_message(pm);
   set_widget_pm(markup, pm);
 
