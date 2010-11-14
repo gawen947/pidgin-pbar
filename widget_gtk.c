@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-14 00:26:48 gawen>
+   Time-stamp: <2010-11-14 01:24:56 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -188,12 +188,10 @@ void cb_pm(GtkWidget *widget, gpointer data)
   swap = (event->button == 1);
   swap = purple_prefs_get_bool(PREF "/swap-click") ? !swap : swap;
 
+  if(!pm || !strcmp(pm, EMPTY_PM))
+    pm = "";
 
   if(swap && !bar->pm_dialog) {
-
-    if(!pm || !strcmp(pm, EMPTY_PM))
-      pm = "";
-
     gtk_entry_set_text(GTK_ENTRY(bar->pm_entry), pm);
 
     if(purple_prefs_get_bool(PREF "/compact"))
@@ -230,7 +228,7 @@ void cb_pm(GtkWidget *widget, gpointer data)
 
     field = purple_request_field_string_new(PREF "/personal-message",
                                             _("Personal message"),
-                                            _(pm),
+                                            pm,
                                             FALSE);
     purple_request_field_set_required(field, FALSE);
     purple_request_field_group_add_field(group, field);
