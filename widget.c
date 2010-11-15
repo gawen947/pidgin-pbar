@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-11-15 14:49:45 gawen>
+   Time-stamp: <2010-11-15 16:46:20 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -279,48 +279,35 @@ void init_widget()
   set_widget_status(stock);
 
   /* fill status menu */
-  /* FIXME: review this */
-  PurpleAccount *account;
-  GList *accounts, *l;
-  GList *status_added = NULL, *i;
-  gboolean already_added;
+  GList *accts = purple_accounts_get_all_active();
+  GHashTable *global_status = g_hash_table_new_full(g_str_hash, g_str_equal,
+                                                    NULL, NULL);
+  for(; accts ; accts = g_list_delete_link(accts, accts)) {
+    PurpleAccount *account = (PurpleAccount *)accts->data;
+    GList *types = purple_account_get_status_types(account);
 
-  accounts = purple_accounts_get_all_active();
-  if(!accounts) {
-    purple_debug_error(NAME, "cannot get active accounts list");
-    return;
-  }
-  for(l = accounts ; l ; l = l->next) {
-    GList *status_types, *k;
-    account      = l->data;
-    status_types = purple_account_get_status_types(account);
-    for(k = status_types ; k ; k = k->next) {
-      PurpleStatusType *status_type = (PurpleStatusType *)k->data;
+    for(; types ; types = g_list_delete_link(types, types)) {
+      PurpleStatusType *type = (PurpleStatusType *)types->data;
       PurpleStatusPrimitive prim;
-      const gchar *stock_id, *status_name;
+      const gchar *stock, *status_name;
       GtkWidget *menu_item, *icon;
 
-      if(!purple_status_type_is_user_settable(status_type) ||
-         purple_status_type_is_independent(status_type))
+      if(!purple_status_type_is_user_settable(type) ||
+         purple_status_type_is_independent(type))
         continue;
 
-      prim      = purple_status_type_get_primitive(status_type);
-      stock_id  = pidgin_stock_id_from_status_primitive(prim);
+      prim  = purple_status_type_get_primitive(type);
+      stock = pidgin_stock_id_from_status_primitive(prim);
 
-      already_added = FALSE;
-      for(i = status_added ; i ; i = i->next) {
-        const gchar *sa_stock_id = (const gchar *)i->data;
-
-        if(!strcmp(sa_stock_id, stock_id))
-          already_added = TRUE;
-      }
-      if(already_added)
+      if(g_hash_table_lookup(global_status, stock))
         continue;
-      status_added = g_list_append(status_added, (gpointer)stock_id);
+      else
+        g_hash_table_insert(global_status, (gpointer)stock,
+                            GINT_TO_POINTER(TRUE));
 
-      menu_item    = gtk_image_menu_item_new_from_stock(stock_id, NULL);
-      icon         = gtk_image_new_from_stock(stock_id, GTK_ICON_SIZE_MENU);
-      status_name  = purple_status_type_get_name(status_type);
+      menu_item    = gtk_image_menu_item_new_from_stock(stock, NULL);
+      icon         = gtk_image_new_from_stock(stock, GTK_ICON_SIZE_MENU);
+      status_name  = purple_status_type_get_name(type);
 
       gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menu_item), icon);
       gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), status_name);
@@ -329,12 +316,13 @@ void init_widget()
 
       g_signal_connect_swapped(menu_item, "activate",
                                G_CALLBACK(cb_status_menu),
-                               (gpointer)status_type);
+                               (gpointer)type);
 
       gtk_widget_show(menu_item);
     }
   }
-  g_list_free(status_added);
+  g_hash_table_destroy(global_status);
+
 
   /* statusbox hiding */
   state = purple_prefs_get_bool(PREF "/hide-statusbox");
