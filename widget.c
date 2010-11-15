@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-11-15 17:05:42 gawen>
+   Time-stamp: <2010-11-15 19:18:30 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -329,15 +329,41 @@ void init_widget()
   set_statusbox_visible(!state);
 }
 
-static gchar * g_strreplace(const gchar *string, const gchar *old,
-                            const gchar *new)
+/* replace format character <c><r> with <n> string and escape with <c><c> */
+static gchar * g_strreplacefmt(const gchar *s, gchar c, gchar r,
+                               const gchar *n)
 {
-  gchar **split = g_strsplit(string, old, -1);
-  gchar  *ret = g_strjoinv(new, split);
+  int ss = strlen(s);
+  int sn = strlen(n);
+  int sr = ss;
+  int index = 0;
+  gchar *ret = g_malloc(sr);
 
-  g_strfreev(split);
-  return ret; /* should be freed with g_free */
+  for(; *s != '\0' ; s++) {
+    if(*s == c) {
+      s++;
+      if(*s == r) {
+        const gchar *i = n;
+
+        sr += sn;
+        ret = g_realloc(ret, sr);
+        for(; *i != '\0' ; i++, index++)
+          ret[index] = *i;
+        continue;
+      }
+      else if(*s != c || *s == '\0')
+        s--;
+    }
+
+    ret[index] = *s;
+    index++;
+  }
+
+  ret[index] = '\0';
+
+  return ret;
 }
+
 
 void set_widget_name(const gchar *markup, const gchar *name)
 {
@@ -350,7 +376,7 @@ void set_widget_name(const gchar *markup, const gchar *name)
     name = _(EMPTY_NAME);
 
   escaped_name = g_markup_printf_escaped("%s", name);
-  new = g_strreplace(markup, "%n", escaped_name);
+  new = g_strreplacefmt(markup, '%', 'n', escaped_name);
   g_free(escaped_name);
 
   gtk_label_set_markup(GTK_LABEL(bar->name_label), new);
@@ -368,7 +394,7 @@ void set_widget_pm(const gchar *markup, const gchar *pm)
     pm = _(EMPTY_PM);
 
   escaped_pm = g_markup_printf_escaped("%s", pm);
-  new = g_strreplace(markup, "%p", escaped_pm);
+  new = g_strreplacefmt(markup, '%', 'p', escaped_pm);
   g_free(escaped_pm);
 
   gtk_label_set_markup(GTK_LABEL(bar->pm_label), new);
