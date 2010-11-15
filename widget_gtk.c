@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-15 14:41:21 gawen>
+   Time-stamp: <2010-11-15 17:13:35 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -396,11 +396,11 @@ void cb_mood_menu(gpointer data)
   g_return_if_fail(bar->installed);
 
   const gchar *mood = (const gchar *)data;
-  GList *accounts = purple_accounts_get_all_active();
+  GList *accts = purple_accounts_get_all_active();
   gchar *path;
 
-  for(; accounts ; accounts = g_list_delete_link(accounts, accounts)) {
-    PurpleAccount *account = (PurpleAccount *)accounts->data;
+  for(; accts ; accts = g_list_delete_link(accts, accts)) {
+    PurpleAccount *account = (PurpleAccount *)accts->data;
     PurpleConnection *gc = purple_account_get_connection(account);
 
     if(gc && gc->flags & PURPLE_CONNECTION_SUPPORT_MOODS)

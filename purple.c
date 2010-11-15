@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-11-15 14:01:30 gawen>
+   Time-stamp: <2010-11-15 17:11:17 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -166,13 +166,13 @@ void set_status_with_mood(PurpleAccount *account, const gchar *mood)
 /* set exclusive status for all account */
 void set_status_all(const gchar *status_id, GList *attrs)
 {
-  GList *accts;
+  GList *accts = purple_accounts_get_all_active();
 
   /* empty list means we have nothing to do */
   if(!attrs)
     return;
 
-  for(accts = purple_accounts_get_all_active() ; accts ; accts = accts->next) {
+  for(; accts ; accts = g_list_delete_link(accts, accts)) {
     PurpleAccount *account = accts->data;
 
     if(!purple_account_is_connected(account))
@@ -222,9 +222,9 @@ void set_display_name(PurpleAccount *account, const gchar *name)
 /* set display name for all connected accounts */
 void set_display_name_all(const char *name)
 {
-  GList *accts;
+  GList *accts = purple_accounts_get_all_active();
 
-  for(accts = purple_accounts_get_all_active() ; accts ; accts = accts->next) {
+  for(; accts ; accts = g_list_delete_link(accts, accts)) {
     PurpleAccount *account = accts->data;
 
     if(!purple_account_is_connected(account))
