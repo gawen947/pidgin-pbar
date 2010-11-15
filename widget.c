@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-11-15 16:46:20 gawen>
+   Time-stamp: <2010-11-15 17:05:42 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -286,7 +286,7 @@ void init_widget()
     PurpleAccount *account = (PurpleAccount *)accts->data;
     GList *types = purple_account_get_status_types(account);
 
-    for(; types ; types = g_list_delete_link(types, types)) {
+    for(; types ; types = types->next) {
       PurpleStatusType *type = (PurpleStatusType *)types->data;
       PurpleStatusPrimitive prim;
       const gchar *stock, *status_name;
