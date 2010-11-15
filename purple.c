@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-11-13 01:05:40 gawen>
+   Time-stamp: <2010-11-15 12:39:45 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -82,7 +82,6 @@ gchar * get_mood_icon_path(const gchar *mood)
 {
   gchar *path;
 
-  /* FIXME: choose something else for "None" mood */
   if(!mood || !strcmp(mood, ""))
     path = g_build_filename(DATADIR, "pixmaps", "pidgin",
                             "toolbar", "16", "emote-select.png", NULL);
@@ -131,7 +130,8 @@ PurpleMood * get_global_moods()
 
           if(!g_hash_table_lookup(global_moods, mood->mood))
             g_hash_table_insert(global_moods, (gpointer)mood->mood, mood);
-          g_hash_table_insert(mood_counts, (gpointer)mood->mood, GINT_TO_POINTER(mood_count + 1));
+          g_hash_table_insert(mood_counts, (gpointer)mood->mood,
+                              GINT_TO_POINTER(mood_count + 1));
         }
 
         num_accounts++;
@@ -162,7 +162,7 @@ PurpleMood * get_global_moods()
   return result;
 }
 
-/* update status with mood */
+/* set status to the specified mood */
 void set_status_with_mood(PurpleAccount *account, const gchar *mood)
 {
   purple_account_set_status(account, "mood", TRUE,

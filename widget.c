@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-11-13 19:13:05 gawen>
+   Time-stamp: <2010-11-14 12:25:31 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -99,7 +99,8 @@ void create_widget()
   gtk_box_pack_start(GTK_BOX(bar->hbox), bar->icon_eventbox, FALSE, FALSE, 5);
   gtk_box_pack_start(GTK_BOX(bar->hbox), vbox, TRUE, TRUE, 0);
 
-  /* pack into buddy list */
+  /* pack at top of the buddy list and fallback to top
+     if the position option is unknown */
   void (*gtk_box_pack)(GtkBox *, GtkWidget *, gboolean, gboolean, guint) = gtk_box_pack_start;
   int position = purple_prefs_get_int(PREF "/widget-position");
   const PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
@@ -124,7 +125,7 @@ void create_widget()
   bar->name_dialog = FALSE;
   bar->pm_dialog   = FALSE;
 
-  /* connect gtk and purple signals */
+  /* gtk signals and callback */
   const struct g_signal {
     GtkWidget *widget;
     const gchar *signal;
@@ -148,6 +149,7 @@ void create_widget()
     { NULL, NULL, NULL }
   }; register const struct g_signal *g_sig = g_signal_connections;
 
+  /* purple signals and callback */
   const struct p_signal {
     void *instance;
     const char *signal;
@@ -158,11 +160,14 @@ void create_widget()
     { NULL, NULL, NULL }
   }; register const struct p_signal *purple_sig = purple_signal_connections;
 
+  /* purple preferences signals and callback */
   const struct p_signal purple_prefs_signal_connections[] = {
     { bar, PIDGIN_PREFS_ROOT "/accounts/buddyicon", cb_buddy_icon_update },
     { NULL, NULL, NULL }
   }; register const struct p_signal *purple_prefs_sig = purple_prefs_signal_connections;
 
+  /* connect signals and save handlers and instance when needed
+     to disconnect those signals when the widget is destroyed */
   gulong handler_id;
   for(; g_sig->widget ; g_sig++) {
     handler_id = g_signal_connect(G_OBJECT(g_sig->widget),
@@ -292,6 +297,7 @@ void init_widget()
   set_widget_status(stock);
 
   /* fill status menu */
+  /* FIXME: review this */
   PurpleAccount *account;
   GList *accounts, *l;
   GList *status_added = NULL, *i;

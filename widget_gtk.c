@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-14 01:24:56 gawen>
+   Time-stamp: <2010-11-14 03:24:52 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -257,7 +257,7 @@ void cb_pm(GtkWidget *widget, gpointer data)
                           _("Enter status message..."),
                           _("This will change some status messages for every "
                             "account which supports it, please be advised "
-                            "that some are incompatible between them."),
+                            "that some are inconsistent between each other."),
                           fields,
                           _("OK"),
                           G_CALLBACK(cb_pm_apply),

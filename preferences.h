@@ -1,5 +1,5 @@
 /* File: prefs.h
-   Time-stamp: <2010-11-13 19:03:27 gawen>
+   Time-stamp: <2010-11-14 01:30:53 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -39,6 +39,5 @@ enum { POSITION_TOP, POSITION_BOTTOM };
 
 void init_prefs();
 GtkWidget * get_config_frame(PurplePlugin *plugin);
-
 
 #endif /* _PREFERENCES_H_ */

@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-14 00:38:01 gawen>
+   Time-stamp: <2010-11-15 12:31:33 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -39,6 +39,9 @@ static void cb_swap_click(GtkWidget *widget, gpointer data);
 static void cb_reset_attrs(GtkWidget *widget, gpointer data);
 static void cb_widget_position(GtkWidget *widget, gpointer data);
 
+/* the following structures are defined here as global
+   since they are needed in combobox callback */
+
 /* alias we will use for combobox */
 static const struct i_alias {
   const char *alias;
@@ -57,6 +60,7 @@ static const struct i_alias alias_position[] = {
   { NULL, 0 }
 };
 
+/* init preferences and set default values */
 void init_prefs()
 {
   /* string preferences and default value */
@@ -145,7 +149,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
 
   /* check button widgets label, associated preference and callback */
   const struct widget check_button[] = {
-    { N_("Hide pidgin's status box"), PREF "/hide-statusbox", cb_hide_statusbox },
+    { N_("Hide statusbox"), PREF "/hide-statusbox", cb_hide_statusbox },
     { N_("Ignore status changes"), PREF "/override-status", cb_override_status },
     { N_("Use a frame for entry"), PREF "/frame-entry", cb_frame_entry },
     { N_("Swap left and right click"), PREF "/swap-click", cb_swap_click },
