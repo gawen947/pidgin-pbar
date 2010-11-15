@@ -1,5 +1,5 @@
 /* File: pbar.h
-   Time-stamp: <2010-10-12 20:04:48 gawen>
+   Time-stamp: <2010-11-15 23:55:36 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -45,11 +45,14 @@
 # define PLUGIN_VERSION    VERSION " (commit:" COMMIT ")" /* add git commit
                                                              when available */
 #endif
-#define PLUGIN_SUMMARY     N_("Changes nickname, personal message, " \
-                              "icon and status for multiple accounts.")
-#define PLUGIN_DESCRIPTION N_("Displays a toolbar to set your nickname, " \
-                              "personal message, icon and status for " \
-                              "multiple accounts at once.")
+#define PLUGIN_SUMMARY     N_("A toolbar to update some account settings "    \
+                              "globally.")
+#define PLUGIN_DESCRIPTION N_("Adds a toolbar to the buddy list to quickly "  \
+                              "update nickname, personal message, icon, "     \
+                              "status and mood. It also allows updating of "  \
+                              "the current song and other parameters which "  \
+                              "are updated globally on all accounts that "    \
+                              "support them.")
 #define PLUGIN_AUTHOR      "David Hauweele <david.hauweele@gmail.com>"
 #define PLUGIN_WEBSITE     "http://www.atlantysse.prout.be/~gawen/pidgin-pbar.html"
 
