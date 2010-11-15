@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-14 03:24:52 gawen>
+   Time-stamp: <2010-11-15 14:41:21 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -37,15 +37,12 @@ void cb_buddy_icon(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  PidginBuddyList *blist;
-  GtkWidget *chooser;
-
-  blist = pidgin_blist_get_default_gtk_blist();
-  chooser = pidgin_buddy_icon_chooser_new(GTK_WINDOW
-                                          (gtk_widget_get_toplevel
-                                           (GTK_WIDGET(blist))),
-                                          cb_icon_choose,
-                                          NULL);
+  PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
+  GtkWidget *chooser = pidgin_buddy_icon_chooser_new(GTK_WINDOW
+                                                     (gtk_widget_get_toplevel
+                                                      (GTK_WIDGET(blist))),
+                                                     cb_icon_choose,
+                                                     NULL);
   gtk_widget_show(chooser);
 }
 
@@ -53,9 +50,8 @@ void cb_buddy_icon_enter(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  GdkPixbuf *icon;
+  GdkPixbuf *icon = get_buddy_icon_hover();
 
-  icon = get_buddy_icon_hover();
   set_widget_icon(icon);
   pidgin_set_cursor(bar->icon_eventbox, GDK_HAND2);
 }
@@ -64,9 +60,8 @@ void cb_buddy_icon_leave(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  GdkPixbuf *icon;
+  GdkPixbuf *icon = get_buddy_icon();
 
-  icon = get_buddy_icon();
   set_widget_icon(icon);
   pidgin_set_cursor(bar->icon_eventbox, GDK_ARROW);
 }
@@ -75,17 +70,14 @@ void cb_name(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  GdkEventButton *event;
-  gboolean swap;
   const gchar *name = purple_prefs_get_string(PREF "/nickname");
+  GdkEventButton *event = (GdkEventButton *)gtk_get_current_event();
+  gboolean swap = (event->button == 1);
+
+  swap = purple_prefs_get_bool(PREF "/swap-click") ? !swap : swap;
 
   if(!name || !strcmp(name, EMPTY_NAME))
     name = "";
-
-  event = (GdkEventButton *)gtk_get_current_event();
-
-  swap = (event->button == 1);
-  swap = purple_prefs_get_bool(PREF "/swap-click") ? !swap : swap;
 
   if(swap && !bar->name_dialog) {
     gtk_entry_set_text(GTK_ENTRY(bar->name_entry), name);
@@ -123,10 +115,8 @@ void cb_name_enter(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  const gchar *markup, *name;
-
-  markup = purple_prefs_get_string(PREF "/nickname-markup-hover");
-  name   = purple_prefs_get_string(PREF "/nickname");
+  const gchar *markup = purple_prefs_get_string(PREF "/nickname-markup-hover");
+  const gchar *name   = purple_prefs_get_string(PREF "/nickname");
 
   bar->hover_name = TRUE;
   set_widget_name(markup, name);
@@ -136,10 +126,8 @@ void cb_name_leave(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  const gchar *markup, *name;
-
-  markup = purple_prefs_get_string(PREF "/nickname-markup");
-  name   = purple_prefs_get_string(PREF "/nickname");
+  const gchar *markup = purple_prefs_get_string(PREF "/nickname-markup");
+  const gchar *name   = purple_prefs_get_string(PREF "/nickname");
 
   bar->hover_name = FALSE;
   set_widget_name(markup, name);
@@ -149,10 +137,9 @@ void cb_name_entry(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  const gchar *name, *markup;
+  const gchar *name   = gtk_entry_get_text(GTK_ENTRY(widget));
+  const gchar *markup = purple_prefs_get_string(PREF "/nickname-markup");
 
-  name = gtk_entry_get_text(GTK_ENTRY(widget));
-  markup = purple_prefs_get_string(PREF "/nickname-markup");
   set_widget_name(markup, name);
 
   purple_prefs_set_string(PREF "/nickname", name);
@@ -179,13 +166,10 @@ void cb_pm(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  GdkEventButton *event;
-  gboolean swap;
   const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
+  GdkEventButton *event = (GdkEventButton *)gtk_get_current_event();
+  gboolean swap = (event->button == 1);
 
-  event = (GdkEventButton *)gtk_get_current_event();
-
-  swap = (event->button == 1);
   swap = purple_prefs_get_bool(PREF "/swap-click") ? !swap : swap;
 
   if(!pm || !strcmp(pm, EMPTY_PM))
@@ -220,7 +204,7 @@ void cb_pm(GtkWidget *widget, gpointer data)
       { N_("Office app name"), PREF "/office-message" },
       { NULL, NULL },
       { NULL, NULL }
-    }; register const struct s_field *g = groups;
+    }; const struct s_field *g = groups;
 
     fields = purple_request_fields_new();
     group = purple_request_field_group_new(_("Status and mood message"));
@@ -272,10 +256,8 @@ void cb_pm_enter(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  const gchar *markup, *pm;
-
-  markup = purple_prefs_get_string(PREF "/personal-message-markup-hover");
-  pm     = purple_prefs_get_string(PREF "/personal-message");
+  const gchar *markup = purple_prefs_get_string(PREF "/personal-message-markup-hover");
+  const gchar *pm     = purple_prefs_get_string(PREF "/personal-message");
 
   bar->hover_pm = TRUE;
   set_widget_pm(markup, pm);
@@ -285,10 +267,8 @@ void cb_pm_leave(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  const gchar *markup, *pm;
-
-  markup = purple_prefs_get_string(PREF "/personal-message-markup");
-  pm     = purple_prefs_get_string(PREF "/personal-message");
+  const gchar *markup = purple_prefs_get_string(PREF "/personal-message-markup");
+  const gchar *pm     = purple_prefs_get_string(PREF "/personal-message");
 
   bar->hover_pm = FALSE;
   set_widget_pm(markup, pm);
@@ -298,15 +278,14 @@ void cb_pm_entry(GtkWidget *widget, gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  const gchar *pm, *markup;
+  const gchar *markup = purple_prefs_get_string(PREF "/personal-message-markup");
+  const gchar *pm     = gtk_entry_get_text(GTK_ENTRY(widget));
 
-  pm = gtk_entry_get_text(GTK_ENTRY(widget));
   purple_prefs_set_string(PREF "/personal-message", pm);
 
   /* set personal message for all protocols */
   set_status_message(pm);
 
-  markup = purple_prefs_get_string(PREF "/personal-message-markup");
   set_widget_pm(markup, pm);
   bar->pm_entry_activated = TRUE;
 
@@ -339,12 +318,11 @@ void cb_status_menu(gpointer data)
 {
   g_return_if_fail(bar->installed);
 
-  PurpleSavedStatus *status;
+  const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
   PurpleStatusType *status_type = (PurpleStatusType *)data;
   PurpleStatusPrimitive type_prim = purple_status_type_get_primitive(status_type);
-  const gchar *pm;
+  PurpleSavedStatus *status = purple_savedstatus_get_current();
 
-  pm = purple_prefs_get_string(PREF "/personal-message");
   status = purple_savedstatus_get_current();
   purple_savedstatus_set_type(status, type_prim);
   purple_savedstatus_set_message(status, pm);

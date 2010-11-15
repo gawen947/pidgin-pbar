@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-11-15 12:39:45 gawen>
+   Time-stamp: <2010-11-15 14:01:30 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -33,9 +33,7 @@ static void cb_dummy();
 /* check if default gtk blist is created */
 gboolean is_gtk_blist_created()
 {
-  const PidginBuddyList *blist;
-
-  blist = pidgin_blist_get_default_gtk_blist();
+  const PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
 
   if(!blist ||
      !blist->vbox ||
@@ -47,33 +45,27 @@ gboolean is_gtk_blist_created()
 /* get buddy icon from statusbox widget */
 GdkPixbuf * get_buddy_icon()
 {
-  const PidginBuddyList *blist;
-  const PidginStatusBox *statusbox;
+  const PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
+  const PidginStatusBox *statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
 
-  blist = pidgin_blist_get_default_gtk_blist();
-  statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
   return statusbox->buddy_icon;
 }
 
 /* get buddy icon hovered from statusbox widget */
 GdkPixbuf * get_buddy_icon_hover()
 {
-  const PidginBuddyList *blist;
-  const PidginStatusBox *statusbox;
+  const PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
+  const PidginStatusBox *statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
 
-  blist = pidgin_blist_get_default_gtk_blist();
-  statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
   return statusbox->buddy_icon_hover;
 }
 
 /* get current status stock id */
 const gchar * get_status_stock_id()
 {
-  const PurpleSavedStatus *status;
-  PurpleStatusPrimitive prim;
+  const PurpleSavedStatus *status = purple_savedstatus_get_current();
+  PurpleStatusPrimitive prim = purple_savedstatus_get_type(status);
 
-  status = purple_savedstatus_get_current();
-  prim   = purple_savedstatus_get_type(status);
   return pidgin_stock_id_from_status_primitive(prim);
 }
 
@@ -117,8 +109,10 @@ PurpleMood * get_global_moods()
 
   for(; accounts ; accounts = g_list_delete_link(accounts, accounts)) {
     PurpleAccount *account = (PurpleAccount *)accounts->data;
+
     if(purple_account_is_connected(account)) {
       PurpleConnection *gc = purple_account_get_connection(account);
+
       if(gc->flags & PURPLE_CONNECTION_SUPPORT_MOODS) {
         PurplePluginProtocolInfo *prpl_info = PURPLE_PLUGIN_PROTOCOL_INFO(gc->prpl);
         PurpleMood *mood = NULL;
@@ -165,8 +159,8 @@ PurpleMood * get_global_moods()
 /* set status to the specified mood */
 void set_status_with_mood(PurpleAccount *account, const gchar *mood)
 {
-  purple_account_set_status(account, "mood", TRUE,
-                            PURPLE_MOOD_NAME, mood, NULL);
+  purple_account_set_status(account, "mood", TRUE, PURPLE_MOOD_NAME, mood,
+                            NULL);
 }
 
 /* set exclusive status for all account */
@@ -179,9 +173,8 @@ void set_status_all(const gchar *status_id, GList *attrs)
     return;
 
   for(accts = purple_accounts_get_all_active() ; accts ; accts = accts->next) {
-    PurpleAccount *account;
+    PurpleAccount *account = accts->data;
 
-    account = accts->data;
     if(!purple_account_is_connected(account))
       continue;
     purple_account_set_status_list(account, status_id, TRUE, attrs);
@@ -191,14 +184,12 @@ void set_status_all(const gchar *status_id, GList *attrs)
 /* set display name for account */
 void set_display_name(PurpleAccount *account, const gchar *name)
 {
-  const gchar *id;
-
-  id = purple_account_get_protocol_id(account);
+  const gchar *id = purple_account_get_protocol_id(account);
 
   /* exception for set_public_alias */
   if(!strcmp(id, "prpl-jabber")) {
-    PurpleConnection *gc;
-    gchar *iq_id;
+    PurpleConnection *gc = account->gc;
+    gchar *iq_id = g_strdup_printf("purple%x", g_random_int());
     xmlnode *iq, *pubsub, *publish, *nicknode;
 
     gc = account->gc;
@@ -234,9 +225,8 @@ void set_display_name_all(const char *name)
   GList *accts;
 
   for(accts = purple_accounts_get_all_active() ; accts ; accts = accts->next) {
-    PurpleAccount *account;
+    PurpleAccount *account = accts->data;
 
-    account = accts->data;
     if(!purple_account_is_connected(account))
       continue;
     set_display_name(account, name);
@@ -246,9 +236,8 @@ void set_display_name_all(const char *name)
 /* set status message (personal message) */
 void set_status_message(const gchar *pm)
 {
-  PurpleSavedStatus *status;
+  PurpleSavedStatus *status = purple_savedstatus_get_current();
 
-  status = purple_savedstatus_get_current();
   purple_savedstatus_set_message(status, pm);
   purple_savedstatus_activate(status);
 }
@@ -265,6 +254,7 @@ static void cb_global_moods_for_each(gpointer key, gpointer value,
 static void cb_set_alias_failure(PurpleAccount *account, const char *error)
 {
   const gchar *id = purple_account_get_protocol_id(account);
+
   purple_debug_info(NAME, "aliases not supported by \"%s\"\n", id);
 }
 

@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-11-14 12:25:31 gawen>
+   Time-stamp: <2010-11-15 14:49:45 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -73,11 +73,10 @@ void create_widget()
   gtk_event_box_set_visible_window(GTK_EVENT_BOX(bar->pm_eventbox), FALSE);
 
   /* pack widgets */
-  gboolean compact = purple_prefs_get_bool(PREF "/compact");
   gtk_container_add(GTK_CONTAINER(bar->name_eventbox), bar->name_label);
   gtk_container_add(GTK_CONTAINER(bar->pm_eventbox), bar->pm_label);
   gtk_container_add(GTK_CONTAINER(bar->icon_eventbox), bar->icon);
-  if(compact) {
+  if(purple_prefs_get_bool(PREF "/compact")) {
     gtk_box_pack_start(GTK_BOX(hbox1), bar->name_eventbox, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox1), bar->name_entry, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(hbox1), bar->pm_eventbox, TRUE, TRUE, 0);
@@ -102,9 +101,8 @@ void create_widget()
   /* pack at top of the buddy list and fallback to top
      if the position option is unknown */
   void (*gtk_box_pack)(GtkBox *, GtkWidget *, gboolean, gboolean, guint) = gtk_box_pack_start;
-  int position = purple_prefs_get_int(PREF "/widget-position");
   const PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
-  switch(position) {
+  switch(purple_prefs_get_int(PREF "/widget-position")) {
   case(POSITION_TOP):
     gtk_box_pack = gtk_box_pack_start;
     break;
@@ -147,7 +145,7 @@ void create_widget()
     { bar->status, "clicked", cb_status_button },
     { bar->mood, "clicked", cb_mood_button },
     { NULL, NULL, NULL }
-  }; register const struct g_signal *g_sig = g_signal_connections;
+  }; const struct g_signal *g_sig = g_signal_connections;
 
   /* purple signals and callback */
   const struct p_signal {
@@ -158,22 +156,21 @@ void create_widget()
     { purple_accounts_get_handle(), "account-status-changed", cb_status },
     { purple_connections_get_handle(), "signed-on", cb_signed_on },
     { NULL, NULL, NULL }
-  }; register const struct p_signal *purple_sig = purple_signal_connections;
+  }; const struct p_signal *purple_sig = purple_signal_connections;
 
   /* purple preferences signals and callback */
   const struct p_signal purple_prefs_signal_connections[] = {
     { bar, PIDGIN_PREFS_ROOT "/accounts/buddyicon", cb_buddy_icon_update },
     { NULL, NULL, NULL }
-  }; register const struct p_signal *purple_prefs_sig = purple_prefs_signal_connections;
+  }; const struct p_signal *purple_prefs_sig = purple_prefs_signal_connections;
 
   /* connect signals and save handlers and instance when needed
      to disconnect those signals when the widget is destroyed */
-  gulong handler_id;
   for(; g_sig->widget ; g_sig++) {
-    handler_id = g_signal_connect(G_OBJECT(g_sig->widget),
-                                  g_sig->signal,
-                                  G_CALLBACK(g_sig->callback),
-                                  NULL);
+    gulong handler_id = g_signal_connect(G_OBJECT(g_sig->widget),
+                                         g_sig->signal,
+                                         G_CALLBACK(g_sig->callback),
+                                         NULL);
     bar->gtk_hnd  = g_list_append(bar->gtk_hnd, GINT_TO_POINTER(handler_id));
     bar->gtk_inst = g_list_append(bar->gtk_inst, g_sig->widget);
   }
@@ -249,29 +246,14 @@ void init_widget()
 {
   g_return_if_fail(bar->installed);
 
-  /* for buddy icon */
-  GdkPixbuf *icon;
-
-  /* for nickname, personal message and status box */
-  const gchar *markup, *value;
-  gboolean state;
-  int jtype;
-
-  /* for status */
-  const gchar *stock;
-
-  /* for mood */
-  const gchar *current_mood;
-  gchar *path;
-
   /* entry frame */
-  state = purple_prefs_get_bool(PREF "/frame-entry");
+  gboolean state = purple_prefs_get_bool(PREF "/frame-entry");
   set_widget_entry_frame(state);
 
   /* nickname */
-  markup = purple_prefs_get_string(PREF "/nickname-markup");
-  value  = purple_prefs_get_string(PREF "/nickname");
-  jtype  = purple_prefs_get_int(PREF "/nickname-justify");
+  const gchar *markup = purple_prefs_get_string(PREF "/nickname-markup");
+  const gchar *value  = purple_prefs_get_string(PREF "/nickname");
+  int jtype  = purple_prefs_get_int(PREF "/nickname-justify");
   set_widget_name(markup, value);
   set_widget_name_justify(jtype);
 
@@ -283,17 +265,17 @@ void init_widget()
   set_widget_pm_justify(jtype);
 
   /* buddy icon */
-  icon = get_buddy_icon();
+  GdkPixbuf *icon = get_buddy_icon();
   set_widget_icon(icon);
 
   /* mood image */
-  current_mood = purple_prefs_get_string(PREF "/mood");
-  path = get_mood_icon_path(current_mood);
+  const gchar *current_mood = purple_prefs_get_string(PREF "/mood");
+  gchar *path = get_mood_icon_path(current_mood);
   set_widget_mood(path);
   g_free(path);
 
   /* status image */
-  stock  = get_status_stock_id();
+  const gchar *stock = get_status_stock_id();
   set_widget_status(stock);
 
   /* fill status menu */
@@ -362,14 +344,11 @@ void init_widget()
 static gchar * g_strreplace(const gchar *string, const gchar *old,
                             const gchar *new)
 {
-  gchar ** split, * ret;
+  gchar **split = g_strsplit(string, old, -1);
+  gchar  *ret = g_strjoinv(new, split);
 
-  split = g_strsplit(string, old, -1);
-  ret = g_strjoinv(new, split);
   g_strfreev(split);
-
-  /* should be freed with g_free */
-  return ret;
+  return ret; /* should be freed with g_free */
 }
 
 void set_widget_name(const gchar *markup, const gchar *name)
@@ -484,21 +463,12 @@ void set_widget_entry_frame(gboolean use_frame)
 
 void set_statusbox_visible(gboolean visible)
 {
-  const PidginBuddyList *blist;
-  GtkWidget *statusbox;
+  const PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
+  GtkWidget *statusbox = blist->statusbox;
 
-  blist = pidgin_blist_get_default_gtk_blist();
-  statusbox = blist->statusbox;
   if(statusbox)
     gtk_widget_set_visible(statusbox, visible);
 }
 
-gboolean get_widget_name_hover_state()
-{
-  return bar->hover_name;
-}
-
-gboolean get_widget_pm_hover_state()
-{
-  return bar->hover_pm;
-}
+gboolean get_widget_name_hover_state() { return bar->hover_name; }
+gboolean get_widget_pm_hover_state() { return bar->hover_pm; }

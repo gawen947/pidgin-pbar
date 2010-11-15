@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-15 12:31:33 gawen>
+   Time-stamp: <2010-11-15 13:54:14 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -82,7 +82,7 @@ void init_prefs()
     { PREF "/mood-message", "" },
     { PREF "/mood", "" },
     { NULL, NULL }
-  }; register const struct prefs_string *s = prefs_add_string;
+  }; const struct prefs_string *s = prefs_add_string;
 
   /* boolean preferences and default value */
   const struct prefs_bool {
@@ -96,7 +96,7 @@ void init_prefs()
     { PREF "/reset-attrs", FALSE },
     { PREF "/compact", FALSE },
     { NULL, FALSE }
-  }; register const struct prefs_bool *b = prefs_add_bool;
+  }; const struct prefs_bool *b = prefs_add_bool;
 
   /* integer preferences and default value */
   const struct prefs_int {
@@ -107,7 +107,7 @@ void init_prefs()
     { PREF "/personal-message-justify", JUSTIFY_LEFT },
     { PREF "/widget-position", POSITION_TOP },
     { NULL, 0 }
-  }; register const struct prefs_int *i = prefs_add_int;
+  }; const struct prefs_int *i = prefs_add_int;
 
   /* add preferences */
   purple_prefs_add_none(PREF);
@@ -132,7 +132,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     { N_("Personal message markup"), PREF "/personal-message-markup", cb_personal_message_markup },
     { N_("Personal message markup hovered"), PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
     { NULL, NULL, NULL }
-  }; register const struct widget *e = entry;
+  }; const struct widget *e = entry;
 
   /* combobox widgets label, associated preference, alias and callback */
   const struct i_widget {
@@ -145,7 +145,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     { N_("Align personal message"), PREF "/personal-message-justify", alias_justify, cb_personal_message_justify },
     { N_("Widget position in the buddy list"), PREF "/widget-position", alias_position, cb_widget_position },
     { NULL, NULL, NULL, NULL }
-  }; register const struct i_widget *cbx = combobox;
+  }; const struct i_widget *cbx = combobox;
 
   /* check button widgets label, associated preference and callback */
   const struct widget check_button[] = {
@@ -156,7 +156,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     { N_("Use a compact bar"), PREF "/compact", cb_compact },
     { N_("Reset status messages"), PREF "/reset-attrs", cb_reset_attrs },
     { NULL, NULL, NULL }
-  }; register const struct widget *cb = check_button;
+  }; const struct widget *cb = check_button;
 
   /* create table */
   GtkWidget *table = gtk_table_new(((sizeof(entry) - 2) +
@@ -181,10 +181,10 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   }
   for(; cbx->name ; cbx++, y++) {
     /* combobox widgets */
+    const struct i_alias *j;
     GtkWidget *widget_label = gtk_label_new(_(cbx->name));
     GtkWidget *widget_combo = gtk_combo_box_new_text();
     int prefs_value         = purple_prefs_get_int(cbx->prefs);
-    const struct i_alias *j;
     int i;
 
     gtk_misc_set_alignment(GTK_MISC(widget_label), 0., .5);
@@ -283,10 +283,10 @@ static void cb_override_status(GtkWidget *widget, gpointer data)
 
 static void cb_nickname_justify(GtkWidget *widget, gpointer data)
 {
-  const struct i_alias *j = (struct i_alias *)data;
   const gchar *value = gtk_combo_box_get_active_text(GTK_COMBO_BOX(widget));
+  const struct i_alias *j;
 
-  for(; j->alias ; j++) {
+  for(j = (struct i_alias *)data ; j->alias ; j++) {
     if(!strcmp(value, _(j->alias))) {
       purple_prefs_set_int(PREF "/nickname-justify", j->value);
       set_widget_name_justify(j->value);
@@ -299,10 +299,10 @@ static void cb_nickname_justify(GtkWidget *widget, gpointer data)
 
 static void cb_personal_message_justify(GtkWidget *widget, gpointer data)
 {
-  const struct i_alias *j = (struct i_alias *)data;
   const gchar *value = gtk_combo_box_get_active_text(GTK_COMBO_BOX(widget));
+  const struct i_alias *j;
 
-  for(; j->alias ; j++) {
+  for(j = (struct i_alias *)data ; j->alias ; j++) {
     if(!strcmp(value, _(j->alias))) {
       purple_prefs_set_int(PREF "/personal-message-justify", j->value);
       set_widget_pm_justify(j->value);
@@ -316,8 +316,8 @@ static void cb_personal_message_justify(GtkWidget *widget, gpointer data)
 static void cb_compact(GtkWidget *widget, gpointer data)
 {
   gboolean state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-  purple_prefs_set_bool(PREF "/compact", state);
 
+  purple_prefs_set_bool(PREF "/compact", state);
   /* recreate bar since we need to repack everything */
   destroy_widget();
   create_widget();
@@ -329,8 +329,8 @@ static void cb_compact(GtkWidget *widget, gpointer data)
 static void cb_frame_entry(GtkWidget *widget, gpointer data)
 {
   gboolean state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-  purple_prefs_set_bool(PREF "/frame-entry", state);
 
+  purple_prefs_set_bool(PREF "/frame-entry", state);
   set_widget_entry_frame(state);
 
   purple_debug_info(NAME, "frame entry state changed\n");
@@ -347,8 +347,8 @@ static void cb_swap_click(GtkWidget *widget, gpointer data)
 static void cb_reset_attrs(GtkWidget *widget, gpointer data)
 {
   gboolean state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-  purple_prefs_set_bool(PREF "/reset-attrs", state);
 
+  purple_prefs_set_bool(PREF "/reset-attrs", state);
   set_widget_entry_frame(state);
 
   purple_debug_info(NAME, "reset attributes state changed\n");
@@ -356,13 +356,12 @@ static void cb_reset_attrs(GtkWidget *widget, gpointer data)
 
 static void cb_widget_position(GtkWidget *widget, gpointer data)
 {
-  const struct i_alias *j = (struct i_alias *)data;
   const gchar *value = gtk_combo_box_get_active_text(GTK_COMBO_BOX(widget));
+  const struct i_alias *j;
 
-  for(; j->alias ; j++) {
+  for(j = (struct i_alias *)data ; j->alias ; j++) {
     if(!strcmp(value, _(j->alias))) {
       purple_prefs_set_int(PREF "/widget-position", j->value);
-
       /* recreate bar since we need to repack everything */
       destroy_widget();
       create_widget();

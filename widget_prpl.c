@@ -29,11 +29,10 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
 {
   g_return_if_fail(bar->installed);
 
-  PurpleSavedStatus *status;
   PurpleStatusPrimitive prim;
   const gchar *stock, *pm;
 
-  status = purple_savedstatus_get_current();
+  PurpleSavedStatus *status = purple_savedstatus_get_current();
   if(purple_prefs_get_bool(PREF "/override-status")) {
     pm = purple_prefs_get_string(PREF "/personal-message");
     purple_savedstatus_set_message(status,pm);
@@ -56,11 +55,8 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
 
 void cb_signed_on(PurpleConnection *gc)
 {
-  const gchar *name;
-  PurpleAccount *account;
-
-  name = purple_prefs_get_string(PREF "/nickname");
-  account = purple_connection_get_account(gc);
+  const gchar *name = purple_prefs_get_string(PREF "/nickname");
+  PurpleAccount *account = purple_connection_get_account(gc);
   set_display_name(account, name);
 
   purple_debug_info(NAME, "nickname changed to \"%s\" by signed-on account\n",
