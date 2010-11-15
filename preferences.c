@@ -129,8 +129,8 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   } entry[] = {
     { N_("_Nickname markup"), PREF "/nickname-markup", cb_nickname_markup },
     { N_("Nickname markup _hovered"), PREF "/nickname-markup-hover", cb_nickname_markup_hover },
-    { N_("_Personal message markup"), PREF "/personal-message-markup", cb_personal_message_markup },
-    { N_("Personal message markup h_overed"), PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
+    { N_("Personal _message markup"), PREF "/personal-message-markup", cb_personal_message_markup },
+    { N_("Personal message markup _hovered"), PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
     { NULL, NULL, NULL }
   }; const struct widget *e = entry;
 
@@ -141,17 +141,17 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     const struct i_alias *alias;
     void (*callback)(GtkWidget *, gpointer);
   } combobox[] = {
-    { N_("Align nick_name"), PREF "/nickname-justify", alias_justify, cb_nickname_justify },
-    { N_("Align perso_nal message"), PREF "/personal-message-justify", alias_justify, cb_personal_message_justify },
-    { N_("Widget p_osition in the buddy list"), PREF "/widget-position", alias_position, cb_widget_position },
+    { N_("Align _nickname"), PREF "/nickname-justify", alias_justify, cb_nickname_justify },
+    { N_("Align personal _message"), PREF "/personal-message-justify", alias_justify, cb_personal_message_justify },
+    { N_("Widget _position in the buddy list"), PREF "/widget-position", alias_position, cb_widget_position },
     { NULL, NULL, NULL, NULL }
   }; const struct i_widget *cbx = combobox;
 
   /* check button widgets label, associated preference and callback */
   const struct widget check_button[] = {
-    { N_("Hide s_tatusbox"), PREF "/hide-statusbox", cb_hide_statusbox },
+    { N_("Hide _statusbox"), PREF "/hide-statusbox", cb_hide_statusbox },
     { N_("_Ignore status changes"), PREF "/override-status", cb_override_status },
-    { N_("Use a _frame for entry"), PREF "/frame-entry", cb_frame_entry },
+    { N_("Use a frame for _entry"), PREF "/frame-entry", cb_frame_entry },
     { N_("_Swap left and right click"), PREF "/swap-click", cb_swap_click },
     { N_("Use a _compact bar"), PREF "/compact", cb_compact },
     { N_("_Reset status messages"), PREF "/reset-attrs", cb_reset_attrs },
