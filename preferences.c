@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-15 17:41:45 gawen>
+   Time-stamp: <2010-11-15 23:14:54 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -127,10 +127,10 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     const char *prefs;
     void (*callback)(GtkWidget *, gpointer);
   } entry[] = {
-    { N_("Nickname markup"), PREF "/nickname-markup", cb_nickname_markup },
-    { N_("Nickname markup hovered"), PREF "/nickname-markup-hover", cb_nickname_markup_hover },
-    { N_("Personal message markup"), PREF "/personal-message-markup", cb_personal_message_markup },
-    { N_("Personal message markup hovered"), PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
+    { N_("_Nickname markup"), PREF "/nickname-markup", cb_nickname_markup },
+    { N_("Nickname markup _hovered"), PREF "/nickname-markup-hover", cb_nickname_markup_hover },
+    { N_("_Personal message markup"), PREF "/personal-message-markup", cb_personal_message_markup },
+    { N_("Personal message markup h_overed"), PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
     { NULL, NULL, NULL }
   }; const struct widget *e = entry;
 
@@ -141,20 +141,20 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     const struct i_alias *alias;
     void (*callback)(GtkWidget *, gpointer);
   } combobox[] = {
-    { N_("Align nickname"), PREF "/nickname-justify", alias_justify, cb_nickname_justify },
-    { N_("Align personal message"), PREF "/personal-message-justify", alias_justify, cb_personal_message_justify },
-    { N_("Widget position in the buddy list"), PREF "/widget-position", alias_position, cb_widget_position },
+    { N_("Align nick_name"), PREF "/nickname-justify", alias_justify, cb_nickname_justify },
+    { N_("Align perso_nal message"), PREF "/personal-message-justify", alias_justify, cb_personal_message_justify },
+    { N_("Widget p_osition in the buddy list"), PREF "/widget-position", alias_position, cb_widget_position },
     { NULL, NULL, NULL, NULL }
   }; const struct i_widget *cbx = combobox;
 
   /* check button widgets label, associated preference and callback */
   const struct widget check_button[] = {
-    { N_("Hide statusbox"), PREF "/hide-statusbox", cb_hide_statusbox },
-    { N_("Ignore status changes"), PREF "/override-status", cb_override_status },
-    { N_("Use a frame for entry"), PREF "/frame-entry", cb_frame_entry },
-    { N_("Swap left and right click"), PREF "/swap-click", cb_swap_click },
-    { N_("Use a compact bar"), PREF "/compact", cb_compact },
-    { N_("Reset status messages"), PREF "/reset-attrs", cb_reset_attrs },
+    { N_("Hide s_tatusbox"), PREF "/hide-statusbox", cb_hide_statusbox },
+    { N_("_Ignore status changes"), PREF "/override-status", cb_override_status },
+    { N_("Use a _frame for entry"), PREF "/frame-entry", cb_frame_entry },
+    { N_("_Swap left and right click"), PREF "/swap-click", cb_swap_click },
+    { N_("Use a _compact bar"), PREF "/compact", cb_compact },
+    { N_("_Reset status messages"), PREF "/reset-attrs", cb_reset_attrs },
     { NULL, NULL, NULL }
   }; const struct widget *cb = check_button;
 
@@ -168,10 +168,11 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   int x = 0, y = 0;
   for(; e->name ; e++, y++) {
     /* entry widgets */
-    GtkWidget *widget_label  = gtk_label_new(_(e->name));
+    GtkWidget *widget_label  = gtk_label_new_with_mnemonic(_(e->name));
     GtkWidget *widget_entry  = gtk_entry_new();
     const gchar *prefs_value = purple_prefs_get_string(e->prefs);
 
+    gtk_label_set_mnemonic_widget(GTK_LABEL(widget_label), widget_entry);
     gtk_entry_set_text(GTK_ENTRY(widget_entry), prefs_value);
     gtk_misc_set_alignment(GTK_MISC(widget_label), 0., .5);
     gtk_table_attach(GTK_TABLE(table), widget_label, 0, 1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
@@ -182,11 +183,12 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   for(; cbx->name ; cbx++, y++) {
     /* combobox widgets */
     const struct i_alias *j;
-    GtkWidget *widget_label = gtk_label_new(_(cbx->name));
+    GtkWidget *widget_label = gtk_label_new_with_mnemonic(_(cbx->name));
     GtkWidget *widget_combo = gtk_combo_box_new_text();
     int prefs_value         = purple_prefs_get_int(cbx->prefs);
     int i;
 
+    gtk_label_set_mnemonic_widget(GTK_LABEL(widget_label), widget_combo);
     gtk_misc_set_alignment(GTK_MISC(widget_label), 0., .5);
     gtk_table_attach(GTK_TABLE(table), widget_label, 0, 1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     gtk_table_attach(GTK_TABLE(table), widget_combo, 1, 2, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
@@ -199,7 +201,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
   }
   for(; cb->name ; cb++, x = (x + 1) % 2) {
     /* check button widgets */
-    GtkWidget *widget_cb = gtk_check_button_new_with_label(_(cb->name));
+    GtkWidget *widget_cb = gtk_check_button_new_with_mnemonic(_(cb->name));
     gboolean prefs_value = purple_prefs_get_bool(cb->prefs);
 
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget_cb), prefs_value);

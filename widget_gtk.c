@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-15 17:13:35 gawen>
+   Time-stamp: <2010-11-15 21:12:19 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -194,14 +194,14 @@ void cb_pm(GtkWidget *widget, gpointer data)
       const gchar *text;
       const gchar *pref;
     } groups[] = {
-      { N_("Mood message"), PREF "/mood-message" },
+      { N_("_Mood message"), PREF "/mood-message" },
       { N_("Current song"), NULL },
-      { N_("Song title"), PREF "/tune-title" },
-      { N_("Song artist"), PREF "/tune-artist" },
-      { N_("Song album"), PREF "/tune-album" },
+      { N_("Song _title"), PREF "/tune-title" },
+      { N_("Song _artist"), PREF "/tune-artist" },
+      { N_("Song al_bum"), PREF "/tune-album" },
       { N_("MSN pecan extra attributes"), NULL },
-      { N_("Game name"), PREF "/game-message" },
-      { N_("Office app name"), PREF "/office-message" },
+      { N_("_Game name"), PREF "/game-message" },
+      { N_("_Office app name"), PREF "/office-message" },
       { NULL, NULL },
       { NULL, NULL }
     }; const struct s_field *g = groups;
@@ -211,7 +211,7 @@ void cb_pm(GtkWidget *widget, gpointer data)
     purple_request_fields_add_group(fields, group);
 
     field = purple_request_field_string_new(PREF "/personal-message",
-                                            _("Personal message"),
+                                            _("_Personal message"),
                                             pm,
                                             FALSE);
     purple_request_field_set_required(field, FALSE);

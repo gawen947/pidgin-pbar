@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-11-15 19:18:30 gawen>
+   Time-stamp: <2010-11-15 19:31:51 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -330,12 +330,10 @@ void init_widget()
 }
 
 /* replace format character <c><r> with <n> string and escape with <c><c> */
-static gchar * g_strreplacefmt(const gchar *s, gchar c, gchar r,
-                               const gchar *n)
+static gchar * g_strreplacefmt(const gchar *s, gchar c, gchar r, const gchar *n)
 {
-  int ss = strlen(s);
   int sn = strlen(n);
-  int sr = ss;
+  int sr = strlen(s);
   int index = 0;
   gchar *ret = g_malloc(sr);
 
@@ -389,7 +387,7 @@ void set_widget_pm(const gchar *markup, const gchar *pm)
 
   gchar *escaped_pm, *new;
 
-  /* translate name if needed */
+  /* translate pm if needed */
   if(!strcmp(pm, EMPTY_PM))
     pm = _(EMPTY_PM);
 
