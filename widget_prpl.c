@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2010-11-13 16:32:06 gawen>
+   Time-stamp: <2010-11-15 18:03:20 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -98,6 +98,9 @@ void cb_signed_on(PurpleConnection *gc)
 
     if(value && !strcmp(value, ""))
       value = NULL;
+    else
+      purple_debug_info(NAME, "%s message changed to \"%s\" by signed-on account\n",
+                        a->attr, value);
 
     *(a->list) = g_list_append(*(a->list), (gpointer)a->attr);
     *(a->list) = g_list_append(*(a->list), (gpointer)value);
@@ -117,8 +120,6 @@ void cb_signed_on(PurpleConnection *gc)
     purple_account_set_status_list(account, s->status_id, TRUE, s->list);
     g_list_free(s->list);
   }
-
-  /* FIXME: debug info */
 }
 
 void cb_buddy_icon_update(const char *name, PurplePrefType type,
@@ -170,6 +171,7 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
   const gchar *markup = purple_prefs_get_string(PREF "/personal-message-markup");
   set_status_message(pm);
   set_widget_pm(markup, pm);
+  purple_debug_info(NAME, "personal message changed to \"%s\" by user\n", pm);
 
   const struct r_field {
     const gchar *id;
@@ -193,6 +195,9 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
 
     if(value && !strcmp(value, ""))
       value = NULL;
+    else
+      purple_debug_info(NAME, "%s message changed to \"%s\" by user\n",
+                        rf->attr, value);
 
     *(rf->list) = g_list_append(*(rf->list), (gpointer)rf->attr);
     *(rf->list) = g_list_append(*(rf->list), (gpointer)value);
@@ -214,9 +219,6 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
   }
 
   bar->pm_dialog = FALSE;
-
-  /* FIXME: change that ! */
-  purple_debug_info(NAME, "personal message changed to \"%s\" by user\n", pm);
 }
 
 void cb_pm_cancel(gpointer data, PurpleRequestFields *fields)

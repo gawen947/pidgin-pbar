@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-15 13:54:14 gawen>
+   Time-stamp: <2010-11-15 17:41:45 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -209,7 +209,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
       y++;
   }
 
-  return table;
+  return table; /* pidgin destroy this when closed */
 }
 
 static void cb_nickname_markup(GtkWidget *widget, gpointer data)
