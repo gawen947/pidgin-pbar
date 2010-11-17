@@ -1,64 +1,189 @@
 # Pidgin PBar French translation.
-# Copyright (C) 2010, David Hauweele <david.hauweele@gmail.com>
+# Copyright (C) 2010, David Hauweele <david.hauweele@gmail.com
 # This file is distributed under the same license as the Pidgin PBar package.
-# David Hauweele <david.hauweele@gmail.com>, 2010 
+# David Hauweele <david.hauweeele@gmail.com>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-13 20:18+0200\n"
-"PO-Revision-Date: 2010-10-13 21:08+0200\n"
+"PO-Revision-Date: 2010-11-17 14:20+0100\n"
 "Last-Translator: David Hauweele <david.hauweele@gmail.com>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. name
+#. internal name
+#: pbar.h:36
 msgid "PBar"
 msgstr "PBar"
 
-msgid "Changes nickname, personal message, icon and status for multiple accounts."
-msgstr "Change le surnom, le message personnel, l'icône et l'état pour plusieurs comptes."
+#: pbar.h:48
+msgid "A toolbar to update some account settings globally."
+msgstr "Une barre d'outils pour mettre à jour certains paramètres de manière globale."
 
-msgid "Displays a toolbar to set your nickname, personal message, icon and status for multiple accounts at once."
-msgstr "Affiche une barre d'outils pour changer le surnom, le message personnel, l'icône et l'état pour plusieurs comptes en une fois."
+#: pbar.h:50
+msgid "Adds a toolbar to the buddy list to quickly update nickname, personal message, icon, status and mood. It also allows updating of the current song and other parameters which are updated globally on all accounts that support them."
+msgstr "Ajoute une barre d'outils à la liste de contacts pour rapidement mettre à jour le pseudonyme, le message personnel, l'icône, le status et l'humeur. Il permet également de mettre à jour le morceau actuel et d'autres paramètres qui sont mis à jours de manière globale sur tous les comptes qui les supportent."
 
+#: preferences.c:50
 msgid "Left"
 msgstr "Gauche"
 
+#: preferences.c:51
 msgid "Center"
 msgstr "Centre"
 
+#: preferences.c:52
 msgid "Right"
 msgstr "Droite"
 
-msgid "Nickname markup"
-msgstr "Balise du surnom"
+#: preferences.c:58
+msgid "Top"
+msgstr "Haut"
 
-msgid "Nickname markup hovered"
-msgstr "Balise du surnom survolé"
+#: preferences.c:59
+msgid "Bottom"
+msgstr "Bas"
 
-msgid "Personal message markup"
-msgstr "Balise du message personnel"
+#: preferences.c:130
+msgid "_Nickname markup"
+msgstr "Balise du _pseudonyme"
 
-msgid "Personal message markup hovered"
-msgstr "Balise du message personnel survolé"
+#: preferences.c:131
+msgid "Nickname markup _hovered"
+msgstr "Balise du pseudonyme _survolé"
 
-msgid "Align nickname"
-msgstr "Aligner le surnom"
+#: preferences.c:132
+msgid "Personal _message markup"
+msgstr "Balise du _message personnel"
 
-msgid "Align personal message"
-msgstr "Aligner le message personnel"
+#: preferences.c:133
+msgid "Personal message markup _hovered"
+msgstr "Balise du message personnel _survolé"
 
-msgid "Hide pidgin's status box"
-msgstr "Cacher le sélecteur d'états de pidgin"
+#: preferences.c:144
+msgid "Align _nickname"
+msgstr "Aligner le _pseudonyme"
 
-msgid "Ignore pidgin's status changes"
-msgstr "Ignorer les changements d'états de pidgin"
+#: preferences.c:145
+msgid "Align personal _message"
+msgstr "Aligner le _message personnel"
 
+#: preferences.c:146
+msgid "Widget _position in the buddy list"
+msgstr "_Position de la barre dans la liste de contacts"
+
+#: preferences.c:152
+msgid "Hide _statusbox"
+msgstr "Cacher le sélecteur d'é_tats"
+
+#: preferences.c:153
+msgid "_Ignore status changes"
+msgstr "_Ignorer les changements d'états"
+
+#: preferences.c:154
+msgid "Use a frame for _entry"
+msgstr "Utiliser un _cadre"
+
+#: preferences.c:155
+msgid "_Swap left and right click"
+msgstr "_Inverser le clique gauche et droit"
+
+#: preferences.c:156
+msgid "Use a _compact bar"
+msgstr "Utiliser une barre _compacte"
+
+#: preferences.c:157
+msgid "_Reset status messages"
+msgstr "Réinitialiser les messages d'état"
+
+#. preferences
+#. preference root
+#. empty messages to display at first installation
+#: preferences.h:33
+msgid "<Enter nickname here>"
+msgstr "<Entrez votre pseudonyme ici>"
+
+#: preferences.h:34
 msgid "<Enter personal message here>"
 msgstr "<Entrez votre message personnel ici>"
 
-msgid "<Enter nickname here>"
-msgstr "<Entrez votre surnom ici>"
+#: widget_gtk.c:94
+msgid "Change nickname"
+msgstr "Changer le pseudonyme"
+
+#: widget_gtk.c:95
+msgid "Enter your nickname here..."
+msgstr "Entrez votre pseudonyme ici..."
+
+#: widget_gtk.c:96
+msgid "This will change your nickname for every account which supports it."
+msgstr "Cela va changer votre pseudonyme pour tous les comptes qui le supportent."
+
+#: widget_gtk.c:102 widget_gtk.c:246
+msgid "OK"
+msgstr "OK"
+
+#: widget_gtk.c:104 widget_gtk.c:248
+msgid "Cancel"
+msgstr "_Annuler"
+
+#: widget_gtk.c:197
+msgid "_Mood message"
+msgstr "Message pour l'_humeur"
+
+#: widget_gtk.c:198
+msgid "Current song"
+msgstr "Morceau actuel"
+
+#: widget_gtk.c:199
+msgid "Song _title"
+msgstr "_Titre"
+
+#: widget_gtk.c:200
+msgid "Song _artist"
+msgstr "_Artiste"
+
+#: widget_gtk.c:201
+msgid "Song al_bum"
+msgstr "_Album"
+
+#: widget_gtk.c:202
+msgid "MSN pecan extra attributes"
+msgstr "Options supplémentaires pour MSN pecan"
+
+#: widget_gtk.c:203
+msgid "_Game name"
+msgstr "_Jeu actuel"
+
+#: widget_gtk.c:204
+msgid "_Office app name"
+msgstr "_Application"
+
+#: widget_gtk.c:210
+msgid "Status and mood message"
+msgstr "Message d'états et d'humeur"
+
+#: widget_gtk.c:214
+msgid "_Personal message"
+msgstr "Message _personnel"
+
+#: widget_gtk.c:240
+msgid "Change status messages"
+msgstr "Changer le message d'état"
+
+#: widget_gtk.c:241
+msgid "Enter status message..."
+msgstr "Entrez votre message d'état..."
+
+#: widget_gtk.c:242
+msgid "This will change some status messages for every account which supports it, please be advised that some are inconsistent between each other."
+msgstr "Cela va changer certains messages d'états pour tous les comptes qui le supportent, notez toutefois que certains sont incompatibles entre eux."
+
+#: widget_gtk.c:361
+msgid "None"
+msgstr "Aucun"

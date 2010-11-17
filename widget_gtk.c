@@ -226,7 +226,7 @@ void cb_pm(GtkWidget *widget, gpointer data)
         else
           message = purple_prefs_get_string(g->pref);
         field = purple_request_field_string_new(g->pref,
-                                                g->text,
+                                                _(g->text),
                                                 message,
                                                 FALSE);
         purple_request_field_set_required(field, FALSE);
