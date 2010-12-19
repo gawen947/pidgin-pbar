@@ -1,65 +1,190 @@
-# Pidgin PBar Dutch translation.
+# Pidgin PBar Dutch translation
 # Copyright (C) 2010, Marleen Bekaert <bekaert.marleen@gmail.com>
 # This file is distributed under the same license as the Pidgin PBar package.
-# Marleen Bekaert <bekaert.marleen@gmail.com>, 2010 
+# Marleen Bekaert <bekaert.marleen@gmail.com>, 2010
 #
+
 msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-13 20:18+0200\n"
-"PO-Revision-Date: 2010-10-14 18:59+0200\n"
+"POT-Creation-Date: 2010-12-19 19:13+0100\n"
+"PO-Revision-Date: 2010-12-19 19:20+0100\n"
 "Last-Translator: Marleen Bekaert <bekaert.marleen@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. name
+#. internal name
+#: pbar.h:36
 msgid "PBar"
 msgstr "PBar"
 
-msgid "Changes nickname, personal message, icon and status for multiple accounts."
-msgstr "Verandert de bijnaam, het persoonlijk bericht, de icoon en de status voor meerdere accounts."
+#: pbar.h:48
+msgid "A toolbar to update some account settings globally."
+msgstr "Een werkbalk om sommige account instellingen globaal te actualiseren."
 
-#,fuzzy
-msgid "Displays a toolbar to set your nickname, personal message, icon and status for multiple accounts."
-msgstr "Geeft de werkbalk om de bijnaam in te stellen, het persoonlijk bericht, de icoon en de status voor meerdere accounts."
+#: pbar.h:50
+msgid "Adds a toolbar to the buddy list to quickly update nickname, personal message, icon, status and mood. It also allows updating of the current song and other parameters which are updated globally on all accounts that support them."
+msgstr "Voegt een werkbalk aan de contact list om vlug bijnaam, persoonlijk bericht, icoon, status en humeur te actualiseren. Het laat ook toe om het huidig lied en andere parameters die globaal actualiseerd zijn op alle accounts die het verdragen."
 
+#: preferences.c:50
 msgid "Left"
 msgstr "Links"
 
+#: preferences.c:51
 msgid "Center"
 msgstr "Midden"
 
+#: preferences.c:52
 msgid "Right"
 msgstr "Rechts"
 
-msgid "Nickname markup"
-msgstr "Baken van de bijnaam"
+#: preferences.c:58
+msgid "Top"
+msgstr "Boven"
 
-msgid "Nickname markup hovered"
-msgstr "Overgezweefd bijnaam baken"
+#: preferences.c:59
+msgid "Bottom"
+msgstr "Beneden"
 
-msgid "Personal message markup"
-msgstr "Het baken van het persoonlijke bericht"
+#: preferences.c:130
+msgid "_Nickname markup"
+msgstr "_Bijnaam baken"
 
-msgid "Personal message markup hovered"
-msgstr "Overgezweefd persoonlijk bericht baken"
+#: preferences.c:131
+msgid "Nickname markup _hovered"
+msgstr "Bijnaam baken _overgezweefd"
 
-msgid "Align nickname"
-msgstr "Bijnaam richten"
+#: preferences.c:132
+msgid "Personal _message markup"
+msgstr "Persoonlijk _bericht baken"
 
-msgid "Align personal message"
-msgstr "Personnlijk bericht richten"
+#: preferences.c:133
+msgid "Personal message markup _hovered"
+msgstr "Persoonlijk bericht baken _overgezweefd"
 
-msgid "Hide pidgin's status box"
-msgstr "Pidgin status box verbergen"
+#: preferences.c:144
+msgid "Align _nickname"
+msgstr "Richten _bijnaam"
 
-msgid "Ignore pidgin's status changes"
-msgstr "De veranderingen van de pidgin status negeren"
+#: preferences.c:145
+msgid "Align personal _message"
+msgstr "Richten persoonlijk _bericht"
 
-msgid "<Enter personal message here>"
-msgstr "<Hier U persoonlijk bericht inbrengen>"
+#: preferences.c:146
+msgid "Widget _position in the buddy list"
+msgstr "Werkbalk _positie in contactlijst"
 
+#: preferences.c:152
+msgid "Hide _statusbox"
+msgstr "Verberg _statusbox"
+
+#: preferences.c:153
+msgid "_Ignore status changes"
+msgstr "_Negeren van status negeren"
+
+#: preferences.c:154
+msgid "Use a frame for _entry"
+msgstr "Gebruik een kader voor _textinvoer"
+
+#: preferences.c:155
+msgid "_Swap left and right click"
+msgstr "_Keer linkse and rechtse klik om"
+
+#: preferences.c:156
+msgid "Use a _compact bar"
+msgstr "gebruikt een _compacte balk"
+
+#: preferences.c:157
+msgid "_Reset status messages"
+msgstr "_Opmaak status berichten"
+
+#. preferences
+#. preference root
+#. empty messages to display at first installation
+#: preferences.h:33
 msgid "<Enter nickname here>"
-msgstr "<Hier U bijnaam inbrengen>"
+msgstr "<Hier bijnaam invoeren>"
+
+#: preferences.h:34
+msgid "<Enter personal message here>"
+msgstr "<Hier persoonlijk bericht iuvoeren>"
+
+#: widget_gtk.c:94
+msgid "Change nickname"
+msgstr "Veranderd bijnaam"
+
+#: widget_gtk.c:95
+msgid "Enter your nickname here..."
+msgstr "Hier U bijnaam invoeren..."
+
+#: widget_gtk.c:96
+msgid "This will change your nickname for every account which supports it."
+msgstr "Dat zal U bijnaam veranderen vor iedere account die het verdraagt."
+
+#: widget_gtk.c:102 widget_gtk.c:246
+msgid "OK"
+msgstr "OK"
+
+#: widget_gtk.c:104 widget_gtk.c:248
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: widget_gtk.c:197
+msgid "_Mood message"
+msgstr "_Humeur bericht"
+
+#: widget_gtk.c:198
+msgid "Current song"
+msgstr "Huidig lied"
+
+#: widget_gtk.c:199
+msgid "Song _title"
+msgstr "Lied _tijtel"
+
+#: widget_gtk.c:200
+msgid "Song _artist"
+msgstr "Lied _artiest"
+
+#: widget_gtk.c:201
+msgid "Song al_bum"
+msgstr "Lied al_bum"
+
+#: widget_gtk.c:202
+msgid "MSN pecan extra attributes"
+msgstr "MSN pecan extra parameters"
+
+#: widget_gtk.c:203
+msgid "_Game name"
+msgstr "_Spelnaam"
+
+#: widget_gtk.c:204
+msgid "_Office app name"
+msgstr "_Office app naam"
+
+#: widget_gtk.c:210
+msgid "Status and mood message"
+msgstr "Status en humeur bericht"
+
+#: widget_gtk.c:214
+msgid "_Personal message"
+msgstr "_Persoonlijk bericht"
+
+#: widget_gtk.c:240
+msgid "Change status messages"
+msgstr "Veranderd status berichten"
+
+#: widget_gtk.c:241
+msgid "Enter status message..."
+msgstr "Voert Status berichten in..."
+
+#: widget_gtk.c:242
+msgid "This will change some status messages for every account which supports it, please be advised that some are inconsistent between each other."
+msgstr"Dat zal sommige status berichten voor iedere account die het verdraagt veranderen, Gelieve nota te nemen dat sommige inconsequent zijn onder elkaar."
+
+#: widget_gtk.c:361
+msgid "None"
+msgstr "Niets"
