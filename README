@@ -7,7 +7,6 @@ support them.
 
 INSTALLATION
 ============
-
 You will need a C compiler like gcc, make and the following depencies :
 
   - pidgin-dev
