@@ -15,7 +15,7 @@ PLUGINDIR ?= $(shell pkg-config --variable=plugindir pidgin)
 DATADIR   ?= $(shell pkg-config --variable=datadir pidgin)
 
 
-ifndef WITHOUT_DEBUG
+ifndef DISABLE_DEBUG
 CFLAGS += -ggdb
 endif
 

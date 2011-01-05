@@ -1,22 +1,20 @@
 Pidgin PBar
 ===========
-
 This Pidgin plugin adds a toolbar to the buddy list to quickly update nickname,
 personal message, icon, status and mood. It also allows updating the current
 song and other parameters which are updated globally on all accounts that
 support them.
 
-It is distributed under the terms of the GNU General Public License version 3.
-
-1. Installation
+INSTALLATION
+============
 
 You will need a C compiler like gcc, make and the following depencies :
 
   - pidgin-dev
-  - gtk+-2.0
+  - gtk2-dev
   - pkg-config
 
-On Debian or Ubuntu use the following command as root to install those required packages :
+On Debian use the following command as root to install the required packages :
 
   # aptitude install pidgin-dev libgtk2.0-dev pkg-config make gcc libc6-dev
 
@@ -25,5 +23,11 @@ Then enter the following command :
   $ make
   $ sudo make install
 
-This will install the plugin and locales which can be disabled with the DISABLE_NLS flag and
-debugging informations could be disabled with the WITHOUT_DEBUG flags.
+This will install the plugin and locales.
+The following flags are also available to enable/disable somes features :
+
+  - DISABLE_NLS   (enabled by default)
+  - DISABLE_DEBUG (enabled by default)
+
+Please take advice that BSD make probably won't work, you need to use gmake 
+instead.
