@@ -1,7 +1,7 @@
 # Pidgin PBar French translation.
-# Copyright (C) 2010, David Hauweele <david.hauweele@gmail.com
+# Copyright (C) 2010, David Hauweele <david.hauweele@gmail.com>
 # This file is distributed under the same license as the Pidgin PBar package.
-# David Hauweele <david.hauweeele@gmail.com>, 2010.
+# David Hauweele <david.hauweele@gmail.com>, 2010.
 #
 msgid ""
 msgstr ""
