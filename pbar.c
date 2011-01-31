@@ -1,5 +1,5 @@
 /* File: pbar.c
-   Time-stamp: <2010-10-10 16:16:19 gawen>
+   Time-stamp: <2011-01-31 19:06:59 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -23,6 +23,7 @@
 #include "common.h"
 
 #include "pbar.h"
+#include "actions.h"
 #include "preferences.h"
 #include "widget.h"
 #include "purple.h"
@@ -54,7 +55,7 @@ static PurplePluginInfo info = {
   &ui_info,
   NULL,
   NULL,
-  NULL,
+  create_actions,
   NULL,
   NULL,
   NULL,
