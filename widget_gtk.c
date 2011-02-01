@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2010-11-15 21:12:19 gawen>
+   Time-stamp: <2011-02-01 14:19:04 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -63,7 +63,7 @@ void cb_buddy_icon_leave(GtkWidget *widget, gpointer data)
   GdkPixbuf *icon = get_buddy_icon();
 
   set_widget_icon(icon);
-  pidgin_set_cursor(bar->icon_eventbox, GDK_ARROW);
+  pidgin_clear_cursor(bar->icon_eventbox);
 }
 
 void cb_name(GtkWidget *widget, gpointer data)
