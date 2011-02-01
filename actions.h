@@ -1,5 +1,5 @@
 /* File: actions.h
-   Time-stamp: <2011-01-31 19:04:45 gawen>
+   Time-stamp: <2011-02-01 01:25:04 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 

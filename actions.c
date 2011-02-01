@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-01-31 19:03:32 gawen>
+   Time-stamp: <2011-02-01 01:55:17 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -18,15 +18,46 @@
 
 #include "common.h"
 
-void create_features_diag()
-{}
+static struct features_dialog {
+  /* window and list storage */
+  GtkWidget *window;
+  GtkWidget *features;
+} *f_diag;
+
+static void create_features_dialog()
+{
+  /* this should occurs each time but
+     this way we avoid memory leaks */
+  if(!f_diag)
+    f_diag = g_malloc(sizeof(struct features_dialog));
+
+  /* widgets that can possibly be modified along dialog lifetime */
+
+  /* widgets that are not modified */
+  GtkWidget *refresh_button = gtk_button_new_from_stock(GTK_STOCK_REFRESH);
+  GtkWidget *close_button   = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
+  GtkWidget *hbox           = gtk_hbox_new(FALSE, 10);
+  GtkWidget *vbox           = gtk_vbox_new(FALSE, 10);
+
+  /* setup widgets */
+
+  /* pack widgets */
+  gtk_box_pack_start(GTK_BOX(hbox), refresh_button, FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(hbox), close_button, FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(vbox), f_diag->features, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
+}
+
+static void action_features(PurplePluginAction *act)
+{
+}
 
 GList * create_actions(PurplePlugin *plugin, gpointer ctx)
 {
   GList *l = NULL;
   PurplePluginAction *act = NULL;
 
-  act = purple_plugin_action_new(_("Supported features"), create_features_diag);
+  act = purple_plugin_action_new(_("Supported features"), action_features);
   l = g_list_append(l, act);
 
   return l;
