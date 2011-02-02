@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2010-11-15 19:31:51 gawen>
+   Time-stamp: <2011-02-02 05:26:31 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -30,6 +30,24 @@
 /* we only have one widget per plugin
    but this might change in the future */
 struct widget *bar;
+
+#if !GTK_CHECK_VERSION(2,18,0)
+static void gtk_widget_set_can_focus(GtkWidget *widget, gboolean can_focus)
+{
+  if(can_focus)
+    GTK_WIDGET_SET_FLAGS(widget, GTK_CAN_FOCUS);
+  else
+    GTK_WIDGET_UNSET_FLAGS(widget, GTK_CAN_FOCUS);
+}
+
+static void gtk_widget_set_visible(GtkWidget *widget, gboolean visible)
+{
+  if(visible)
+    gtk_widget_show(widget);
+  else
+    gtk_widget_hide(widget);
+}
+#endif /* GTK+ < 2.18 */
 
 void create_widget()
 {
@@ -305,13 +323,11 @@ void init_widget()
         g_hash_table_insert(global_status, (gpointer)stock,
                             GINT_TO_POINTER(TRUE));
 
-      menu_item    = gtk_image_menu_item_new_from_stock(stock, NULL);
-      icon         = gtk_image_new_from_stock(stock, GTK_ICON_SIZE_MENU);
       status_name  = purple_status_type_get_name(type);
+      menu_item    = gtk_image_menu_item_new_with_label(status_name);
+      icon         = gtk_image_new_from_stock(stock, GTK_ICON_SIZE_MENU);
 
       gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menu_item), icon);
-      gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), status_name);
-
       gtk_menu_shell_append(GTK_MENU_SHELL(bar->status_menu), menu_item);
 
       g_signal_connect_swapped(menu_item, "activate",
@@ -322,7 +338,6 @@ void init_widget()
     }
   }
   g_hash_table_destroy(global_status);
-
 
   /* statusbox hiding */
   state = purple_prefs_get_bool(PREF "/hide-statusbox");

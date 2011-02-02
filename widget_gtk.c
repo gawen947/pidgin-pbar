@@ -1,5 +1,5 @@
 /* File: widget_gtk.c
-   Time-stamp: <2011-02-01 14:19:04 gawen>
+   Time-stamp: <2011-02-02 05:23:25 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -355,10 +355,9 @@ void cb_mood_button(GtkWidget *widget, gpointer data)
   empty_mood = "";
   path       = get_mood_icon_path(empty_mood);
   icon       = gtk_image_new_from_file(path);
-  menu_item  = gtk_image_menu_item_new();
+  menu_item  = gtk_image_menu_item_new_with_label(_("None"));
   g_free(path);
   gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menu_item), icon);
-  gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), _("None"));
   gtk_menu_shell_append(GTK_MENU_SHELL(bar->mood_menu), menu_item);
   g_signal_connect_swapped(menu_item, "activate",
                            G_CALLBACK(cb_mood_menu),
@@ -372,11 +371,10 @@ void cb_mood_button(GtkWidget *widget, gpointer data)
 
     path = get_mood_icon_path(mood->mood);
     icon = gtk_image_new_from_file(path);
-    menu_item = gtk_image_menu_item_new();
+    menu_item = gtk_image_menu_item_new_with_label(_(mood->description));
     g_free(path);
 
     gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menu_item), icon);
-    gtk_menu_item_set_label(GTK_MENU_ITEM(menu_item), _(mood->description));
     gtk_menu_shell_append(GTK_MENU_SHELL(bar->mood_menu), menu_item);
 
     g_signal_connect_swapped(menu_item, "activate",

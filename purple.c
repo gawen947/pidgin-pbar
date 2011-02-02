@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2010-11-15 17:11:17 gawen>
+   Time-stamp: <2011-02-02 05:38:53 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -23,6 +23,13 @@
 
 #include "pbar.h"
 #include "purple.h"
+
+#if !GTK_CHECK_VERSION(2,18,0)
+static gboolean gtk_widget_get_visible(GtkWidget *widget)
+{
+  return GTK_WIDGET_FLAGS(widget) & GTK_VISIBLE;
+}
+#endif /* GTK+ < 2.18 */
 
 /* callbacks */
 static void cb_global_moods_for_each(gpointer key, gpointer value,
