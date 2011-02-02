@@ -1,6 +1,7 @@
 include commands.mk
 
-CFLAGS  := -std=c99 -O2 $(shell pkg-config --cflags pidgin purple gtk+-2.0 gobject-2.0) -fPIC -Wall
+OPTS    := -O2
+CFLAGS  := -std=c99 $(OPTS) $(shell pkg-config --cflags pidgin purple gtk+-2.0 gobject-2.0) -fPIC -Wall
 LDFLAGS := $(shell pkg-config --libs pidgin purple gtk+-2.0 gobject-2.0)
 
 SRC  = $(wildcard *.c)
@@ -51,18 +52,22 @@ clean:
 	$(RM) pbar.so
 
 install: $(install-locales)
-	$(MKDIR) -p $(PLUGINDIR)
-	$(INSTALL_PROGRAM) pbar.so $(PLUGINDIR)
+	$(MKDIR) -p $(DESTDIR)$(PLUGINDIR)
+	$(INSTALL_PROGRAM) pbar.so $(DESTDIR)$(PLUGINDIR)
 
 uninstall: $(uninstall-locales)
 	$(RM) $(PLUGINDIR)/pbar.so
 
 locales: $(CATALOGS)
 
-CAT_INST_PATH = $(foreach lang, $(POFILES:.po=), $(LOCALEDIR)/$(lang)/LC_MESSAGES/pidgin-pbar.mo)
+CAT_INST_PATH = $(foreach lang, $(POFILES:.po=), $(DESTDIR)$(LOCALEDIR)/$(lang)/LC_MESSAGES/pidgin-pbar.mo)
+
 install-locales: $(CAT_INST_PATH)
-$(LOCALEDIR)/%/LC_MESSAGES/pidgin-pbar.mo: %.mo
+
+$(DESTDIR)$(LOCALEDIR)/%/LC_MESSAGES/pidgin-pbar.mo: %.mo
+	$(MKDIR) -p $(DESTDIR)$(LOCALEDIR)/$(basename $<)/LC_MESSAGES
 	$(INSTALL_DATA) $< $@
+
 uninstall-locales:
 	$(RM) $(CAT_INST_PATH)
 
