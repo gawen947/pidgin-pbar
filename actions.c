@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-03 23:26:35 gawen>
+   Time-stamp: <2011-02-03 23:37:11 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -212,6 +212,7 @@ static void init_features_dialog()
       GdkPixbuf *p_icon = create_prpl_icon_from_info(protocol,
                                                      PIDGIN_PRPL_ICON_MEDIUM);
       GHashTable *attrs  = get_protocol_attrs(protocol);
+      GdkPixbuf *nickname;
       GdkPixbuf *mood    = g_hash_table_lookup(attrs, "mood") ? yes : no;
       GdkPixbuf *moodmsg = g_hash_table_lookup(attrs, "moodtext") ? yes : no;
       GdkPixbuf *game    = g_hash_table_lookup(attrs, "game") ? yes : no;
@@ -221,12 +222,20 @@ static void init_features_dialog()
                          g_hash_table_lookup(attrs, "tune_album")) ? yes : no;
       g_hash_table_destroy(attrs);
 
+      /* exception for XMPP
+         nickname supported
+         manually */
+      if(!strcmp(info->name, "XMPP"))
+        nickname = yes;
+      else
+        nickname = protocol->set_public_alias ? yes : no;
+
       /* TODO: exception for XMPP */
       gtk_list_store_append(f_diag->list_store, &iter);
       gtk_list_store_set(f_diag->list_store, &iter,
                          PROTOCOL_COLUMN, info->name,
                          PROTOCOLICON_COLUMN, p_icon,
-                         NICKNAME_COLUMN, protocol->set_public_alias ? yes : no,
+                         NICKNAME_COLUMN, nickname,
                          PM_COLUMN, protocol->set_status ? yes : no,
                          ICON_COLUMN, protocol->set_buddy_icon ? yes : no,
                          MOOD_COLUMN, mood,
