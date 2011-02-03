@@ -1,5 +1,5 @@
 /* File: purple.h
-   Time-stamp: <2010-11-10 01:17:04 gawen>
+   Time-stamp: <2011-02-03 03:56:29 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -29,6 +29,8 @@
 #endif
 
 gboolean is_gtk_blist_created();
+GdkPixbuf * create_prpl_icon_from_info(PurplePluginProtocolInfo *prpl_info,
+                                       PidginPrplIconSize size);
 GdkPixbuf * get_buddy_icon();
 GdkPixbuf * get_buddy_icon_hover();
 const gchar * get_status_stock_id();

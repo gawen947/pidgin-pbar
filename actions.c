@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-03 03:10:06 gawen>
+   Time-stamp: <2011-02-03 04:10:01 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -18,6 +18,8 @@
 
 #include "common.h"
 
+#include "purple.h"
+
 static void cb_destroy_win();
 static void cb_close_button();
 static void destroy_features_dialog();
@@ -26,6 +28,7 @@ static void init_features_dialog();
 static void action_features(PurplePluginAction *act);
 
 enum {
+  PROTOCOLICON_COLUMN,
   PROTOCOL_COLUMN,
   NICKNAME_COLUMN,
   PM_COLUMN,
@@ -73,6 +76,7 @@ static void create_features_dialog()
                                         "supported features",
                                         TRUE);
   f_diag->list_store = gtk_list_store_new(N_COLUMN,
+                                          GDK_TYPE_PIXBUF, /* PROTOCOLICON */
                                           G_TYPE_STRING,   /* PROTOCOL */
                                           GDK_TYPE_PIXBUF, /* NICKNAME */
                                           GDK_TYPE_PIXBUF, /* PM */
@@ -93,13 +97,24 @@ static void create_features_dialog()
   GtkWidget *close_button   = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
 
   /* create view and model */
+  GtkTreeViewColumn *p_col = gtk_tree_view_column_new();
+  GtkCellRenderer *p_renderer;
+  gtk_tree_view_column_set_title(p_col, _("Protocol"));
+  gtk_tree_view_append_column(GTK_TREE_VIEW(view), p_col);
+  p_renderer = gtk_cell_renderer_pixbuf_new();
+  gtk_tree_view_column_pack_start(p_col, p_renderer, FALSE);
+  gtk_tree_view_column_add_attribute(p_col, p_renderer,
+                                     "pixbuf", PROTOCOLICON_COLUMN);
+  p_renderer = gtk_cell_renderer_text_new();
+  gtk_tree_view_column_pack_start(p_col, p_renderer, TRUE);
+  gtk_tree_view_column_add_attribute(p_col, p_renderer,
+                                     "text", PROTOCOL_COLUMN);
   const struct g_column {
     const gchar *title;                          /* column title */
     const gchar *attr_type;                      /* column type attribute */
     GtkCellRenderer *(*gtk_cell_renderer_new)(); /* gtk cell renderer creation */
     guint position;                              /* column position */
   } columns[] = {
-    { N_("Protocol"), "text", gtk_cell_renderer_text_new, PROTOCOL_COLUMN },
     { N_("Nickname"), "pixbuf", gtk_cell_renderer_pixbuf_new, NICKNAME_COLUMN },
     { N_("Status message"), "pixbuf", gtk_cell_renderer_pixbuf_new, PM_COLUMN },
     { N_("Buddy icon"), "pixbuf", gtk_cell_renderer_pixbuf_new, ICON_COLUMN },
@@ -195,18 +210,22 @@ static void init_features_dialog()
 
     if(info && info->name) {
       GtkTreeIter iter;
+      GdkPixbuf *p_icon = create_prpl_icon_from_info(protocol,
+                                                     PIDGIN_PRPL_ICON_MEDIUM);
+
       /* TODO: exception for XMPP */
       gtk_list_store_append(f_diag->list_store, &iter);
       gtk_list_store_set(f_diag->list_store, &iter,
                          PROTOCOL_COLUMN, info->name,
+                         PROTOCOLICON_COLUMN, p_icon,
                          NICKNAME_COLUMN, protocol->set_public_alias ? yes : no,
                          PM_COLUMN, protocol->set_status ? yes : no,
                          ICON_COLUMN, protocol->set_buddy_icon ? yes : no,
-                         MOOD_COLUMN, yes,
+                         /*MOOD_COLUMN, yes,
                          MOODMSG_COLUMN, yes,
                          TUNE_COLUMN, yes,
                          GAME_COLUMN, yes,
-                         APP_COLUMN, yes,
+                         APP_COLUMN, yes,*/
                          -1);
     }
   }
