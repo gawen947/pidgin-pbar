@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-03 03:04:44 gawen>
+   Time-stamp: <2011-02-03 03:10:06 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -201,7 +201,7 @@ static void init_features_dialog()
                          PROTOCOL_COLUMN, info->name,
                          NICKNAME_COLUMN, protocol->set_public_alias ? yes : no,
                          PM_COLUMN, protocol->set_status ? yes : no,
-                         ICON_COLUMN, yes,
+                         ICON_COLUMN, protocol->set_buddy_icon ? yes : no,
                          MOOD_COLUMN, yes,
                          MOODMSG_COLUMN, yes,
                          TUNE_COLUMN, yes,
