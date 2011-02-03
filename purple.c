@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2011-02-02 05:38:53 gawen>
+   Time-stamp: <2011-02-03 03:59:41 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -65,6 +65,40 @@ GdkPixbuf * get_buddy_icon_hover()
   const PidginStatusBox *statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
 
   return statusbox->buddy_icon_hover;
+}
+
+/* create purple protocol icon from protocol info */
+GdkPixbuf * create_prpl_icon_from_info(PurplePluginProtocolInfo *prpl_info,
+                                       PidginPrplIconSize size)
+{
+  const char *protoname = NULL;
+  char *tmp;
+  char *filename = NULL;
+  GdkPixbuf *pixbuf;
+
+  if (prpl_info->list_icon == NULL)
+    return NULL;
+
+  protoname = prpl_info->list_icon(NULL, NULL);
+  if (protoname == NULL)
+    return NULL;
+
+  /*
+   * Status icons will be themeable too, and then it will look up
+   * protoname from the theme
+   */
+  tmp = g_strconcat(protoname, ".png", NULL);
+
+  filename = g_build_filename(DATADIR, "pixmaps", "pidgin", "protocols",
+                              size == PIDGIN_PRPL_ICON_SMALL ? "16" :
+                              size == PIDGIN_PRPL_ICON_MEDIUM ? "22" : "48",
+                              tmp, NULL);
+  g_free(tmp);
+
+  pixbuf = gdk_pixbuf_new_from_file(filename, NULL);
+  g_free(filename);
+
+  return pixbuf;
 }
 
 /* get current status stock id */
