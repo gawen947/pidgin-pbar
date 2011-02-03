@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-03 23:37:11 gawen>
+   Time-stamp: <2011-02-03 23:44:47 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -230,7 +230,6 @@ static void init_features_dialog()
       else
         nickname = protocol->set_public_alias ? yes : no;
 
-      /* TODO: exception for XMPP */
       gtk_list_store_append(f_diag->list_store, &iter);
       gtk_list_store_set(f_diag->list_store, &iter,
                          PROTOCOL_COLUMN, info->name,
