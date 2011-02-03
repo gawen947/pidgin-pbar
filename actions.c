@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-01 17:41:03 gawen>
+   Time-stamp: <2011-02-03 01:39:41 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -18,10 +18,30 @@
 
 #include "common.h"
 
+static void cb_destroy_win();
+static void cb_close_button();
+static void destroy_features_dialog();
+static void init_features_dialog();
+static void init_features_dialog();
+static void action_features(PurplePluginAction *act);
+
+enum {
+  PROTOCOL_COLUMN,
+  NICKNAME_COLUMN,
+  PM_COLUMN,
+  ICON_COLUMN,
+  MOOD_COLUMN,
+  MOODMSG_COLUMN,
+  TUNE_COLUMN,
+  GAME_COLUMN,
+  APP_COLUMN,
+  N_COLUMN
+};
+
 static struct features_dialog {
   /* window and list storage */
   GtkWidget *window;
-  GtkWidget *view;
+  GtkListStore *list_store;
 
   /* signals handlers and instance for disconnection */
   GList *gtk_hnd;
@@ -38,6 +58,8 @@ static void cb_close_button()
   destroy_features_dialog();
 }
 
+static void cb_refresh_button() {}
+
 static void create_features_dialog()
 {
   /* this should occurs each time but
@@ -50,43 +72,60 @@ static void create_features_dialog()
                                         PIDGIN_HIG_BORDER,
                                         "supported features",
                                         TRUE);
-  f_diag->view   = gtk_tree_view_new();
+  f_diag->list_store = gtk_list_store_new(N_COLUMN,
+                                          G_TYPE_STRING,   /* PROTOCOL */
+                                          GDK_TYPE_PIXBUF, /* NICKNAME */
+                                          GDK_TYPE_PIXBUF, /* PM */
+                                          GDK_TYPE_PIXBUF, /* ICON */
+                                          GDK_TYPE_PIXBUF, /* MOOD */
+                                          GDK_TYPE_PIXBUF, /* MOODMSG */
+                                          GDK_TYPE_PIXBUF, /* TUNE */
+                                          GDK_TYPE_PIXBUF, /* GAME */
+                                          GDK_TYPE_PIXBUF  /* APP */ );
 
   /* widgets that are not modified */
+  GtkWidget *wbox = pidgin_dialog_get_vbox_with_properties(GTK_DIALOG(f_diag->window),
+                                                           FALSE,
+                                                           PIDGIN_HIG_BORDER);
+  GtkWidget *view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(f_diag->list_store));
   GtkWidget *refresh_button = gtk_button_new_from_stock(GTK_STOCK_REFRESH);
   GtkWidget *close_button   = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
   GtkWidget *hbox           = gtk_hbox_new(FALSE, 10);
-  GtkWidget *vbox           = gtk_vbox_new(FALSE, 10);
 
   /* create view and model */
-  GtkCellRenderer *renderer;
-  GtkTreeModel *model;
-
-  const char *column_title[] = {
-    N_("Protocol"),
-    N_("Nickname"),
-    N_("Buddy icon"),
-    N_("Mood"),
-    N_("Mood message"),
-    N_("Song"),
-    N_("Game"),
-    N_("App."),
-    NULL
-  }; const char **ctitle = column_title;
+  const struct g_column {
+    const gchar *title;                          /* column title */
+    const gchar *attr_type;                      /* column type attribute */
+    GtkCellRenderer *(*gtk_cell_renderer_new)(); /* gtk cell renderer creation */
+    guint position;                              /* column position */
+  } columns[] = {
+    { N_("Protocol"), "text", gtk_cell_renderer_text_new, PROTOCOL_COLUMN },
+    { N_("Nickname"), "pixbuf", gtk_cell_renderer_pixbuf_new, NICKNAME_COLUMN },
+    { N_("Buddy icon"), "pixbuf", gtk_cell_renderer_pixbuf_new, ICON_COLUMN },
+    { N_("Mood"), "pixbuf", gtk_cell_renderer_pixbuf_new, MOOD_COLUMN },
+    { N_("Mood message"), "pixbuf", gtk_cell_renderer_pixbuf_new, MOODMSG_COLUMN },
+    { N_("Tune"), "pixbuf", gtk_cell_renderer_pixbuf_new, TUNE_COLUMN },
+    { N_("Game"), "pixbuf", gtk_cell_renderer_pixbuf_new, GAME_COLUMN },
+    { N_("App."), "pixbuf", gtk_cell_renderer_pixbuf_new, APP_COLUMN },
+    { NULL, NULL, NULL, 0 }
+  }; const struct g_column *col = columns;
 
   /* create columns */
-  for(; ctitle ; ctitle++) {
-    GtkTreeViewColumn *col = gtk_tree_view_column_new();
-
-    gtk_tree_view_column_set_title(col, ctitle);
-    gtk_tree_view_append_column(GTK_TREE_VIEW(f_diag->view), col);
+  for(; col->title ; col++) {
+    GtkCellRenderer *renderer = col->gtk_cell_renderer_new();
+    GtkTreeViewColumn *column = gtk_tree_view_column_new_with_attributes(_(col->title),
+                                                                         renderer,
+                                                                         col->attr_type,
+                                                                         col->position,
+                                                                         NULL);
+    gtk_tree_view_append_column(GTK_TREE_VIEW(view), column);
   }
 
   /* pack widgets */
   gtk_box_pack_start(GTK_BOX(hbox), refresh_button, FALSE, FALSE, 0);
   gtk_box_pack_start(GTK_BOX(hbox), close_button, FALSE, FALSE, 0);
-  gtk_box_pack_start(GTK_BOX(vbox), f_diag->features, TRUE, TRUE, 0);
-  gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(wbox), view, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(wbox), hbox, TRUE, TRUE, 0);
 
   /* gtk signals and callback */
   const struct g_signal {
@@ -104,7 +143,7 @@ static void create_features_dialog()
      to disconnect those signals when the widget is destroyed */
   for(; g_sig->widget ; g_sig++) {
     gulong handler_id = g_signal_connect(G_OBJECT(g_sig->widget),
-                                         g_sig->ignal,
+                                         g_sig->signal,
                                          G_CALLBACK(g_sig->callback),
                                          NULL);
     f_diag->gtk_hnd = g_list_append(f_diag->gtk_hnd,GINT_TO_POINTER(handler_id));
@@ -112,13 +151,17 @@ static void create_features_dialog()
   }
 
   /* show everything */
+  gtk_widget_show(hbox);
+  gtk_widget_show(wbox);
   gtk_widget_show(f_diag->window);
 }
 
 static void destroy_features_dialog()
 {
+  GList *l, *i, *j;
+
   /* disconnect gtk signals */
-  for(i = f_diag->gtk_hnd, j = f_diag->gtk_inst ; i && i = i->next ; j = j->next)
+  for(i = f_diag->gtk_hnd, j = f_diag->gtk_inst ; i && j ; i = i->next, j = j->next)
     g_signal_handler_disconnect(j->data, GPOINTER_TO_INT(i->data));
   g_list_free(f_diag->gtk_hnd);
   g_list_free(f_diag->gtk_inst);
@@ -143,6 +186,7 @@ static void init_features_dialog()
 
 static void action_features(PurplePluginAction *act)
 {
+  create_features_dialog();
 }
 
 GList * create_actions(PurplePlugin *plugin, gpointer ctx)
