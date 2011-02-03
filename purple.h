@@ -1,5 +1,5 @@
 /* File: purple.h
-   Time-stamp: <2011-02-03 03:56:29 gawen>
+   Time-stamp: <2011-02-03 23:24:54 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -33,6 +33,7 @@ GdkPixbuf * create_prpl_icon_from_info(PurplePluginProtocolInfo *prpl_info,
                                        PidginPrplIconSize size);
 GdkPixbuf * get_buddy_icon();
 GdkPixbuf * get_buddy_icon_hover();
+GHashTable * get_protocol_attrs(PurplePluginProtocolInfo *protocol);
 const gchar * get_status_stock_id();
 gchar * get_mood_icon_path();
 PurpleMood * get_global_moods();

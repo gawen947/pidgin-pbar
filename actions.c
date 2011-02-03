@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-03 04:10:01 gawen>
+   Time-stamp: <2011-02-03 23:26:35 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -18,6 +18,7 @@
 
 #include "common.h"
 
+#include "pbar.h"
 #include "purple.h"
 
 static void cb_destroy_win();
@@ -196,8 +197,6 @@ static void destroy_features_dialog()
 static void init_features_dialog()
 {
   GList *p = purple_plugins_get_protocols();
-  GtkWidget *w_yes = gtk_image_new_from_stock(GTK_STOCK_YES, GTK_ICON_SIZE_MENU);
-  GtkWidget *w_no  = gtk_image_new_from_stock(GTK_STOCK_NO, GTK_ICON_SIZE_MENU);
   GdkPixbuf *yes = gtk_widget_render_icon(f_diag->window, GTK_STOCK_YES,
                                           GTK_ICON_SIZE_MENU, NULL);
   GdkPixbuf *no  = gtk_widget_render_icon(f_diag->window, GTK_STOCK_NO,
@@ -212,6 +211,15 @@ static void init_features_dialog()
       GtkTreeIter iter;
       GdkPixbuf *p_icon = create_prpl_icon_from_info(protocol,
                                                      PIDGIN_PRPL_ICON_MEDIUM);
+      GHashTable *attrs  = get_protocol_attrs(protocol);
+      GdkPixbuf *mood    = g_hash_table_lookup(attrs, "mood") ? yes : no;
+      GdkPixbuf *moodmsg = g_hash_table_lookup(attrs, "moodtext") ? yes : no;
+      GdkPixbuf *game    = g_hash_table_lookup(attrs, "game") ? yes : no;
+      GdkPixbuf *app     = g_hash_table_lookup(attrs, "office") ? yes : no;
+      GdkPixbuf *tune = (g_hash_table_lookup(attrs, "tune_title") &&
+                         g_hash_table_lookup(attrs, "tune_artist") &&
+                         g_hash_table_lookup(attrs, "tune_album")) ? yes : no;
+      g_hash_table_destroy(attrs);
 
       /* TODO: exception for XMPP */
       gtk_list_store_append(f_diag->list_store, &iter);
@@ -221,11 +229,11 @@ static void init_features_dialog()
                          NICKNAME_COLUMN, protocol->set_public_alias ? yes : no,
                          PM_COLUMN, protocol->set_status ? yes : no,
                          ICON_COLUMN, protocol->set_buddy_icon ? yes : no,
-                         /*MOOD_COLUMN, yes,
-                         MOODMSG_COLUMN, yes,
-                         TUNE_COLUMN, yes,
-                         GAME_COLUMN, yes,
-                         APP_COLUMN, yes,*/
+                         MOOD_COLUMN, mood,
+                         MOODMSG_COLUMN, moodmsg,
+                         TUNE_COLUMN, tune,
+                         GAME_COLUMN, game,
+                         APP_COLUMN, app,
                          -1);
     }
   }
