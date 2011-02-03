@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-03 02:56:19 gawen>
+   Time-stamp: <2011-02-03 03:04:44 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -200,7 +200,7 @@ static void init_features_dialog()
       gtk_list_store_set(f_diag->list_store, &iter,
                          PROTOCOL_COLUMN, info->name,
                          NICKNAME_COLUMN, protocol->set_public_alias ? yes : no,
-                         PM_COLUMN, yes,
+                         PM_COLUMN, protocol->set_status ? yes : no,
                          ICON_COLUMN, yes,
                          MOOD_COLUMN, yes,
                          MOODMSG_COLUMN, yes,
