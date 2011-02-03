@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-03 01:39:41 gawen>
+   Time-stamp: <2011-02-03 02:05:32 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -84,13 +84,13 @@ static void create_features_dialog()
                                           GDK_TYPE_PIXBUF  /* APP */ );
 
   /* widgets that are not modified */
-  GtkWidget *wbox = pidgin_dialog_get_vbox_with_properties(GTK_DIALOG(f_diag->window),
+  GtkWidget *vbox = pidgin_dialog_get_vbox_with_properties(GTK_DIALOG(f_diag->window),
                                                            FALSE,
                                                            PIDGIN_HIG_BORDER);
+  GtkWidget *hbox = pidgin_dialog_get_action_area(GTK_DIALOG(f_diag->window));
   GtkWidget *view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(f_diag->list_store));
   GtkWidget *refresh_button = gtk_button_new_from_stock(GTK_STOCK_REFRESH);
   GtkWidget *close_button   = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-  GtkWidget *hbox           = gtk_hbox_new(FALSE, 10);
 
   /* create view and model */
   const struct g_column {
@@ -124,8 +124,7 @@ static void create_features_dialog()
   /* pack widgets */
   gtk_box_pack_start(GTK_BOX(hbox), refresh_button, FALSE, FALSE, 0);
   gtk_box_pack_start(GTK_BOX(hbox), close_button, FALSE, FALSE, 0);
-  gtk_box_pack_start(GTK_BOX(wbox), view, TRUE, TRUE, 0);
-  gtk_box_pack_start(GTK_BOX(wbox), hbox, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(vbox), view, TRUE, TRUE, 0);
 
   /* gtk signals and callback */
   const struct g_signal {
@@ -151,9 +150,8 @@ static void create_features_dialog()
   }
 
   /* show everything */
-  gtk_widget_show(hbox);
-  gtk_widget_show(wbox);
-  gtk_widget_show(f_diag->window);
+  gtk_widget_show_all(f_diag->window);
+  gtk_window_present(GTK_WINDOW(f_diag->window));
 }
 
 static void destroy_features_dialog()
