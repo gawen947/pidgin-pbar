@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-03 02:46:52 gawen>
+   Time-stamp: <2011-02-03 02:56:19 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -195,11 +195,11 @@ static void init_features_dialog()
 
     if(info && info->name) {
       GtkTreeIter iter;
-
+      /* TODO: exception for XMPP */
       gtk_list_store_append(f_diag->list_store, &iter);
       gtk_list_store_set(f_diag->list_store, &iter,
                          PROTOCOL_COLUMN, info->name,
-                         NICKNAME_COLUMN, yes,
+                         NICKNAME_COLUMN, protocol->set_public_alias ? yes : no,
                          PM_COLUMN, yes,
                          ICON_COLUMN, yes,
                          MOOD_COLUMN, yes,
