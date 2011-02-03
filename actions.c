@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-03 02:05:32 gawen>
+   Time-stamp: <2011-02-03 02:46:52 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -101,6 +101,7 @@ static void create_features_dialog()
   } columns[] = {
     { N_("Protocol"), "text", gtk_cell_renderer_text_new, PROTOCOL_COLUMN },
     { N_("Nickname"), "pixbuf", gtk_cell_renderer_pixbuf_new, NICKNAME_COLUMN },
+    { N_("Status message"), "pixbuf", gtk_cell_renderer_pixbuf_new, PM_COLUMN },
     { N_("Buddy icon"), "pixbuf", gtk_cell_renderer_pixbuf_new, ICON_COLUMN },
     { N_("Mood"), "pixbuf", gtk_cell_renderer_pixbuf_new, MOOD_COLUMN },
     { N_("Mood message"), "pixbuf", gtk_cell_renderer_pixbuf_new, MOODMSG_COLUMN },
@@ -179,12 +180,42 @@ static void destroy_features_dialog()
 
 static void init_features_dialog()
 {
+  GList *p = purple_plugins_get_protocols();
+  GtkWidget *w_yes = gtk_image_new_from_stock(GTK_STOCK_YES, GTK_ICON_SIZE_MENU);
+  GtkWidget *w_no  = gtk_image_new_from_stock(GTK_STOCK_NO, GTK_ICON_SIZE_MENU);
+  GdkPixbuf *yes = gtk_widget_render_icon(f_diag->window, GTK_STOCK_YES,
+                                          GTK_ICON_SIZE_MENU, NULL);
+  GdkPixbuf *no  = gtk_widget_render_icon(f_diag->window, GTK_STOCK_NO,
+                                          GTK_ICON_SIZE_MENU, NULL);
 
+  for(; p ; p = p->next) {
+    PurplePlugin *plugin = p->data;
+    PurplePluginInfo *info = plugin->info;
+    PurplePluginProtocolInfo *protocol = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
+
+    if(info && info->name) {
+      GtkTreeIter iter;
+
+      gtk_list_store_append(f_diag->list_store, &iter);
+      gtk_list_store_set(f_diag->list_store, &iter,
+                         PROTOCOL_COLUMN, info->name,
+                         NICKNAME_COLUMN, yes,
+                         PM_COLUMN, yes,
+                         ICON_COLUMN, yes,
+                         MOOD_COLUMN, yes,
+                         MOODMSG_COLUMN, yes,
+                         TUNE_COLUMN, yes,
+                         GAME_COLUMN, yes,
+                         APP_COLUMN, yes,
+                         -1);
+    }
+  }
 }
 
 static void action_features(PurplePluginAction *act)
 {
   create_features_dialog();
+  init_features_dialog();
 }
 
 GList * create_actions(PurplePlugin *plugin, gpointer ctx)
