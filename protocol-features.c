@@ -1,5 +1,5 @@
 /* File: protocol-features.c
-   Time-stamp: <2011-02-04 03:30:06 gawen>
+   Time-stamp: <2011-02-04 03:43:11 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -41,30 +41,26 @@ enum {
 };
 
 static void cb_destroy_win(GtkWidget *widget, gpointer data)
-{
-  destroy_features_dialog((struct features_dialog *)data);
-}
+{ destroy_protocol_features_dialog((struct protocol_features_dialog *)data); }
 
 static void cb_close_button(GtkWidget *widget, gpointer data)
-{
-  destroy_features_dialog((struct features_dialog *)data);
-}
+{ destroy_protocol_features_dialog((struct protocol_features_dialog *)data); }
 
 static void cb_refresh_button(GtkWidget *widget, gpointer data)
 {
-  struct features_dialog *f_diag = (struct features_dialog *)data;
+  struct protocol_features_dialog *f_diag = (struct protocol_features_dialog *)data;
   gtk_list_store_clear(f_diag->list_store);
-  init_features_dialog(f_diag);
+  init_protocol_features_dialog(f_diag);
 }
 
-struct features_dialog * create_features_dialog()
+struct protocol_features_dialog * create_protocol_features_dialog()
 {
-  struct features_dialog *f_diag = g_malloc(sizeof(struct features_dialog));
+  struct protocol_features_dialog *f_diag = g_malloc(sizeof(struct protocol_features_dialog));
 
   /* widgets that can possibly be modified along dialog lifetime */
-  f_diag->window = pidgin_create_dialog(_("Supported features"),
+  f_diag->window = pidgin_create_dialog(_("Protocol features"),
                                         PIDGIN_HIG_BORDER,
-                                        "supported features",
+                                        "protocol-features",
                                         TRUE);
   f_diag->list_store = gtk_list_store_new(N_COLUMN,
                                           GDK_TYPE_PIXBUF, /* PROTOCOLICON */
@@ -163,12 +159,13 @@ struct features_dialog * create_features_dialog()
   return f_diag;
 }
 
-void destroy_features_dialog(struct features_dialog *f_diag)
+void destroy_protocol_features_dialog(struct protocol_features_dialog *f_diag)
 {
   GList *l, *i, *j;
 
   /* disconnect gtk signals */
-  for(i = f_diag->gtk_hnd, j = f_diag->gtk_inst ; i && j ; i = i->next, j = j->next)
+  for(i = f_diag->gtk_hnd, j = f_diag->gtk_inst ; i && j ;
+      i = i->next, j = j->next)
     g_signal_handler_disconnect(j->data, GPOINTER_TO_INT(i->data));
   g_list_free(f_diag->gtk_hnd);
   g_list_free(f_diag->gtk_inst);
@@ -185,7 +182,7 @@ void destroy_features_dialog(struct features_dialog *f_diag)
   g_free(f_diag);
 }
 
-void init_features_dialog(struct features_dialog *f_diag)
+void init_protocol_features_dialog(struct protocol_features_dialog *f_diag)
 {
   GList *p = purple_plugins_get_protocols();
   /* TODO: should be freed ? */

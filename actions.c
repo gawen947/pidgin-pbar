@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-04 03:31:28 gawen>
+   Time-stamp: <2011-02-04 03:37:16 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -24,8 +24,8 @@
 
 static void action_features(PurplePluginAction *act)
 {
-  struct features_dialog *f_diag = create_features_dialog();
-  init_features_dialog(f_diag);
+  struct protocol_features_dialog *f_diag = create_protocol_features_dialog();
+  init_protocol_features_dialog(f_diag);
 }
 
 GList * create_actions(PurplePlugin *plugin, gpointer ctx)
@@ -33,7 +33,7 @@ GList * create_actions(PurplePlugin *plugin, gpointer ctx)
   GList *l = NULL;
   PurplePluginAction *act = NULL;
 
-  act = purple_plugin_action_new(_("Supported features"), action_features);
+  act = purple_plugin_action_new(_("Protocol features"), action_features);
   l = g_list_append(l, act);
 
   return l;
