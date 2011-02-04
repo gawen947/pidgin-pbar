@@ -1,5 +1,5 @@
 /* File: acct_features.c
-   Time-stamp: <2011-02-04 18:34:34 gawen>
+   Time-stamp: <2011-02-04 18:44:47 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -212,6 +212,9 @@ void init_acct_features_dialog(struct acct_features_dialog *f_diag)
     PurplePluginProtocolInfo *protocol = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
 
     GtkTreeIter iter;
+    gchar *username = g_strdup_printf("%s (%s)",
+                                           purple_account_get_username(acct),
+                                           purple_account_get_protocol_name(acct));
     GdkPixbuf *a_icon = pidgin_create_prpl_icon(acct, PIDGIN_PRPL_ICON_MEDIUM);
     GHashTable *attrs  = get_account_attrs(acct);
 
@@ -260,7 +263,7 @@ void init_acct_features_dialog(struct acct_features_dialog *f_diag)
 
     gtk_list_store_append(f_diag->list_store, &iter);
     gtk_list_store_set(f_diag->list_store, &iter,
-                       ACCT_COLUMN, purple_account_get_username(acct),
+                       ACCT_COLUMN, username,
                        ACCTICON_COLUMN, a_icon,
                        NICKNAME_COLUMN, nickname,
                        PM_COLUMN, pm,
@@ -271,6 +274,7 @@ void init_acct_features_dialog(struct acct_features_dialog *f_diag)
                        GAME_COLUMN, game,
                        APP_COLUMN, app,
                        -1);
+    g_free(username);
   }
 
   /* last line summarize all available features */
