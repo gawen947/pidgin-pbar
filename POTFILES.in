@@ -1,5 +1,7 @@
 pbar.c
 pbar.h
+protocol-features.c
+protocol-features.h
 preferences.c
 preferences.h
 actions.c
