@@ -1,5 +1,5 @@
 /* File: actions.h
-   Time-stamp: <2011-02-01 01:25:04 gawen>
+   Time-stamp: <2011-02-04 03:33:28 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -16,6 +16,11 @@
    You should have received a copy of the GNU General Public License
    along with this program. If not, see <http://www.gnu.org/licenses/>. */
 
+#ifndef _ACTIONS_H_
+#define _ACTIONS_H_
+
 #include "common.h"
 
 GList * create_actions(PurplePlugin *plugin, gpointer ctx);
+
+#endif /* _ACTIONS_H_ */
