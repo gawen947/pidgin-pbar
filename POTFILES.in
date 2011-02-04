@@ -2,6 +2,8 @@ pbar.c
 pbar.h
 protocol_features.c
 protocol_features.h
+acct_features.c
+acct_features.h
 preferences.c
 preferences.h
 actions.c
