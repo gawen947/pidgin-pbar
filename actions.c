@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-04 03:18:01 gawen>
+   Time-stamp: <2011-02-04 03:20:41 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -200,6 +200,7 @@ static void destroy_features_dialog(struct features_dialog *f_diag)
 static void init_features_dialog(struct features_dialog *f_diag)
 {
   GList *p = purple_plugins_get_protocols();
+  /* TODO: should be freed ? */
   GdkPixbuf *yes = gtk_widget_render_icon(f_diag->window, GTK_STOCK_YES,
                                           GTK_ICON_SIZE_MENU, NULL);
   GdkPixbuf *no  = gtk_widget_render_icon(f_diag->window, GTK_STOCK_NO,
