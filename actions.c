@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-04 03:13:19 gawen>
+   Time-stamp: <2011-02-04 03:18:01 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -62,7 +62,12 @@ static void cb_close_button(GtkWidget *widget, gpointer data)
   destroy_features_dialog((struct features_dialog *)data);
 }
 
-static void cb_refresh_button(GtkWidget *widget, gpointer data) {}
+static void cb_refresh_button(GtkWidget *widget, gpointer data)
+{
+  struct features_dialog *f_diag = (struct features_dialog *)data;
+  gtk_list_store_clear(f_diag->list_store);
+  init_features_dialog(f_diag);
+}
 
 static struct features_dialog * create_features_dialog()
 {
@@ -190,7 +195,6 @@ static void destroy_features_dialog(struct features_dialog *f_diag)
 
   /* free dialog */
   g_free(f_diag);
-  f_diag = NULL;
 }
 
 static void init_features_dialog(struct features_dialog *f_diag)
