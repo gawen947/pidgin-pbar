@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-03 23:44:47 gawen>
+   Time-stamp: <2011-02-04 03:13:19 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -42,7 +42,7 @@ enum {
   N_COLUMN
 };
 
-static struct features_dialog {
+struct features_dialog {
   /* window and list storage */
   GtkWidget *window;
   GtkListStore *list_store;
@@ -50,26 +50,23 @@ static struct features_dialog {
   /* signals handlers and instance for disconnection */
   GList *gtk_hnd;
   GList *gtk_inst;
-} *f_diag;
+};
 
-static void cb_destroy_win()
+static void cb_destroy_win(GtkWidget *widget, gpointer data)
 {
-  destroy_features_dialog();
+  destroy_features_dialog((struct features_dialog *)data);
 }
 
-static void cb_close_button()
+static void cb_close_button(GtkWidget *widget, gpointer data)
 {
-  destroy_features_dialog();
+  destroy_features_dialog((struct features_dialog *)data);
 }
 
-static void cb_refresh_button() {}
+static void cb_refresh_button(GtkWidget *widget, gpointer data) {}
 
-static void create_features_dialog()
+static struct features_dialog * create_features_dialog()
 {
-  /* this should occurs each time but
-     this way we avoid memory leaks */
-  if(!f_diag)
-    f_diag = g_malloc(sizeof(struct features_dialog));
+  struct features_dialog *f_diag = g_malloc(sizeof(struct features_dialog));
 
   /* widgets that can possibly be modified along dialog lifetime */
   f_diag->window = pidgin_create_dialog(_("Supported features"),
@@ -161,7 +158,7 @@ static void create_features_dialog()
     gulong handler_id = g_signal_connect(G_OBJECT(g_sig->widget),
                                          g_sig->signal,
                                          G_CALLBACK(g_sig->callback),
-                                         NULL);
+                                         f_diag);
     f_diag->gtk_hnd = g_list_append(f_diag->gtk_hnd,GINT_TO_POINTER(handler_id));
     f_diag->gtk_inst = g_list_append(f_diag->gtk_inst, g_sig->widget);
   }
@@ -169,9 +166,11 @@ static void create_features_dialog()
   /* show everything */
   gtk_widget_show_all(f_diag->window);
   gtk_window_present(GTK_WINDOW(f_diag->window));
+
+  return f_diag;
 }
 
-static void destroy_features_dialog()
+static void destroy_features_dialog(struct features_dialog *f_diag)
 {
   GList *l, *i, *j;
 
@@ -194,7 +193,7 @@ static void destroy_features_dialog()
   f_diag = NULL;
 }
 
-static void init_features_dialog()
+static void init_features_dialog(struct features_dialog *f_diag)
 {
   GList *p = purple_plugins_get_protocols();
   GdkPixbuf *yes = gtk_widget_render_icon(f_diag->window, GTK_STOCK_YES,
@@ -249,8 +248,8 @@ static void init_features_dialog()
 
 static void action_features(PurplePluginAction *act)
 {
-  create_features_dialog();
-  init_features_dialog();
+  struct features_dialog *f_diag = create_features_dialog();
+  init_features_dialog(f_diag);
 }
 
 GList * create_actions(PurplePlugin *plugin, gpointer ctx)
@@ -263,5 +262,3 @@ GList * create_actions(PurplePlugin *plugin, gpointer ctx)
 
   return l;
 }
-
-
