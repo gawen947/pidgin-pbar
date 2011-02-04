@@ -1,5 +1,5 @@
 /* File: acct_features.c
-   Time-stamp: <2011-02-04 17:09:21 gawen>
+   Time-stamp: <2011-02-04 18:03:49 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -191,6 +191,21 @@ void init_acct_features_dialog(struct acct_features_dialog *f_diag)
   GdkPixbuf *no  = gtk_widget_render_icon(f_diag->window, GTK_STOCK_NO,
                                           GTK_ICON_SIZE_MENU, NULL);
 
+  /* last line summarize all available features */
+  GtkTreeIter e_iter;
+  GdkPixbuf *e_icon     = gtk_widget_render_icon(f_diag->window,
+                                                 PIDGIN_ICON_SIZE_TANGO_MEDIUM,
+                                                 GTK_ICON_SIZE_MENU,
+                                                 NULL);
+  GdkPixbuf *e_pm        = no;
+  GdkPixbuf *e_buddyicon = no;
+  GdkPixbuf *e_nickname  = no;
+  GdkPixbuf *e_mood      = no;
+  GdkPixbuf *e_moodmsg   = no;
+  GdkPixbuf *e_game      = no;
+  GdkPixbuf *e_app       = no;
+  GdkPixbuf *e_tune      = no;
+
   for(; a ; a = a->next) {
     PurpleAccount *acct  = (PurpleAccount *)a->data;
     PurplePlugin *plugin = purple_find_prpl(acct->protocol_id);
@@ -199,32 +214,57 @@ void init_acct_features_dialog(struct acct_features_dialog *f_diag)
     GtkTreeIter iter;
     GdkPixbuf *a_icon = pidgin_create_prpl_icon(acct, PIDGIN_PRPL_ICON_MEDIUM);
     GHashTable *attrs  = get_account_attrs(acct);
-    GdkPixbuf *nickname;
-    GdkPixbuf *mood    = g_hash_table_lookup(attrs, "mood") ? yes : no;
-    GdkPixbuf *moodmsg = g_hash_table_lookup(attrs, "moodtext") ? yes : no;
-    GdkPixbuf *game    = g_hash_table_lookup(attrs, "game") ? yes : no;
-    GdkPixbuf *app     = g_hash_table_lookup(attrs, "office") ? yes : no;
-    GdkPixbuf *tune = (g_hash_table_lookup(attrs, "tune_title") &&
-                       g_hash_table_lookup(attrs, "tune_artist") &&
-                       g_hash_table_lookup(attrs, "tune_album")) ? yes : no;
+
+    GdkPixbuf *nickname, *mood, *moodmsg, *game, *app, *tune, *pm, *buddyicon;
+
+    if(g_hash_table_lookup(attrs, "mood"))
+      e_mood = mood = yes;
+    else
+      mood = no;
+    if(g_hash_table_lookup(attrs, "moodtext"))
+      e_moodmsg = moodmsg = yes;
+    else
+      moodmsg = no;
+    if(g_hash_table_lookup(attrs, "game"))
+      e_game = game = yes;
+    else
+      game = no;
+    if(g_hash_table_lookup(attrs, "office"))
+      e_app = app = yes;
+    else
+      app = no;
+    if((g_hash_table_lookup(attrs, "tune_title") &&
+        g_hash_table_lookup(attrs, "tune_artist") &&
+        g_hash_table_lookup(attrs, "tune_album")))
+      e_tune = tune = yes;
+    else
+      tune = no;
     g_hash_table_destroy(attrs);
 
+    if(protocol->set_status)
+      e_pm = pm = yes;
+    else
+      pm = no;
+    if(protocol->set_buddy_icon)
+      e_buddyicon = buddyicon = yes;
+    else
+      buddyicon = no;
     /* exception for XMPP
        nickname supported
        manually
        FIXME: however some XMPP account don't support nickname extension */
-    if(!strcmp(acct->protocol_id, "prpl-jabber"))
-      nickname = yes;
+    if(!strcmp(acct->protocol_id, "prpl-jabber") || protocol->set_public_alias)
+      e_nickname = nickname = yes;
     else
-      nickname = protocol->set_public_alias ? yes : no;
+      nickname = no;
 
     gtk_list_store_append(f_diag->list_store, &iter);
     gtk_list_store_set(f_diag->list_store, &iter,
                        ACCT_COLUMN, purple_account_get_username(acct),
                        ACCTICON_COLUMN, a_icon,
                        NICKNAME_COLUMN, nickname,
-                       PM_COLUMN, protocol->set_status ? yes : no,
-                       ICON_COLUMN, protocol->set_buddy_icon ? yes : no,
+                       PM_COLUMN, pm,
+                       ICON_COLUMN, buddyicon,
                        MOOD_COLUMN, mood,
                        MOODMSG_COLUMN, moodmsg,
                        TUNE_COLUMN, tune,
@@ -232,4 +272,19 @@ void init_acct_features_dialog(struct acct_features_dialog *f_diag)
                        APP_COLUMN, app,
                        -1);
   }
+
+  /* last line summarize all available features */
+  gtk_list_store_append(f_diag->list_store, &e_iter);
+  gtk_list_store_set(f_diag->list_store, &e_iter,
+                     ACCT_COLUMN, "Pidgin",
+                     ACCTICON_COLUMN, e_icon,
+                     NICKNAME_COLUMN, e_nickname,
+                     PM_COLUMN, e_pm,
+                     ICON_COLUMN, e_buddyicon,
+                     MOOD_COLUMN, e_mood,
+                     MOODMSG_COLUMN, e_moodmsg,
+                     TUNE_COLUMN, e_tune,
+                     GAME_COLUMN, e_game,
+                     APP_COLUMN, e_app,
+                     -1);
 }
