@@ -1,5 +1,5 @@
-/* File: protocol-features.h
-   Time-stamp: <2011-02-04 03:36:46 gawen>
+/* File: protocol_features.h
+   Time-stamp: <2011-02-04 14:08:11 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 

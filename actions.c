@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-04 03:37:16 gawen>
+   Time-stamp: <2011-02-04 13:54:50 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -20,7 +20,7 @@
 
 #include "pbar.h"
 #include "purple.h"
-#include "protocol-features.h"
+#include "protocol_features.h"
 
 static void action_features(PurplePluginAction *act)
 {

@@ -1,5 +1,5 @@
-/* File: protocol-features.c
-   Time-stamp: <2011-02-04 03:43:11 gawen>
+/* File: protocol_features.c
+   Time-stamp: <2011-02-04 14:07:55 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -20,7 +20,7 @@
 
 #include "pbar.h"
 #include "purple.h"
-#include "protocol-features.h"
+#include "protocol_features.h"
 
 static void cb_destroy_win(GtkWidget *widget, gpointer data);
 static void cb_close_button(GtkWidget *widget, gpointer data);
