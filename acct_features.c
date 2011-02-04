@@ -1,5 +1,5 @@
 /* File: acct_features.c
-   Time-stamp: <2011-02-04 18:03:49 gawen>
+   Time-stamp: <2011-02-04 18:34:34 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -194,7 +194,7 @@ void init_acct_features_dialog(struct acct_features_dialog *f_diag)
   /* last line summarize all available features */
   GtkTreeIter e_iter;
   GdkPixbuf *e_icon     = gtk_widget_render_icon(f_diag->window,
-                                                 PIDGIN_ICON_SIZE_TANGO_MEDIUM,
+                                                 PIDGIN_STOCK_INFO,
                                                  GTK_ICON_SIZE_MENU,
                                                  NULL);
   GdkPixbuf *e_pm        = no;
@@ -276,7 +276,7 @@ void init_acct_features_dialog(struct acct_features_dialog *f_diag)
   /* last line summarize all available features */
   gtk_list_store_append(f_diag->list_store, &e_iter);
   gtk_list_store_set(f_diag->list_store, &e_iter,
-                     ACCT_COLUMN, "Pidgin",
+                     ACCT_COLUMN, "Available features",
                      ACCTICON_COLUMN, e_icon,
                      NICKNAME_COLUMN, e_nickname,
                      PM_COLUMN, e_pm,
