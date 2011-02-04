@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-04 13:54:50 gawen>
+   Time-stamp: <2011-02-04 14:40:47 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -21,20 +21,38 @@
 #include "pbar.h"
 #include "purple.h"
 #include "protocol_features.h"
+#include "acct_features.h"
 
-static void action_features(PurplePluginAction *act)
+static void protocol_features(PurplePluginAction *act)
 {
   struct protocol_features_dialog *f_diag = create_protocol_features_dialog();
   init_protocol_features_dialog(f_diag);
 }
 
+static void acct_features(PurplePluginAction *act)
+{
+  struct acct_features_dialog *f_diag = create_acct_features_dialog();
+  init_acct_features_dialog(f_diag);
+}
+
 GList * create_actions(PurplePlugin *plugin, gpointer ctx)
 {
   GList *l = NULL;
-  PurplePluginAction *act = NULL;
 
-  act = purple_plugin_action_new(_("Protocol features"), action_features);
-  l = g_list_append(l, act);
+  const struct action {
+    const gchar *title;
+    void (*action)(PurplePluginAction *);
+  } actions[] = {
+    { N_("Protocol features"), protocol_features },
+    { N_("Account features"), acct_features },
+    { NULL, NULL }
+  }; const struct action *acts = actions;
+
+  for(; acts->title ; acts++) {
+    PurplePluginAction *act = purple_plugin_action_new(acts->title,
+                                                       acts->action);
+    l = g_list_append(l, act);
+  }
 
   return l;
 }
