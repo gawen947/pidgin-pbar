@@ -1,5 +1,5 @@
 /* File: acct_features.c
-   Time-stamp: <2011-02-04 14:23:41 gawen>
+   Time-stamp: <2011-02-04 17:09:21 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -184,54 +184,52 @@ void destroy_acct_features_dialog(struct acct_features_dialog *f_diag)
 
 void init_acct_features_dialog(struct acct_features_dialog *f_diag)
 {
-  GList *p = purple_plugins_get_protocols();
+  GList *a = purple_accounts_get_all_active();
   /* TODO: should be freed ? */
   GdkPixbuf *yes = gtk_widget_render_icon(f_diag->window, GTK_STOCK_YES,
                                           GTK_ICON_SIZE_MENU, NULL);
   GdkPixbuf *no  = gtk_widget_render_icon(f_diag->window, GTK_STOCK_NO,
                                           GTK_ICON_SIZE_MENU, NULL);
 
-  for(; p ; p = p->next) {
-    PurplePlugin *plugin = p->data;
-    PurplePluginInfo *info = plugin->info;
+  for(; a ; a = a->next) {
+    PurpleAccount *acct  = (PurpleAccount *)a->data;
+    PurplePlugin *plugin = purple_find_prpl(acct->protocol_id);
     PurplePluginProtocolInfo *protocol = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
 
-    if(info && info->name) {
-      GtkTreeIter iter;
-      GdkPixbuf *p_icon = create_prpl_icon_from_info(protocol,
-                                                     PIDGIN_PRPL_ICON_MEDIUM);
-      GHashTable *attrs  = get_protocol_attrs(protocol);
-      GdkPixbuf *nickname;
-      GdkPixbuf *mood    = g_hash_table_lookup(attrs, "mood") ? yes : no;
-      GdkPixbuf *moodmsg = g_hash_table_lookup(attrs, "moodtext") ? yes : no;
-      GdkPixbuf *game    = g_hash_table_lookup(attrs, "game") ? yes : no;
-      GdkPixbuf *app     = g_hash_table_lookup(attrs, "office") ? yes : no;
-      GdkPixbuf *tune = (g_hash_table_lookup(attrs, "tune_title") &&
-                         g_hash_table_lookup(attrs, "tune_artist") &&
-                         g_hash_table_lookup(attrs, "tune_album")) ? yes : no;
-      g_hash_table_destroy(attrs);
+    GtkTreeIter iter;
+    GdkPixbuf *a_icon = pidgin_create_prpl_icon(acct, PIDGIN_PRPL_ICON_MEDIUM);
+    GHashTable *attrs  = get_account_attrs(acct);
+    GdkPixbuf *nickname;
+    GdkPixbuf *mood    = g_hash_table_lookup(attrs, "mood") ? yes : no;
+    GdkPixbuf *moodmsg = g_hash_table_lookup(attrs, "moodtext") ? yes : no;
+    GdkPixbuf *game    = g_hash_table_lookup(attrs, "game") ? yes : no;
+    GdkPixbuf *app     = g_hash_table_lookup(attrs, "office") ? yes : no;
+    GdkPixbuf *tune = (g_hash_table_lookup(attrs, "tune_title") &&
+                       g_hash_table_lookup(attrs, "tune_artist") &&
+                       g_hash_table_lookup(attrs, "tune_album")) ? yes : no;
+    g_hash_table_destroy(attrs);
 
-      /* exception for XMPP
-         nickname supported
-         manually */
-      if(!strcmp(info->name, "XMPP"))
-        nickname = yes;
-      else
-        nickname = protocol->set_public_alias ? yes : no;
+    /* exception for XMPP
+       nickname supported
+       manually
+       FIXME: however some XMPP account don't support nickname extension */
+    if(!strcmp(acct->protocol_id, "prpl-jabber"))
+      nickname = yes;
+    else
+      nickname = protocol->set_public_alias ? yes : no;
 
-      gtk_list_store_append(f_diag->list_store, &iter);
-      gtk_list_store_set(f_diag->list_store, &iter,
-                         ACCT_COLUMN, info->name,
-                         ACCTICON_COLUMN, p_icon,
-                         NICKNAME_COLUMN, nickname,
-                         PM_COLUMN, protocol->set_status ? yes : no,
-                         ICON_COLUMN, protocol->set_buddy_icon ? yes : no,
-                         MOOD_COLUMN, mood,
-                         MOODMSG_COLUMN, moodmsg,
-                         TUNE_COLUMN, tune,
-                         GAME_COLUMN, game,
-                         APP_COLUMN, app,
-                         -1);
-    }
+    gtk_list_store_append(f_diag->list_store, &iter);
+    gtk_list_store_set(f_diag->list_store, &iter,
+                       ACCT_COLUMN, purple_account_get_username(acct),
+                       ACCTICON_COLUMN, a_icon,
+                       NICKNAME_COLUMN, nickname,
+                       PM_COLUMN, protocol->set_status ? yes : no,
+                       ICON_COLUMN, protocol->set_buddy_icon ? yes : no,
+                       MOOD_COLUMN, mood,
+                       MOODMSG_COLUMN, moodmsg,
+                       TUNE_COLUMN, tune,
+                       GAME_COLUMN, game,
+                       APP_COLUMN, app,
+                       -1);
   }
 }

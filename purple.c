@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2011-02-03 23:28:26 gawen>
+   Time-stamp: <2011-02-04 16:20:34 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -141,8 +141,7 @@ GHashTable * get_protocol_attrs(PurplePluginProtocolInfo *protocol)
   if(!protocol->status_types)
     return NULL;
 
-  GHashTable *attrs = g_hash_table_new_full(g_str_hash, g_str_equal,
-                                                 NULL, NULL);
+  GHashTable *attrs = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, NULL);
   GList *l = protocol->status_types(NULL);
   for(; l ; l = l->next) {
     PurpleStatusType *type = (PurpleStatusType *)l->data;
@@ -164,6 +163,35 @@ GHashTable * get_protocol_attrs(PurplePluginProtocolInfo *protocol)
 
   return attrs;
 }
+
+/* get available attributes for an account
+   returned hashtable should be freed manally */
+/* TODO: review this, now it does the same as get_protocol_attrs... */
+GHashTable * get_account_attrs(PurpleAccount *account)
+{
+  GHashTable *attrs = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, NULL);
+  GList *l = purple_account_get_status_types(account);
+  for(; l ; l = l->next) {
+    PurpleStatusType *type = (PurpleStatusType *)l->data;
+    GList *k = purple_status_type_get_attrs(type);
+    for(; k ; k = k->next) {
+      struct _PurpleStatusAttr {
+        char *id;
+        char *name;
+        PurpleValue *value_type;
+      };
+      struct _PurpleStatusAttr *attr = (struct _PurpleStatusAttr *)k->data;
+      if(g_hash_table_lookup(attrs, attr->id))
+        continue;
+      else
+        g_hash_table_insert(attrs, (gpointer)attr->id,
+                            GINT_TO_POINTER(TRUE));
+    }
+  }
+
+  return attrs;
+}
+
 
 /* get global moods */
 PurpleMood * get_global_moods()
