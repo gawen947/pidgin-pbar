@@ -1,5 +1,5 @@
 /* File: gtk.c
-   Time-stamp: <2011-02-05 02:57:34 gawen>
+   Time-stamp: <2011-02-05 04:26:05 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -43,6 +43,17 @@ void gtk_widget_set_can_focus(GtkWidget *widget, gboolean can_focus)
 }
 #endif /* GTK < 2.18 */
 
-
-#include "gtk.h"
-
+void gtk_connect_signals(struct pbar_widget *w,
+                         const struct pbar_gtk_signal *sig_list,
+                         gpointer data)
+{
+  const struct pbar_gtk_signal *s = sig_list;
+  for(; s->signal ; s++) {
+    gulong handler_id = g_signal_connect(G_OBJECT(s->widget),
+                                         s->signal,
+                                         G_CALLBACK(s->callback),
+                                         data);
+    w->gtk_hnd  = g_list_append(w->gtk_hnd, GINT_TO_POINTER(handler_id));
+    w->gtk_inst = g_list_append(w->gtk_inst, s->widget);
+  }
+}

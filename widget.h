@@ -1,5 +1,5 @@
 /* File: widget.h
-   Time-stamp: <2010-10-28 20:14:25 gawen>
+   Time-stamp: <2011-02-05 04:25:24 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -23,7 +23,11 @@
 
 #include "common.h"
 
+#include "gtk.h"
+
 struct widget {
+  BEGIN_PBAR_WIDGET;
+
   /* icon and status */
   GtkWidget *icon;
   GtkWidget *icon_eventbox;
@@ -58,10 +62,6 @@ struct widget {
   /* avoid activating entry with dialog */
   gboolean name_dialog;
   gboolean pm_dialog;
-
-  /* signals handlers and instance for disconnection */
-  GList *gtk_hnd;
-  GList *gtk_inst;
 };
 
 extern struct widget *bar;

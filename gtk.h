@@ -1,5 +1,5 @@
 /* File: gtk.h
-   Time-stamp: <2011-02-05 02:56:44 gawen>
+   Time-stamp: <2011-02-05 04:23:15 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -21,10 +21,27 @@
 
 #include "common.h"
 
+#define PBAR_WIDGET(widget) ((struct pbar_widget *)widget)
+#define BEGIN_PBAR_WIDGET GList *gtk_hnd; GList *gtk_inst
+
+struct pbar_gtk_signal {
+  GtkWidget *widget;
+  const gchar *signal;
+  void (*callback)(GtkWidget *, gpointer);
+};
+
+struct pbar_widget {
+  BEGIN_PBAR_WIDGET; /* signals handlers and instance for disconnection */
+};
+
 #if !GTK_CHECK_VERSION(2,18,0)
 gboolean gtk_widget_get_visible(GtkWidget *widget);
 void gtk_widget_set_visible(GtkWidget *widget, gboolean visible);
 void gtk_widget_set_can_focus(GtkWidget *widget, gboolean can_focus);
 #endif /* GTK < 2.18 */
+
+void gtk_connect_signals(struct pbar_widget *w,
+                         const struct pbar_gtk_signal *sig_list,
+                         gpointer data);
 
 #endif /* _GTK_H_ */

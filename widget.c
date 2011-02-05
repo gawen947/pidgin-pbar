@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-02-05 02:58:07 gawen>
+   Time-stamp: <2011-02-05 04:24:45 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -125,11 +125,7 @@ void create_widget()
   bar->pm_dialog   = FALSE;
 
   /* gtk signals and callback */
-  const struct g_signal {
-    GtkWidget *widget;
-    const gchar *signal;
-    void (*callback)(GtkWidget *, gpointer);
-  } g_signal_connections[] = {
+  const struct pbar_gtk_signal g_signal_connections[] = {
     { bar->icon_eventbox, "button-press-event", cb_buddy_icon },
     { bar->icon_eventbox, "enter-notify-event", cb_buddy_icon_enter },
     { bar->icon_eventbox, "leave-notify-event", cb_buddy_icon_leave },
@@ -146,7 +142,7 @@ void create_widget()
     { bar->status, "clicked", cb_status_button },
     { bar->mood, "clicked", cb_mood_button },
     { NULL, NULL, NULL }
-  }; const struct g_signal *g_sig = g_signal_connections;
+  };
 
   /* purple signals and callback */
   const struct p_signal {
@@ -167,14 +163,7 @@ void create_widget()
 
   /* connect signals and save handlers and instance when needed
      to disconnect those signals when the widget is destroyed */
-  for(; g_sig->widget ; g_sig++) {
-    gulong handler_id = g_signal_connect(G_OBJECT(g_sig->widget),
-                                         g_sig->signal,
-                                         G_CALLBACK(g_sig->callback),
-                                         NULL);
-    bar->gtk_hnd  = g_list_append(bar->gtk_hnd, GINT_TO_POINTER(handler_id));
-    bar->gtk_inst = g_list_append(bar->gtk_inst, g_sig->widget);
-  }
+  gtk_connect_signals(PBAR_WIDGET(bar), g_signal_connections, NULL);
   for(; purple_sig->instance ; purple_sig++)
     purple_signal_connect(purple_sig->instance,
                           purple_sig->signal,
