@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-02-02 05:26:31 gawen>
+   Time-stamp: <2011-02-05 02:58:07 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -26,28 +26,11 @@
 #include "widget_prpl.h"
 #include "preferences.h"
 #include "purple.h"
+#include "gtk.h"
 
 /* we only have one widget per plugin
    but this might change in the future */
 struct widget *bar;
-
-#if !GTK_CHECK_VERSION(2,18,0)
-static void gtk_widget_set_can_focus(GtkWidget *widget, gboolean can_focus)
-{
-  if(can_focus)
-    GTK_WIDGET_SET_FLAGS(widget, GTK_CAN_FOCUS);
-  else
-    GTK_WIDGET_UNSET_FLAGS(widget, GTK_CAN_FOCUS);
-}
-
-static void gtk_widget_set_visible(GtkWidget *widget, gboolean visible)
-{
-  if(visible)
-    gtk_widget_show(widget);
-  else
-    gtk_widget_hide(widget);
-}
-#endif /* GTK+ < 2.18 */
 
 void create_widget()
 {

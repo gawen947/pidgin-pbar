@@ -1,5 +1,5 @@
 /* File: gtk.h
-   Time-stamp: <2011-02-05 02:48:08 gawen>
+   Time-stamp: <2011-02-05 02:56:44 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -20,5 +20,11 @@
 #define _GTK_H_
 
 #include "common.h"
+
+#if !GTK_CHECK_VERSION(2,18,0)
+gboolean gtk_widget_get_visible(GtkWidget *widget);
+void gtk_widget_set_visible(GtkWidget *widget, gboolean visible);
+void gtk_widget_set_can_focus(GtkWidget *widget, gboolean can_focus);
+#endif /* GTK < 2.18 */
 
 #endif /* _GTK_H_ */

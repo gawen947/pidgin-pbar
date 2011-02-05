@@ -1,5 +1,5 @@
 /* File: gtk.c
-   Time-stamp: <2011-02-05 02:50:43 gawen>
+   Time-stamp: <2011-02-05 02:57:34 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -17,6 +17,32 @@
    along with this program. If not, see <http://www.gnu.org/licenses/>. */
 
 #include "common.h"
+
+#include "gtk.h"
+
+#if !GTK_CHECK_VERSION(2,18,0)
+gboolean gtk_widget_get_visible(GtkWidget *widget)
+{
+  return GTK_WIDGET_FLAGS(widget) & GTK_VISIBLE;
+}
+
+void gtk_widget_set_visible(GtkWidget *widget, gboolean visible)
+{
+  if(visible)
+    gtk_widget_show(widget);
+  else
+    gtk_widget_hide(widget);
+}
+
+void gtk_widget_set_can_focus(GtkWidget *widget, gboolean can_focus)
+{
+  if(can_focus)
+    GTK_WIDGET_SET_FLAGS(widget, GTK_CAN_FOCUS);
+  else
+    GTK_WIDGET_UNSET_FLAGS(widget, GTK_CAN_FOCUS);
+}
+#endif /* GTK < 2.18 */
+
 
 #include "gtk.h"
 
