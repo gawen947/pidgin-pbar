@@ -16,4 +16,6 @@ widget_prpl.c
 widget_prpl.h
 purple.c
 purple.h
+gtk.c
+gtk.h
 common.h
