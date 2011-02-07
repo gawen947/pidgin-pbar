@@ -1,5 +1,5 @@
 /* File: gtk.c
-   Time-stamp: <2011-02-05 04:26:05 gawen>
+   Time-stamp: <2011-02-07 18:33:55 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -57,3 +57,30 @@ void gtk_connect_signals(struct pbar_widget *w,
     w->gtk_inst = g_list_append(w->gtk_inst, s->widget);
   }
 }
+
+void gtk_destroy(struct pbar_widget *w)
+{
+  GList *l, *i, *j;
+
+  /* disconnect gtk signals */
+  for(i = w->gtk_hnd, j = w->gtk_inst ; i && j ;
+      i = i->next, j = j->next)
+    g_signal_handler_disconnect(j->data, GPOINTER_TO_INT(i->data));
+  g_list_free(w->gtk_hnd);
+  g_list_free(w->gtk_inst);
+
+  /* destroy widgets */
+  for(j = w->main_widgets ; j ; j = j->next) {
+    GtkWidget *main_widget = (GtkWidget *)i->data;
+
+    l = gtk_container_get_children(GTK_CONTAINER(main_widget));
+    for(i = l ; i ; i = i->next) {
+      gtk_widget_destroy(i->data);
+      i->data = NULL;
+    }
+    gtk_widget_destroy(main_widget);
+  }
+}
+
+void gtk_add_main_widget(struct pbar_widget *w, GtkWidget *widget)
+{ w->main_widgets = g_list_append(w->main_widgets, widget); }
