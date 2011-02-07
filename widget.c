@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-02-07 18:58:02 gawen>
+   Time-stamp: <2011-02-07 20:20:05 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -151,36 +151,23 @@ void create_widget()
   };
 
   /* purple signals and callback */
-  const struct p_signal {
-    void *instance;
-    const char *signal;
-    void *callback;
-  } purple_signal_connections[] = {
+  const struct pbar_prpl_signal p_signal_connections[] = {
     { purple_accounts_get_handle(), "account-status-changed", cb_status },
     { purple_connections_get_handle(), "signed-on", cb_signed_on },
     { NULL, NULL, NULL }
-  }; const struct p_signal *purple_sig = purple_signal_connections;
+  };
 
   /* purple preferences signals and callback */
-  const struct p_signal purple_prefs_signal_connections[] = {
+  const struct pbar_prpl_signal pp_signal_connections[] = {
     { bar, PIDGIN_PREFS_ROOT "/accounts/buddyicon", cb_buddy_icon_update },
     { NULL, NULL, NULL }
-  }; const struct p_signal *purple_prefs_sig = purple_prefs_signal_connections;
+  };
 
   /* connect signals and save handlers and instance when needed
      to disconnect those signals when the widget is destroyed */
   gtk_connect_signals(PBAR_WIDGET(bar), g_signal_connections, NULL);
-  for(; purple_sig->instance ; purple_sig++)
-    purple_signal_connect(purple_sig->instance,
-                          purple_sig->signal,
-                          bar,
-                          PURPLE_CALLBACK(purple_sig->callback),
-                          NULL);
-  for(; purple_prefs_sig->instance ; purple_prefs_sig++)
-    purple_prefs_connect_callback(purple_prefs_sig->instance,
-                                  purple_prefs_sig->signal,
-                                  PURPLE_PREFS_CALLBACK(purple_prefs_sig->callback),
-                                  NULL);
+  prpl_connect_signals(PBAR_WIDGET(bar), p_signal_connections, NULL);
+  prpl_prefs_connect_signals(PBAR_WIDGET(bar), pp_signal_connections, NULL);
 
   /* show everything */
   gtk_widget_show_all(bar->hbox);
@@ -198,8 +185,8 @@ void destroy_widget()
   bar->installed = FALSE;
 
   /* disconnect purple and prefs signals */
-  purple_signals_disconnect_by_handle(bar);
-  purple_prefs_disconnect_by_handle(bar);
+  prpl_disconnect_signals(PBAR_WIDGET(bar));
+  prpl_prefs_disconnect_signals(PBAR_WIDGET(bar));
 
   gtk_destroy(PBAR_WIDGET(bar)); /* destroy widgets */
   g_free(bar);                   /* free widget */
