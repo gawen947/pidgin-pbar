@@ -1,5 +1,5 @@
 /* File: purple.h
-   Time-stamp: <2011-02-04 16:26:58 gawen>
+   Time-stamp: <2011-02-07 20:12:06 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -23,6 +23,14 @@
 
 #include "common.h"
 
+#include "gtk.h"
+
+struct pbar_prpl_signal {
+  void *instance;
+  const char *signal;
+  void *callback;
+};
+
 /* not sure purple define that */
 #ifndef PURPLE_PREFS_CALLBACK
 # define PURPLE_PREFS_CALLBACK(func) ((PurplePrefCallback)func)
@@ -44,5 +52,13 @@ void set_status_all(const gchar *status_id, GList *attrs);
 void set_status_with_mood(PurpleAccount *account, const gchar *mood);
 void set_display_name(PurpleAccount *account, const gchar *name);
 void set_display_name_all(const gchar *name);
+void prpl_disconnect_signals(struct pbar_widget *w);
+void prpl_prefs_disconnect_signals(struct pbar_widget *w);
+void prpl_connect_signals(struct pbar_widget *w,
+                          const struct pbar_prpl_signal *sig_list,
+                          gpointer data);
+void prpl_prefs_connect_signals(struct pbar_widget *w,
+                                const struct pbar_prpl_signal *sig_list,
+                                gpointer data);
 
 #endif /* _PURPLE_H_ */

@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2011-02-05 02:53:06 gawen>
+   Time-stamp: <2011-02-07 20:11:54 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -335,6 +335,37 @@ void set_status_message(const gchar *pm)
   purple_savedstatus_set_message(status, pm);
   purple_savedstatus_activate(status);
 }
+
+void prpl_connect_signals(struct pbar_widget *w,
+                          const struct pbar_prpl_signal *sig_list,
+                          gpointer data)
+{
+  const struct pbar_prpl_signal *s = sig_list;
+  for(; s->signal ; s++)
+    purple_signal_connect(s->instance,
+                          s->signal,
+                          w,
+                          PURPLE_CALLBACK(s->callback),
+                          data);
+}
+
+void prpl_prefs_connect_signals(struct pbar_widget *w,
+                                const struct pbar_prpl_signal *sig_list,
+                                gpointer data)
+{
+  const struct pbar_prpl_signal *s = sig_list;
+  for(; s->signal ; s++)
+    purple_prefs_connect_callback(s->instance,
+                                  s->signal,
+                                  PURPLE_PREFS_CALLBACK(s->callback),
+                                  data);
+}
+
+void prpl_disconnect_signals(struct pbar_widget *w)
+{ purple_signals_disconnect_by_handle(w); }
+
+void prpl_prefs_disconnect_signals(struct pbar_widget *w)
+{ purple_prefs_disconnect_by_handle(w); }
 
 static void cb_global_moods_for_each(gpointer key, gpointer value,
                                      gpointer user_data)
