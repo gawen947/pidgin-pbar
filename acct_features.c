@@ -1,5 +1,5 @@
 /* File: acct_features.c
-   Time-stamp: <2011-02-07 17:29:51 gawen>
+   Time-stamp: <2011-02-07 18:57:18 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -75,6 +75,9 @@ struct acct_features_dialog * create_acct_features_dialog()
                                           GDK_TYPE_PIXBUF, /* TUNE */
                                           GDK_TYPE_PIXBUF, /* GAME */
                                           GDK_TYPE_PIXBUF  /* APP */ );
+
+  /* add main widgets */
+  gtk_add_main_widget(PBAR_WIDGET(f_diag), f_diag->window);
 
   /* widgets that are not modified */
   GtkWidget *vbox = pidgin_dialog_get_vbox_with_properties(GTK_DIALOG(f_diag->window),
@@ -152,25 +155,8 @@ struct acct_features_dialog * create_acct_features_dialog()
 
 void destroy_acct_features_dialog(struct acct_features_dialog *f_diag)
 {
-  GList *l, *i, *j;
-
-  /* disconnect gtk signals */
-  for(i = f_diag->gtk_hnd, j = f_diag->gtk_inst ; i && j ;
-      i = i->next, j = j->next)
-    g_signal_handler_disconnect(j->data, GPOINTER_TO_INT(i->data));
-  g_list_free(f_diag->gtk_hnd);
-  g_list_free(f_diag->gtk_inst);
-
-  /* destroy widgets */
-  l = gtk_container_get_children(GTK_CONTAINER(f_diag->window));
-  for(i = l ; i ; i = i->next) {
-    gtk_widget_destroy(i->data);
-    i->data = NULL;
-  }
-  gtk_widget_destroy(f_diag->window);
-
-  /* free dialog */
-  g_free(f_diag);
+  gtk_destroy(PBAR_WIDGET(f_diag)); /* destroy widgets */
+  g_free(f_diag);                   /* free dialog */
 }
 
 void init_acct_features_dialog(struct acct_features_dialog *f_diag)

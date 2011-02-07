@@ -1,5 +1,5 @@
 /* File: gtk.c
-   Time-stamp: <2011-02-07 18:33:55 gawen>
+   Time-stamp: <2011-02-07 18:49:30 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -71,7 +71,7 @@ void gtk_destroy(struct pbar_widget *w)
 
   /* destroy widgets */
   for(j = w->main_widgets ; j ; j = j->next) {
-    GtkWidget *main_widget = (GtkWidget *)i->data;
+    GtkWidget *main_widget = (GtkWidget *)j->data;
 
     l = gtk_container_get_children(GTK_CONTAINER(main_widget));
     for(i = l ; i ; i = i->next) {

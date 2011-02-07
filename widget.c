@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-02-05 04:24:45 gawen>
+   Time-stamp: <2011-02-07 18:58:02 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -38,6 +38,7 @@ void create_widget()
      this way way we avoid memory leaks */
   if(!bar)
     bar = g_malloc(sizeof(struct widget));
+  memset(bar, 0, sizeof(struct widget));
 
   /* widgets that can possibly be modified along plugin's execution */
   bar->icon          = gtk_image_new();
@@ -53,6 +54,11 @@ void create_widget()
   bar->icon_eventbox = gtk_event_box_new();
   bar->status_menu   = gtk_menu_new();
   bar->mood_menu     = gtk_menu_new();
+
+  /* add main widgets */
+  gtk_add_main_widget(PBAR_WIDGET(bar), bar->hbox);
+  gtk_add_main_widget(PBAR_WIDGET(bar), bar->status_menu);
+  gtk_add_main_widget(PBAR_WIDGET(bar), bar->mood_menu);
 
   /* widgets that are not modified */
   GtkWidget *vbox = gtk_vbox_new(FALSE, 0);
@@ -189,45 +195,14 @@ void destroy_widget()
 {
   g_return_if_fail(bar->installed);
 
-  GList *l, *i, *j;
-
   bar->installed = FALSE;
 
   /* disconnect purple and prefs signals */
   purple_signals_disconnect_by_handle(bar);
   purple_prefs_disconnect_by_handle(bar);
 
-  /* disconnect gtk signals */
-  for(i = bar->gtk_hnd, j = bar->gtk_inst ; i && j ; i = i->next, j = j->next)
-    g_signal_handler_disconnect(j->data, GPOINTER_TO_INT(i->data));
-  g_list_free(bar->gtk_hnd);
-  g_list_free(bar->gtk_inst);
-
-  /* destroy drop down status menu */
-  l = gtk_container_get_children(GTK_CONTAINER(bar->status_menu));
-  for(i = l ; i ; i = i->next) {
-    gtk_widget_destroy(i->data);
-    i->data = NULL;
-  }
-  gtk_widget_destroy(bar->status_menu);
-
-  /* destroy drop down mood menu */
-  l = gtk_container_get_children(GTK_CONTAINER(bar->mood_menu));
-  for(i = l ; i ; i = i->next) {
-    gtk_widget_destroy(i->data);
-    i->data = NULL;
-  }
-  gtk_widget_destroy(bar->mood_menu);
-
-  /* destroy widget */
-  l = gtk_container_get_children(GTK_CONTAINER(bar->hbox));
-  for(i = l ; i ; i = i->next) {
-    gtk_widget_destroy(i->data);
-    i->data = NULL;
-  }
-  gtk_widget_destroy(bar->hbox);
-
-  g_free(bar);
+  gtk_destroy(PBAR_WIDGET(bar)); /* destroy widgets */
+  g_free(bar);                   /* free widget */
   bar = NULL;
 }
 
