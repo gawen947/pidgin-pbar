@@ -1,5 +1,5 @@
 /* File: acct_features.h
-   Time-stamp: <2011-02-04 14:15:13 gawen>
+   Time-stamp: <2011-02-07 17:31:32 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -19,14 +19,16 @@
 #ifndef _ACCT_FEATURES_H_
 #define _ACCT_FEATURES_H_
 
+#include "common.h"
+
+#include "gtk.h"
+
 struct acct_features_dialog {
+  BEGIN_PBAR_WIDGET;
+
   /* window and list storage */
   GtkWidget *window;
   GtkListStore *list_store;
-
-  /* signals handlers and instance for disconnection */
-  GList *gtk_hnd;
-  GList *gtk_inst;
 };
 
 struct acct_features_dialog * create_acct_features_dialog();

@@ -1,5 +1,5 @@
 /* File: protocol_features.h
-   Time-stamp: <2011-02-04 14:08:11 gawen>
+   Time-stamp: <2011-02-07 17:31:27 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -19,14 +19,16 @@
 #ifndef _PROTOCOL_FEATURES_H_
 #define _PROTOCOL_FEATURES_H_
 
+#include "common.h"
+
+#include "gtk.h"
+
 struct protocol_features_dialog {
+  BEGIN_PBAR_WIDGET;
+
   /* window and list storage */
   GtkWidget *window;
   GtkListStore *list_store;
-
-  /* signals handlers and instance for disconnection */
-  GList *gtk_hnd;
-  GList *gtk_inst;
 };
 
 struct protocol_features_dialog * create_protocol_features_dialog();

@@ -1,5 +1,5 @@
 /* File: protocol_features.c
-   Time-stamp: <2011-02-04 14:07:55 gawen>
+   Time-stamp: <2011-02-07 17:33:20 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -20,6 +20,7 @@
 
 #include "pbar.h"
 #include "purple.h"
+#include "gtk.h"
 #include "protocol_features.h"
 
 static void cb_destroy_win(GtkWidget *widget, gpointer data);
@@ -56,6 +57,7 @@ static void cb_refresh_button(GtkWidget *widget, gpointer data)
 struct protocol_features_dialog * create_protocol_features_dialog()
 {
   struct protocol_features_dialog *f_diag = g_malloc(sizeof(struct protocol_features_dialog));
+  memset(f_diag, 0, sizeof(struct protocol_features_dialog));
 
   /* widgets that can possibly be modified along dialog lifetime */
   f_diag->window = pidgin_create_dialog(_("Protocol features"),
@@ -130,27 +132,16 @@ struct protocol_features_dialog * create_protocol_features_dialog()
   gtk_box_pack_start(GTK_BOX(vbox), view, TRUE, TRUE, 0);
 
   /* gtk signals and callback */
-  const struct g_signal {
-    GtkWidget *widget;
-    const gchar *signal;
-    void (*callback)(GtkWidget *, gpointer);
-  } g_signal_connections[] = {
+  const struct pbar_gtk_signal g_signal_connections[] = {
     { f_diag->window, "destroy", cb_destroy_win },
     { refresh_button, "clicked", cb_refresh_button },
     { close_button, "clicked", cb_close_button },
     { NULL, NULL, NULL }
-  }; const struct g_signal *g_sig = g_signal_connections;
+  };
 
   /* connect signals and save handlers and instance when needed
      to disconnect those signals when the widget is destroyed */
-  for(; g_sig->widget ; g_sig++) {
-    gulong handler_id = g_signal_connect(G_OBJECT(g_sig->widget),
-                                         g_sig->signal,
-                                         G_CALLBACK(g_sig->callback),
-                                         f_diag);
-    f_diag->gtk_hnd = g_list_append(f_diag->gtk_hnd,GINT_TO_POINTER(handler_id));
-    f_diag->gtk_inst = g_list_append(f_diag->gtk_inst, g_sig->widget);
-  }
+  gtk_connect_signals(PBAR_WIDGET(f_diag), g_signal_connections, f_diag);
 
   /* show everything */
   gtk_widget_show_all(f_diag->window);
