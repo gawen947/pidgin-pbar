@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-04 14:40:47 gawen>
+   Time-stamp: <2011-02-08 19:30:30 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -35,6 +35,26 @@ static void acct_features(PurplePluginAction *act)
   init_acct_features_dialog(f_diag);
 }
 
+static void change_nickname(PurplePluginAction *act)
+{
+}
+
+static void change_pm(PurplePluginAction *act)
+{
+}
+
+static void change_status(PurplePluginAction *act)
+{
+}
+
+static void change_mood(PurplePluginAction *act)
+{
+}
+
+static void change_icon(PurplePluginAction *act)
+{
+}
+
 GList * create_actions(PurplePlugin *plugin, gpointer ctx)
 {
   GList *l = NULL;
@@ -43,13 +63,18 @@ GList * create_actions(PurplePlugin *plugin, gpointer ctx)
     const gchar *title;
     void (*action)(PurplePluginAction *);
   } actions[] = {
+    { N_("Change nickname"), change_nickname },
+    { N_("Change personal message"), change_pm },
+    { N_("Change status"), change_status },
+    { N_("Change mood"), change_mood },
+    { N_("Change icon"), change_icon },
     { N_("Protocol features"), protocol_features },
     { N_("Account features"), acct_features },
     { NULL, NULL }
   }; const struct action *acts = actions;
 
   for(; acts->title ; acts++) {
-    PurplePluginAction *act = purple_plugin_action_new(acts->title,
+    PurplePluginAction *act = purple_plugin_action_new(_(acts->title),
                                                        acts->action);
     l = g_list_append(l, act);
   }
