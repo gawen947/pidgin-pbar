@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-02-07 20:20:05 gawen>
+   Time-stamp: <2011-02-08 19:42:07 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -277,6 +277,105 @@ void init_widget()
   state = purple_prefs_get_bool(PREF "/hide-statusbox");
   set_statusbox_visible(!state);
 }
+
+/* create a change name dialog */
+void create_name_dialog()
+{
+  const gchar *name = purple_prefs_get_string(PREF "/nickname");
+  if(!name || !strcmp(name, EMPTY_NAME))
+    name = "";
+
+  purple_request_input(thisplugin,
+                       _("Change nickname"),
+                       _("Enter your nickname here..."),
+                       _("This will change your nickname "
+                         "for every account which supports it."),
+                       name,
+                       FALSE,
+                       FALSE,
+                       NULL,
+                       _("OK"),
+                       G_CALLBACK(cb_name_apply),
+                       _("Cancel"),
+                       G_CALLBACK(cb_name_cancel),
+                       NULL,
+                       NULL,
+                       NULL,
+                       NULL);
+  bar->name_dialog = TRUE;
+}
+
+/* create a personal message dialog */
+void create_pm_dialog()
+{
+  PurpleRequestFields *fields;
+  PurpleRequestFieldGroup *group;
+  PurpleRequestField *field;
+  const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
+  if(!pm || !strcmp(pm, EMPTY_PM))
+    pm = "";
+
+  const struct s_field {
+    const gchar *text;
+    const gchar *pref;
+  } groups[] = {
+    { N_("_Mood message"), PREF "/mood-message" },
+    { N_("Current song"), NULL },
+    { N_("Song _title"), PREF "/tune-title" },
+    { N_("Song _artist"), PREF "/tune-artist" },
+    { N_("Song al_bum"), PREF "/tune-album" },
+    { N_("MSN pecan extra attributes"), NULL },
+    { N_("_Game name"), PREF "/game-message" },
+    { N_("_Office app name"), PREF "/office-message" },
+    { NULL, NULL },
+    { NULL, NULL }
+  }; const struct s_field *g = groups;
+
+  fields = purple_request_fields_new();
+  group = purple_request_field_group_new(_("Status and mood message"));
+  purple_request_fields_add_group(fields, group);
+
+  field = purple_request_field_string_new(PREF "/personal-message",
+                                          _("_Personal message"),
+                                          pm,
+                                          FALSE);
+  purple_request_field_set_required(field, FALSE);
+  purple_request_field_group_add_field(group, field);
+
+  for(; g->pref ; g++) {
+    for(; g->pref ; g++) {
+      const gchar *message;
+
+      if(purple_prefs_get_bool(PREF "/reset-attrs"))
+        message = "";
+      else
+        message = purple_prefs_get_string(g->pref);
+      field = purple_request_field_string_new(g->pref,
+                                              _(g->text),
+                                              message,
+                                              FALSE);
+      purple_request_field_set_required(field, FALSE);
+      purple_request_field_group_add_field(group, field);
+    }
+    group = purple_request_field_group_new(_(g->text));
+    purple_request_fields_add_group(fields, group);
+  }
+
+  purple_request_fields(thisplugin,
+                        _("Change status messages"),
+                        _("Enter status message..."),
+                        _("This will change some status messages for every "
+                          "account which supports it, please be advised "
+                          "that some are inconsistent between each other."),
+                        fields,
+                        _("OK"),
+                        G_CALLBACK(cb_pm_apply),
+                        _("Cancel"),
+                        G_CALLBACK(cb_pm_cancel),
+                        NULL, NULL, NULL, NULL);
+  bar->pm_dialog = TRUE;
+}
+
 
 /* replace format character <c><r> with <n> string and escape with <c><c> */
 static gchar * g_strreplacefmt(const gchar *s, gchar c, gchar r, const gchar *n)

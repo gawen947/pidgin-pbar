@@ -1,5 +1,5 @@
 /* File: widget.h
-   Time-stamp: <2011-02-05 04:25:24 gawen>
+   Time-stamp: <2011-02-08 19:39:51 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -69,6 +69,8 @@ extern struct widget *bar;
 void create_widget();
 void destroy_widget();
 void init_widget();
+void create_name_dialog();
+void create_pm_dialog();
 void set_widget_name(const gchar *markup, const gchar *name);
 void set_widget_pm(const gchar *markup, const gchar *pm);
 void set_widget_status(const gchar *stock);
