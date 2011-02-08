@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-08 19:30:30 gawen>
+   Time-stamp: <2011-02-08 19:43:20 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -19,6 +19,7 @@
 #include "common.h"
 
 #include "pbar.h"
+#include "widget.h"
 #include "purple.h"
 #include "protocol_features.h"
 #include "acct_features.h"
@@ -36,12 +37,10 @@ static void acct_features(PurplePluginAction *act)
 }
 
 static void change_nickname(PurplePluginAction *act)
-{
-}
+{ create_name_dialog(); }
 
 static void change_pm(PurplePluginAction *act)
-{
-}
+{ create_pm_dialog(); }
 
 static void change_status(PurplePluginAction *act)
 {
