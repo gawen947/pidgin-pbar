@@ -1,5 +1,5 @@
 /* File: status_dialog.h
-   Time-stamp: <2011-02-09 20:05:59 gawen>
+   Time-stamp: <2011-02-09 20:32:23 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -29,6 +29,9 @@ struct status_dialog {
   /* window and list storage */
   GtkWidget *window;
   GtkListStore *list_store;
+
+  /* global status for selection */
+  GHashTable *global_status;
 };
 
 struct status_dialog * create_status_dialog();

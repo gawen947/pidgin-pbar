@@ -1,5 +1,5 @@
 /* File: status_dialog.c
-   Time-stamp: <2011-02-09 20:09:53 gawen>
+   Time-stamp: <2011-02-09 20:32:38 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -117,15 +117,17 @@ struct status_dialog * create_status_dialog()
 
 void destroy_status_dialog(struct status_dialog *s_diag)
 {
-  gtk_destroy(PBAR_WIDGET(s_diag)); /* destroy widgets */
-  g_free(s_diag);                   /* free dialog */
+  gtk_destroy(PBAR_WIDGET(s_diag));            /* destroy widgets */
+  g_hash_table_destroy(s_diag->global_status); /* free global status */
+  g_free(s_diag);                              /* free dialog */
 }
 
 void init_status_dialog(struct status_dialog *s_diag)
 {
   GList *a = purple_accounts_get_all_active();
-  GHashTable *global_status = g_hash_table_new_full(g_str_hash, g_str_equal,
-                                                    NULL, NULL);
+  if(!s_diag->global_status)
+    s_diag->global_status = g_hash_table_new_full(g_str_hash, g_str_equal,
+                                                  NULL, NULL);
 
   for(; a ; a = g_list_delete_link(a, a)) {
     PurpleAccount *acct  = (PurpleAccount *)a->data;
