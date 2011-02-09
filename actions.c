@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-08 19:43:20 gawen>
+   Time-stamp: <2011-02-09 20:11:28 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -23,6 +23,14 @@
 #include "purple.h"
 #include "protocol_features.h"
 #include "acct_features.h"
+#include "status_dialog.h"
+
+static void cb_icon_choose(const gchar *path, gpointer data)
+{
+  g_return_if_fail(path);
+
+  purple_prefs_set_path(PIDGIN_PREFS_ROOT "/accounts/buddyicon", path);
+}
 
 static void protocol_features(PurplePluginAction *act)
 {
@@ -44,6 +52,8 @@ static void change_pm(PurplePluginAction *act)
 
 static void change_status(PurplePluginAction *act)
 {
+  struct status_dialog *s_diag = create_status_dialog();
+  init_status_dialog(s_diag);
 }
 
 static void change_mood(PurplePluginAction *act)
@@ -52,6 +62,15 @@ static void change_mood(PurplePluginAction *act)
 
 static void change_icon(PurplePluginAction *act)
 {
+  g_return_if_fail(bar->installed);
+
+  PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
+  GtkWidget *chooser = pidgin_buddy_icon_chooser_new(GTK_WINDOW
+                                                     (gtk_widget_get_toplevel
+                                                      (GTK_WIDGET(blist))),
+                                                     cb_icon_choose,
+                                                     NULL);
+  gtk_widget_show(chooser);
 }
 
 GList * create_actions(PurplePlugin *plugin, gpointer ctx)
