@@ -1,5 +1,5 @@
 /* File: status_dialog.c
-   Time-stamp: <2011-02-10 16:02:23 gawen>
+   Time-stamp: <2011-02-10 16:46:34 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -26,6 +26,10 @@ static void cb_destroy_win(GtkWidget *widget, gpointer data);
 static void cb_close_button(GtkWidget *widget, gpointer data);
 static void cb_apply_button(GtkWidget *widget, gpointer date);
 static void cb_refresh_button(GtkWidget *widget, gpointer data);
+static void cb_row_activated(GtkWidget *widget,
+                             GtkTreePath *path,
+                             GtkTreeViewColumn *column,
+                             gpointer data);
 
 enum {
   STATUSICON_COLUMN,
@@ -36,20 +40,28 @@ enum {
 static void cb_destroy_win(GtkWidget *widget, gpointer data)
 { destroy_status_dialog((struct status_dialog *)data); }
 
+static void cb_row_activated(GtkWidget *widget,
+                             GtkTreePath *path,
+                             GtkTreeViewColumn *column,
+                             gpointer data)
+{ cb_apply_button(widget, data); }
+
 static void cb_apply_button(GtkWidget *widget, gpointer data)
 {
-  GtkTreeSelection *sel;
   GtkTreeModel *model;
   GtkTreeIter iter;
+  GtkTreeSelection *sel;
   struct status_dialog *s_diag = (struct status_dialog *)data;
 
   sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(s_diag->list_view));
   if(gtk_tree_selection_get_selected(sel, &model, &iter)) {
     PurpleStatusType *type;
     gchar *name;
+
     gtk_tree_model_get(model, &iter, STATUS_COLUMN, &name, -1);
     type = g_hash_table_lookup(s_diag->global_status, name);
-    if(type) {
+
+    if(type) { /* status type found */
       const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
       PurpleStatusPrimitive prim = purple_status_type_get_primitive(type);
       PurpleSavedStatus *status = purple_savedstatus_get_current();
@@ -60,6 +72,7 @@ static void cb_apply_button(GtkWidget *widget, gpointer data)
 
       purple_debug_info(NAME, "status changed to \"%s\" by user\n",
                         purple_status_type_get_name(type));
+      destroy_status_dialog(s_diag); /* destroy dialog */
     } else
       purple_debug_info(NAME, "selected status \"%s\" doesn't exists\n", name);
     g_free(name);
@@ -130,6 +143,7 @@ struct status_dialog * create_status_dialog()
   /* gtk signals and callback */
   const struct pbar_gtk_signal g_signal_connections[] = {
     { s_diag->window, "destroy", cb_destroy_win },
+    { s_diag->list_view, "row-activated", cb_row_activated },
     { refresh_button, "clicked", cb_refresh_button },
     { apply_button, "clicked", cb_apply_button },
     { close_button, "clicked", cb_close_button },
