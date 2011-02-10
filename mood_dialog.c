@@ -1,5 +1,5 @@
 /* File: mood_dialog.c
-   Time-stamp: <2011-02-10 17:55:48 gawen>
+   Time-stamp: <2011-02-10 17:58:48 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -56,7 +56,6 @@ static void cb_apply_button(GtkWidget *widget, gpointer data)
 
   sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(s_diag->list_view));
   if(gtk_tree_selection_get_selected(sel, &model, &iter)) {
-    /* TODO: factorisation, use set_mood_all or similar */
     const gchar *mood;
     gchar *name;
 
