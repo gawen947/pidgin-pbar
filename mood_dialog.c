@@ -1,5 +1,5 @@
 /* File: mood_dialog.c
-   Time-stamp: <2011-02-10 17:48:14 gawen>
+   Time-stamp: <2011-02-10 17:55:48 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -64,19 +64,11 @@ static void cb_apply_button(GtkWidget *widget, gpointer data)
     mood = g_hash_table_lookup(s_diag->global_moods, name);
 
     if(mood) { /* mood found */
-      GList *accts = purple_accounts_get_all_active();
       gchar *path;
 
       destroy_mood_dialog(s_diag); /* destroy dialog first */
 
-      for(; accts ; accts = g_list_delete_link(accts, accts)) {
-        PurpleAccount *account = (PurpleAccount *)accts->data;
-        PurpleConnection *gc = purple_account_get_connection(account);
-
-        if(gc && gc->flags & PURPLE_CONNECTION_SUPPORT_MOODS)
-          set_status_with_mood(account, mood);
-      }
-
+      set_status_with_mood_all(mood);
       purple_prefs_set_string(PREF "/mood", mood);
       path = get_mood_icon_path(mood);
       set_widget_mood(path);

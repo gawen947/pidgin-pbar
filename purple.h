@@ -1,5 +1,5 @@
 /* File: purple.h
-   Time-stamp: <2011-02-07 20:12:06 gawen>
+   Time-stamp: <2011-02-10 17:54:53 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -50,6 +50,7 @@ PurpleMood * get_global_moods();
 void set_status_message(const gchar *pm);
 void set_status_all(const gchar *status_id, GList *attrs);
 void set_status_with_mood(PurpleAccount *account, const gchar *mood);
+void set_status_with_mood_all(const gchar *mood);
 void set_display_name(PurpleAccount *account, const gchar *name);
 void set_display_name_all(const gchar *name);
 void prpl_disconnect_signals(struct pbar_widget *w);

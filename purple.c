@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2011-02-07 20:11:54 gawen>
+   Time-stamp: <2011-02-10 17:54:01 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -163,7 +163,8 @@ GHashTable * get_protocol_attrs(PurplePluginProtocolInfo *protocol)
 /* TODO: review this, now it does the same as get_protocol_attrs... */
 GHashTable * get_account_attrs(PurpleAccount *account)
 {
-  GHashTable *attrs = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, NULL);
+  GHashTable *attrs = g_hash_table_new_full(g_str_hash, g_str_equal,
+                                            NULL, NULL);
   GList *l = purple_account_get_status_types(account);
   for(; l ; l = l->next) {
     PurpleStatusType *type = (PurpleStatusType *)l->data;
@@ -208,7 +209,8 @@ PurpleMood * get_global_moods()
       PurpleConnection *gc = purple_account_get_connection(account);
 
       if(gc->flags & PURPLE_CONNECTION_SUPPORT_MOODS) {
-        PurplePluginProtocolInfo *prpl_info = PURPLE_PLUGIN_PROTOCOL_INFO(gc->prpl);
+        PurplePluginProtocolInfo *prpl_info = PURPLE_PLUGIN_PROTOCOL_INFO(
+          gc->prpl);
         PurpleMood *mood = NULL;
 
         for(mood = prpl_info->get_moods(account) ;
@@ -257,7 +259,21 @@ void set_status_with_mood(PurpleAccount *account, const gchar *mood)
                             NULL);
 }
 
-/* set exclusive status for all account */
+/* set status to the specified mood for all accounts */
+void set_status_with_mood_all(const gchar *mood)
+{
+  GList *accts = purple_accounts_get_all_active();
+  for(; accts ; accts = g_list_delete_link(accts, accts)) {
+    PurpleAccount *account = (PurpleAccount *)accts->data;
+    PurpleConnection *gc = purple_account_get_connection(account);
+
+    if(gc && gc->flags & PURPLE_CONNECTION_SUPPORT_MOODS)
+      set_status_with_mood(account, mood);
+  }
+}
+
+
+/* set exclusive status for all accounts */
 void set_status_all(const gchar *status_id, GList *attrs)
 {
   GList *accts = purple_accounts_get_all_active();
