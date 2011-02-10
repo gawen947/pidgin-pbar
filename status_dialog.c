@@ -1,5 +1,5 @@
 /* File: status_dialog.c
-   Time-stamp: <2011-02-09 20:32:38 gawen>
+   Time-stamp: <2011-02-10 16:02:23 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -19,6 +19,7 @@
 #include "common.h"
 
 #include "gtk.h"
+#include "preferences.h"
 #include "status_dialog.h"
 
 static void cb_destroy_win(GtkWidget *widget, gpointer data);
@@ -37,6 +38,33 @@ static void cb_destroy_win(GtkWidget *widget, gpointer data)
 
 static void cb_apply_button(GtkWidget *widget, gpointer data)
 {
+  GtkTreeSelection *sel;
+  GtkTreeModel *model;
+  GtkTreeIter iter;
+  struct status_dialog *s_diag = (struct status_dialog *)data;
+
+  sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(s_diag->list_view));
+  if(gtk_tree_selection_get_selected(sel, &model, &iter)) {
+    PurpleStatusType *type;
+    gchar *name;
+    gtk_tree_model_get(model, &iter, STATUS_COLUMN, &name, -1);
+    type = g_hash_table_lookup(s_diag->global_status, name);
+    if(type) {
+      const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
+      PurpleStatusPrimitive prim = purple_status_type_get_primitive(type);
+      PurpleSavedStatus *status = purple_savedstatus_get_current();
+
+      purple_savedstatus_set_type(status, prim);
+      purple_savedstatus_set_message(status, pm);
+      purple_savedstatus_activate(status);
+
+      purple_debug_info(NAME, "status changed to \"%s\" by user\n",
+                        purple_status_type_get_name(type));
+    } else
+      purple_debug_info(NAME, "selected status \"%s\" doesn't exists\n", name);
+    g_free(name);
+  } else
+    purple_debug_info(NAME, "no row selected\n");
 }
 
 static void cb_close_button(GtkWidget *widget, gpointer data)
@@ -61,17 +89,20 @@ struct status_dialog * create_status_dialog()
                                         TRUE);
   s_diag->list_store = gtk_list_store_new(N_COLUMN,
                                           GDK_TYPE_PIXBUF, /* STATUSICON */
-                                          G_TYPE_STRING   /* STATUS */ );
+                                          G_TYPE_STRING    /* STATUS */ );
+  s_diag->list_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(
+                                                     s_diag->list_store));
+
 
   /* add main widgets */
   gtk_add_main_widget(PBAR_WIDGET(s_diag), s_diag->window);
 
   /* widgets that are not modified */
-  GtkWidget *vbox = pidgin_dialog_get_vbox_with_properties(GTK_DIALOG(s_diag->window),
+  GtkWidget *vbox = pidgin_dialog_get_vbox_with_properties(GTK_DIALOG(
+                                                             s_diag->window),
                                                            FALSE,
                                                            PIDGIN_HIG_BORDER);
   GtkWidget *hbox = pidgin_dialog_get_action_area(GTK_DIALOG(s_diag->window));
-  GtkWidget *view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(s_diag->list_store));
   GtkWidget *refresh_button = gtk_button_new_from_stock(GTK_STOCK_REFRESH);
   GtkWidget *close_button   = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
   GtkWidget *apply_button   = gtk_button_new_from_stock(GTK_STOCK_APPLY);
@@ -80,7 +111,7 @@ struct status_dialog * create_status_dialog()
   GtkTreeViewColumn *p_col = gtk_tree_view_column_new();
   GtkCellRenderer *p_renderer;
   gtk_tree_view_column_set_title(p_col, _("Status"));
-  gtk_tree_view_append_column(GTK_TREE_VIEW(view), p_col);
+  gtk_tree_view_append_column(GTK_TREE_VIEW(s_diag->list_view), p_col);
   p_renderer = gtk_cell_renderer_pixbuf_new();
   gtk_tree_view_column_pack_start(p_col, p_renderer, FALSE);
   gtk_tree_view_column_add_attribute(p_col, p_renderer,
@@ -94,12 +125,13 @@ struct status_dialog * create_status_dialog()
   gtk_box_pack_start(GTK_BOX(hbox), refresh_button, FALSE, FALSE, 0);
   gtk_box_pack_start(GTK_BOX(hbox), close_button, FALSE, FALSE, 0);
   gtk_box_pack_start(GTK_BOX(hbox), apply_button, FALSE, FALSE, 0);
-  gtk_box_pack_start(GTK_BOX(vbox), view, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(vbox), s_diag->list_view, TRUE, TRUE, 0);
 
   /* gtk signals and callback */
   const struct pbar_gtk_signal g_signal_connections[] = {
     { s_diag->window, "destroy", cb_destroy_win },
     { refresh_button, "clicked", cb_refresh_button },
+    { apply_button, "clicked", cb_apply_button },
     { close_button, "clicked", cb_close_button },
     { NULL, NULL, NULL }
   };
@@ -125,6 +157,9 @@ void destroy_status_dialog(struct status_dialog *s_diag)
 void init_status_dialog(struct status_dialog *s_diag)
 {
   GList *a = purple_accounts_get_all_active();
+  GHashTable *global_status = g_hash_table_new_full(g_str_hash, g_str_equal,
+                                                    NULL, NULL);
+
   if(!s_diag->global_status)
     s_diag->global_status = g_hash_table_new_full(g_str_hash, g_str_equal,
                                                   NULL, NULL);
@@ -152,9 +187,11 @@ void init_status_dialog(struct status_dialog *s_diag)
       else
         g_hash_table_insert(global_status, (gpointer)stock,
                             GINT_TO_POINTER(TRUE));
+
       status_name = purple_status_type_get_name(type);
       icon        = gtk_widget_render_icon(s_diag->window, stock,
                                            GTK_ICON_SIZE_MENU, NULL);
+      g_hash_table_insert(s_diag->global_status, (gpointer)status_name, type);
       gtk_list_store_append(s_diag->list_store, &iter);
       gtk_list_store_set(s_diag->list_store, &iter,
                          STATUSICON_COLUMN, icon,
@@ -162,4 +199,5 @@ void init_status_dialog(struct status_dialog *s_diag)
                          -1);
     }
   }
+  g_hash_table_destroy(global_status);
 }

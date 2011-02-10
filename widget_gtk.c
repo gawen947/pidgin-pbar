@@ -242,7 +242,6 @@ void cb_status_menu(gpointer data)
   PurpleStatusPrimitive type_prim = purple_status_type_get_primitive(status_type);
   PurpleSavedStatus *status = purple_savedstatus_get_current();
 
-  status = purple_savedstatus_get_current();
   purple_savedstatus_set_type(status, type_prim);
   purple_savedstatus_set_message(status, pm);
   purple_savedstatus_activate(status);

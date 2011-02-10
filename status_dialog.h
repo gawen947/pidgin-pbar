@@ -1,5 +1,5 @@
 /* File: status_dialog.h
-   Time-stamp: <2011-02-09 20:32:23 gawen>
+   Time-stamp: <2011-02-10 15:42:51 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -26,8 +26,9 @@
 struct status_dialog {
   BEGIN_PBAR_WIDGET;
 
-  /* window and list storage */
+  /* window and list */
   GtkWidget *window;
+  GtkWidget *list_view;
   GtkListStore *list_store;
 
   /* global status for selection */
