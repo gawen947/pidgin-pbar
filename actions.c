@@ -1,5 +1,5 @@
 /* File: actions.c
-   Time-stamp: <2011-02-09 20:11:28 gawen>
+   Time-stamp: <2011-02-10 17:40:19 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -24,6 +24,7 @@
 #include "protocol_features.h"
 #include "acct_features.h"
 #include "status_dialog.h"
+#include "mood_dialog.h"
 
 static void cb_icon_choose(const gchar *path, gpointer data)
 {
@@ -58,6 +59,8 @@ static void change_status(PurplePluginAction *act)
 
 static void change_mood(PurplePluginAction *act)
 {
+  struct mood_dialog *s_diag = create_mood_dialog();
+  init_mood_dialog(s_diag);
 }
 
 static void change_icon(PurplePluginAction *act)
