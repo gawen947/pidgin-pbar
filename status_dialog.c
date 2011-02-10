@@ -1,5 +1,5 @@
 /* File: status_dialog.c
-   Time-stamp: <2011-02-10 16:58:30 gawen>
+   Time-stamp: <2011-02-10 17:48:54 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -206,7 +206,8 @@ void init_status_dialog(struct status_dialog *s_diag)
       status_name = purple_status_type_get_name(type);
       icon        = gtk_widget_render_icon(s_diag->window, stock,
                                            GTK_ICON_SIZE_MENU, NULL);
-      g_hash_table_insert(s_diag->global_status, (gpointer)status_name, type);
+      g_hash_table_insert(s_diag->global_status, (gpointer)_(status_name),
+                          type);
       gtk_list_store_append(s_diag->list_store, &iter);
       gtk_list_store_set(s_diag->list_store, &iter,
                          STATUSICON_COLUMN, icon,
