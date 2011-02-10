@@ -1,5 +1,5 @@
 /* File: status_dialog.c
-   Time-stamp: <2011-02-10 16:52:56 gawen>
+   Time-stamp: <2011-02-10 16:58:30 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -62,7 +62,7 @@ static void cb_apply_button(GtkWidget *widget, gpointer data)
     type = g_hash_table_lookup(s_diag->global_status, name);
 
     if(type) { /* status type found */
-      destroy_status_dialog(s_diag); /* destroy dialog fist */
+      destroy_status_dialog(s_diag); /* destroy dialog first */
 
       const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
       PurpleStatusPrimitive prim = purple_status_type_get_primitive(type);
