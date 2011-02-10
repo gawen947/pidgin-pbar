@@ -1,5 +1,5 @@
 /* File: mood_dialog.c
-   Time-stamp: <2011-02-10 17:45:26 gawen>
+   Time-stamp: <2011-02-10 17:48:14 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -205,7 +205,6 @@ void init_mood_dialog(struct mood_dialog *s_diag)
                      -1);
   g_hash_table_insert(s_diag->global_moods, (gpointer)_("None"),
                       (gpointer)empty_mood);
-
 
   for(; mood->mood ; mood++) {
     if(!mood->mood || !mood->description)
