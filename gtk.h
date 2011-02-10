@@ -1,5 +1,5 @@
 /* File: gtk.h
-   Time-stamp: <2011-02-07 18:33:20 gawen>
+   Time-stamp: <2011-02-10 16:52:27 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -21,6 +21,7 @@
 
 #include "common.h"
 
+#define PBAR_GTK_CALLBACK(func) ((void (*)(GtkWidget *, gpointer))func)
 #define PBAR_WIDGET(widget) ((struct pbar_widget *)widget)
 #define BEGIN_PBAR_WIDGET GList *gtk_hnd;     \
                           GList *gtk_inst;    \

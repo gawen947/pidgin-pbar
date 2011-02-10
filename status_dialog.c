@@ -1,5 +1,5 @@
 /* File: status_dialog.c
-   Time-stamp: <2011-02-10 16:46:34 gawen>
+   Time-stamp: <2011-02-10 16:52:56 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -62,6 +62,8 @@ static void cb_apply_button(GtkWidget *widget, gpointer data)
     type = g_hash_table_lookup(s_diag->global_status, name);
 
     if(type) { /* status type found */
+      destroy_status_dialog(s_diag); /* destroy dialog fist */
+
       const gchar *pm = purple_prefs_get_string(PREF "/personal-message");
       PurpleStatusPrimitive prim = purple_status_type_get_primitive(type);
       PurpleSavedStatus *status = purple_savedstatus_get_current();
@@ -72,7 +74,6 @@ static void cb_apply_button(GtkWidget *widget, gpointer data)
 
       purple_debug_info(NAME, "status changed to \"%s\" by user\n",
                         purple_status_type_get_name(type));
-      destroy_status_dialog(s_diag); /* destroy dialog */
     } else
       purple_debug_info(NAME, "selected status \"%s\" doesn't exists\n", name);
     g_free(name);
@@ -143,7 +144,7 @@ struct status_dialog * create_status_dialog()
   /* gtk signals and callback */
   const struct pbar_gtk_signal g_signal_connections[] = {
     { s_diag->window, "destroy", cb_destroy_win },
-    { s_diag->list_view, "row-activated", cb_row_activated },
+    { s_diag->list_view, "row-activated", PBAR_GTK_CALLBACK(cb_row_activated) },
     { refresh_button, "clicked", cb_refresh_button },
     { apply_button, "clicked", cb_apply_button },
     { close_button, "clicked", cb_close_button },
