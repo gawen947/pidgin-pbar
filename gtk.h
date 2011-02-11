@@ -1,5 +1,5 @@
 /* File: gtk.h
-   Time-stamp: <2011-02-10 16:52:27 gawen>
+   Time-stamp: <2011-02-11 01:23:06 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -48,5 +48,8 @@ void gtk_add_main_widget(struct pbar_widget *w, GtkWidget *widget);
 void gtk_connect_signals(struct pbar_widget *w,
                          const struct pbar_gtk_signal *sig_list,
                          gpointer data);
+GtkWidget * gtk_pidgin_dialog_box_new(const gchar *primary,
+                                      const gchar *secondary,
+                                      const gchar *icon);
 
 #endif /* _GTK_H_ */

@@ -1,5 +1,5 @@
 /* File: status_dialog.c
-   Time-stamp: <2011-02-10 17:48:54 gawen>
+   Time-stamp: <2011-02-11 01:47:39 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -112,6 +112,11 @@ struct status_dialog * create_status_dialog()
   gtk_add_main_widget(PBAR_WIDGET(s_diag), s_diag->window);
 
   /* widgets that are not modified */
+  GtkWidget *pbox = gtk_pidgin_dialog_box_new(_("Select your status..."),
+                                              _("This will change your current"
+                                                " status for every account"
+                                                " which supports it."),
+                                              PIDGIN_STOCK_DIALOG_QUESTION);
   GtkWidget *vbox = pidgin_dialog_get_vbox_with_properties(GTK_DIALOG(
                                                              s_diag->window),
                                                            FALSE,
@@ -139,6 +144,7 @@ struct status_dialog * create_status_dialog()
   gtk_box_pack_start(GTK_BOX(hbox), refresh_button, FALSE, FALSE, 0);
   gtk_box_pack_start(GTK_BOX(hbox), close_button, FALSE, FALSE, 0);
   gtk_box_pack_start(GTK_BOX(hbox), apply_button, FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(vbox), pbox, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX(vbox), s_diag->list_view, TRUE, TRUE, 0);
 
   /* gtk signals and callback */

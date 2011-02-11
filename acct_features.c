@@ -1,5 +1,6 @@
+
 /* File: acct_features.c
-   Time-stamp: <2011-02-09 18:15:19 gawen>
+   Time-stamp: <2011-02-11 01:41:03 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -80,6 +81,14 @@ struct acct_features_dialog * create_acct_features_dialog()
   gtk_add_main_widget(PBAR_WIDGET(f_diag), f_diag->window);
 
   /* widgets that are not modified */
+  GtkWidget *pbox = gtk_pidgin_dialog_box_new(_("Available features..."),
+                                              _("The following list shows the"
+                                                " available features for each"
+                                                " activated account. The last"
+                                                " line summarizes features"
+                                                " that have an impact on at"
+                                                " least one account."),
+                                              PIDGIN_STOCK_DIALOG_INFO);
   GtkWidget *vbox = pidgin_dialog_get_vbox_with_properties(GTK_DIALOG(f_diag->window),
                                                            FALSE,
                                                            PIDGIN_HIG_BORDER);
@@ -132,6 +141,7 @@ struct acct_features_dialog * create_acct_features_dialog()
   /* pack widgets */
   gtk_box_pack_start(GTK_BOX(hbox), refresh_button, FALSE, FALSE, 0);
   gtk_box_pack_start(GTK_BOX(hbox), close_button, FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(vbox), pbox, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX(vbox), view, TRUE, TRUE, 0);
 
   /* gtk signals and callback */

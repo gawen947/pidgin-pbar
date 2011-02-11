@@ -1,5 +1,5 @@
 /* File: protocol_features.c
-   Time-stamp: <2011-02-07 19:05:53 gawen>
+   Time-stamp: <2011-02-11 01:39:18 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -80,6 +80,12 @@ struct protocol_features_dialog * create_protocol_features_dialog()
   gtk_add_main_widget(PBAR_WIDGET(f_diag), f_diag->window);
 
   /* widgets that are not modified */
+  GtkWidget *pbox = gtk_pidgin_dialog_box_new(_("Available features..."),
+                                              _("The following list shows the"
+                                                " available features for each"
+                                                " protocol."),
+                                              PIDGIN_STOCK_DIALOG_INFO);
+
   GtkWidget *vbox = pidgin_dialog_get_vbox_with_properties(GTK_DIALOG(f_diag->window),
                                                            FALSE,
                                                            PIDGIN_HIG_BORDER);
@@ -132,6 +138,7 @@ struct protocol_features_dialog * create_protocol_features_dialog()
   /* pack widgets */
   gtk_box_pack_start(GTK_BOX(hbox), refresh_button, FALSE, FALSE, 0);
   gtk_box_pack_start(GTK_BOX(hbox), close_button, FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(vbox), pbox, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX(vbox), view, TRUE, TRUE, 0);
 
   /* gtk signals and callback */

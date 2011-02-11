@@ -1,5 +1,5 @@
 /* File: gtk.c
-   Time-stamp: <2011-02-07 18:49:30 gawen>
+   Time-stamp: <2011-02-11 01:29:58 gawen>
 
    Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
 
@@ -84,3 +84,51 @@ void gtk_destroy(struct pbar_widget *w)
 
 void gtk_add_main_widget(struct pbar_widget *w, GtkWidget *widget)
 { w->main_widgets = g_list_append(w->main_widgets, widget); }
+
+GtkWidget * gtk_pidgin_dialog_box_new(const gchar *primary,
+                                      const gchar *secondary,
+                                      const gchar *icon)
+{
+  GtkWidget *hbox;
+  GtkWidget *vbox;
+  GtkWidget *img;
+
+  /* create initial pidgin box */
+  hbox = gtk_hbox_new(FALSE, PIDGIN_HIG_BORDER);
+  vbox = gtk_vbox_new(FALSE, PIDGIN_HIG_BORDER);
+
+  /* create dialog icon */
+  img = gtk_image_new_from_stock(icon,
+                                 gtk_icon_size_from_name(
+                                   PIDGIN_ICON_SIZE_TANGO_HUGE));
+  gtk_misc_set_alignment(GTK_MISC(img), 0, 0);
+
+  if(primary) { /* create and setup primary */
+    GtkWidget *primary_label;
+    gchar *primary_esc = g_markup_escape_text(primary, -1);
+    gchar *label_text  = g_strdup_printf(
+      "<span weight=\"bold\" size=\"larger\">%s</span>", primary_esc);
+    primary_label = gtk_label_new(NULL);
+    gtk_label_set_markup(GTK_LABEL(primary_label), label_text);
+    gtk_label_set_line_wrap(GTK_LABEL(primary_label), TRUE);
+    gtk_misc_set_alignment(GTK_MISC(primary_label), 0, 0);
+    g_free(label_text);
+    gtk_box_pack_start(GTK_BOX(vbox), primary_label, FALSE, FALSE, 0);
+  }
+  if(secondary) { /* create and setup secondary */
+    GtkWidget *secondary_label;
+    gchar *secondary_esc = g_markup_escape_text(secondary, -1);
+    secondary_label = gtk_label_new(NULL);
+    gtk_label_set_markup(GTK_LABEL(secondary_label), secondary_esc);
+    g_free(secondary_esc);
+    gtk_label_set_line_wrap(GTK_LABEL(secondary_label), TRUE);
+    gtk_misc_set_alignment(GTK_MISC(secondary_label), 0, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), secondary_label, FALSE, FALSE, 0);
+  }
+
+  /* pack widgets into pidgin box */
+  gtk_box_pack_start(GTK_BOX(hbox), img, FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
+
+  return hbox;
+}
