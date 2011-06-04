@@ -54,7 +54,7 @@
                               "are updated globally on all accounts that "    \
                               "support them.")
 #define PLUGIN_AUTHOR      "David Hauweele <david@hauweele.net>"
-#define PLUGIN_WEBSITE     "http://www.atlantysse.prout.be/~gawen/pidgin-pbar.html"
+#define PLUGIN_WEBSITE     "http://www.hauweele.net/~gawen/pidgin-pbar.html"
 
 extern PurplePlugin *thisplugin;
 
