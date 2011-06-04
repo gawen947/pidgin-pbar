@@ -1,7 +1,7 @@
 /* File: pbar.h
    Time-stamp: <2010-11-15 23:55:36 gawen>
 
-   Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
+   Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
                            Wolter Hellmund <wolterh@gmail.com>
 
@@ -53,7 +53,7 @@
                               "the current song and other parameters which "  \
                               "are updated globally on all accounts that "    \
                               "support them.")
-#define PLUGIN_AUTHOR      "David Hauweele <david.hauweele@gmail.com>"
+#define PLUGIN_AUTHOR      "David Hauweele <david@hauweele.net>"
 #define PLUGIN_WEBSITE     "http://www.atlantysse.prout.be/~gawen/pidgin-pbar.html"
 
 extern PurplePlugin *thisplugin;

@@ -1,7 +1,7 @@
 /* File: widget.c
    Time-stamp: <2011-02-08 19:42:07 gawen>
 
-   Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
+   Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
                            Wolter Hellmund <wolterh@gmail.com>
 

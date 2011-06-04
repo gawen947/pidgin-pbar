@@ -1,7 +1,7 @@
 /* File: protocol_features.h
    Time-stamp: <2011-02-07 17:31:27 gawen>
 
-   Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
+   Copyright (C) 2011 David Hauweele <david@hauweele.net>
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

@@ -1,7 +1,7 @@
 /* File: common.h
    Time-stamp: <2010-10-05 01:14:39 gawen>
 
-   Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
+   Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
                            Wolter Hellmund <wolterh@gmail.com>
 

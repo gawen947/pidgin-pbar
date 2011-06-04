@@ -1,7 +1,7 @@
 /* File: prefs.c
-   Time-stamp: <2010-11-15 23:14:54 gawen>
+   Time-stamp: <2011-04-02 16:25:35 gawen>
 
-   Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
+   Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
                            Wolter Hellmund <wolterh@gmail.com>
 

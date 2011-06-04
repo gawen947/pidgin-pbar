@@ -1,7 +1,7 @@
 /* File: mood_dialog.h
    Time-stamp: <2011-02-10 17:09:37 gawen>
 
-   Copyright (C) 2011 David Hauweele <david.hauweele@gmail.com>
+   Copyright (C) 2011 David Hauweele <david@hauweele.net>
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

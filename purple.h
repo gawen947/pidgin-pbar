@@ -1,7 +1,7 @@
 /* File: purple.h
    Time-stamp: <2011-02-10 17:54:53 gawen>
 
-   Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
+   Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
                            Wolter Hellmund <wolterh@gmail.com>
 
