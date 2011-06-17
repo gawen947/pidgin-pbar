@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-06-17 17:26:35 gawen>
+   Time-stamp: <2011-06-17 17:39:17 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -380,17 +380,16 @@ void update_available_features(PurpleAccount *acct, gboolean enable)
   int inc = 1;
   PurplePlugin *plugin = purple_find_prpl(acct->protocol_id);
   PurplePluginProtocolInfo *protocol = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
-  PurpleMood *mood  = get_global_moods();
   GHashTable *attrs    = get_account_attrs(acct);
 
   if(!enable)
     inc = -1;
 
   /* update references */
-  if(g_hash_table_lookup(attrs, "mood") && mood->mood &&
+  if(g_hash_table_lookup(attrs, "mood") &&
      assert_ref(mood_ref, inc))
       bar->mood_ref += inc;
-  if(g_hash_table_lookup(attrs, "moodtext") && mood->mood &&
+  if(g_hash_table_lookup(attrs, "moodtext") &&
      assert_ref(mood_message_ref, inc))
     bar->mood_message_ref += inc;
   if(g_hash_table_lookup(attrs, "game") && assert_ref(game_name_ref, inc))
@@ -411,16 +410,30 @@ void update_available_features(PurpleAccount *acct, gboolean enable)
     bar->name_ref += inc;
   if(assert_ref(status_ref, inc))
     bar->status_ref += inc;
+
+  printf("account ref : %d %d %d %d %d %d %d %d %d %d\n",
+         bar->icon_ref,
+         bar->status_ref,
+         bar->mood_ref,
+         bar->name_ref,
+         bar->pm_ref,
+         bar->mood_message_ref,
+         bar->current_song_ref,
+         bar->song_title_ref,
+         bar->game_name_ref,
+         bar->office_app_ref);
 }
 
 void update_available_widgets()
 {
+  PurpleMood *mood  = get_global_moods();
+
   gtk_widget_set_sensitive(bar->icon, bar->icon_ref);
   gtk_widget_set_sensitive(bar->icon_eventbox, bar->icon_ref);
   gtk_widget_set_sensitive(bar->status, bar->status_ref);
   gtk_widget_set_sensitive(bar->status_menu, bar->status_ref);
-  gtk_widget_set_sensitive(bar->mood, bar->mood_ref);
-  gtk_widget_set_sensitive(bar->mood_menu, bar->mood_ref);
+  gtk_widget_set_sensitive(bar->mood, bar->mood_ref && mood->mood);
+  gtk_widget_set_sensitive(bar->mood_menu, bar->mood_ref && mood->mood);
   gtk_widget_set_sensitive(bar->name_label, bar->name_ref);
   gtk_widget_set_sensitive(bar->name_eventbox, bar->name_ref);
   gtk_widget_set_sensitive(bar->name_entry, bar->name_ref);
@@ -434,7 +447,7 @@ void update_available_widgets()
                            bar->mood_message_ref + bar->game_name_ref +
                            bar->office_app_ref + bar->current_song_ref);
   bar->pm_message   = bar->pm_ref;
-  bar->mood_message = bar->mood_message_ref;
+  bar->mood_message = bar->mood_message_ref && mood->mood;
   bar->current_song = bar->current_song_ref;
   bar->song_title   = bar->current_song_ref;
   bar->song_album   = bar->current_song_ref;
