@@ -1,5 +1,5 @@
 /* File: prefs.c
-   Time-stamp: <2011-04-02 16:25:35 gawen>
+   Time-stamp: <2011-06-17 05:03:03 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -126,11 +126,30 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     const char *name;
     const char *prefs;
     void (*callback)(GtkWidget *, gpointer);
+    const char *tooltip;
   } entry[] = {
-    { N_("_Nickname markup"), PREF "/nickname-markup", cb_nickname_markup },
-    { N_("Nickname markup _hovered"), PREF "/nickname-markup-hover", cb_nickname_markup_hover },
-    { N_("Personal _message markup"), PREF "/personal-message-markup", cb_personal_message_markup },
-    { N_("Personal message markup _hovered"), PREF "/personal-message-markup-hover", cb_personal_message_markup_hover },
+    { N_("_Nickname markup"), PREF "/nickname-markup", cb_nickname_markup,
+      N_("Change the markup used to display the nickname using the "
+         "Pango Markup Language where %n is replaced with your nickname.") },
+
+    { N_("Nickname markup _hovered"), PREF "/nickname-markup-hover",
+      cb_nickname_markup_hover,
+      N_("Change the markup used to display the nickname when hovered "
+         "by the mouse using the Pango Text Attribute Markup Language "
+         "where %n is replaced with your nickname") },
+
+    { N_("Personal _message markup"), PREF "/personal-message-markup",
+      cb_personal_message_markup,
+      N_("Change the markup used to display the personal message using the "
+         "Pango Markup Language where %m is replaced with your personal "
+         "message.") },
+
+     { N_("Personal message markup _hovered"), PREF "/personal-message-markup-hover",
+       cb_personal_message_markup_hover,
+       N_("Change the markup used to display the personal message when hovered "
+          "by the mouse using the Pango Markup Language where %m is replaced "
+          "with your personal message.") },
+
     { NULL, NULL, NULL }
   }; const struct widget *e = entry;
 
@@ -140,21 +159,50 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     const char *prefs;
     const struct i_alias *alias;
     void (*callback)(GtkWidget *, gpointer);
+    const char *tooltip;
   } combobox[] = {
-    { N_("Align _nickname"), PREF "/nickname-justify", alias_justify, cb_nickname_justify },
-    { N_("Align personal _message"), PREF "/personal-message-justify", alias_justify, cb_personal_message_justify },
-    { N_("Widget _position in the buddy list"), PREF "/widget-position", alias_position, cb_widget_position },
+    { N_("Align _nickname"), PREF "/nickname-justify", alias_justify,
+      cb_nickname_justify,
+      N_("Alignment of the nickname into the bar.") },
+
+    { N_("Align personal _message"), PREF "/personal-message-justify",
+      alias_justify, cb_personal_message_justify,
+      N_("Alignment of the personal message into the bar.") },
+
+    { N_("Widget _position in the buddy list"), PREF "/widget-position",
+      alias_position, cb_widget_position,
+      N_("Position of the widget into pidgin's buddy list.") },
+
     { NULL, NULL, NULL, NULL }
   }; const struct i_widget *cbx = combobox;
 
   /* check button widgets label, associated preference and callback */
   const struct widget check_button[] = {
-    { N_("Hide _statusbox"), PREF "/hide-statusbox", cb_hide_statusbox },
-    { N_("_Ignore status changes"), PREF "/override-status", cb_override_status },
-    { N_("Use a frame for _entry"), PREF "/frame-entry", cb_frame_entry },
-    { N_("_Swap left and right click"), PREF "/swap-click", cb_swap_click },
-    { N_("Use a _compact bar"), PREF "/compact", cb_compact },
-    { N_("_Reset status messages"), PREF "/reset-attrs", cb_reset_attrs },
+    { N_("Hide _statusbox"), PREF "/hide-statusbox", cb_hide_statusbox,
+      N_("Show or hide the Pidgin's default statusbox.") },
+
+    { N_("_Ignore status changes"), PREF "/override-status", cb_override_status,
+      N_("Ignore changes made to status from outside the widget. "
+         "This include changes made in Pidgin's default statusbox "
+         "and other plugins.") },
+
+    { N_("Use a frame for _entry"), PREF "/frame-entry", cb_frame_entry,
+      N_("Enable or disable the use of a frame around the entries when "
+         "editing the nickname or personal message from the bar.") },
+
+    { N_("_Swap left and right click"), PREF "/swap-click", cb_swap_click,
+      N_("Swap the role of left and right click to edit the nickname or "
+         "personal message in the bar.") },
+
+    { N_("Use a _compact bar"), PREF "/compact", cb_compact,
+      N_("Reduce the size of the widget putting the nickname and personal "
+         "message on one line.") },
+
+    { N_("_Reset status messages"), PREF "/reset-attrs", cb_reset_attrs,
+      N_("Clear the status messages when Pidgin restart (except for personal "
+         "message). By default these messages are saved in the preferences and "
+         "reactivated when pidgin restart.") },
+
     { NULL, NULL, NULL }
   }; const struct widget *cb = check_button;
 
@@ -174,6 +222,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
 
     gtk_label_set_mnemonic_widget(GTK_LABEL(widget_label), widget_entry);
     gtk_entry_set_text(GTK_ENTRY(widget_entry), prefs_value);
+    gtk_widget_set_tooltip_text(widget_entry, e->tooltip);
     gtk_misc_set_alignment(GTK_MISC(widget_label), 0., .5);
     gtk_table_attach(GTK_TABLE(table), widget_label, 0, 1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     gtk_table_attach(GTK_TABLE(table), widget_entry, 1, 2, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
@@ -190,6 +239,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
 
     gtk_label_set_mnemonic_widget(GTK_LABEL(widget_label), widget_combo);
     gtk_misc_set_alignment(GTK_MISC(widget_label), 0., .5);
+    gtk_widget_set_tooltip_text(widget_label, cbx->tooltip);
     gtk_table_attach(GTK_TABLE(table), widget_label, 0, 1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     gtk_table_attach(GTK_TABLE(table), widget_combo, 1, 2, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     for(i = 0, j = cbx->alias ; j->alias ; j++, i++) {
@@ -205,6 +255,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     gboolean prefs_value = purple_prefs_get_bool(cb->prefs);
 
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget_cb), prefs_value);
+    gtk_widget_set_tooltip_text(widget_cb, cb->tooltip);
     gtk_table_attach(GTK_TABLE(table), widget_cb, x, x+1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     g_signal_connect(G_OBJECT(widget_cb), "toggled", G_CALLBACK(cb->callback),NULL);
     if(x % 2)
