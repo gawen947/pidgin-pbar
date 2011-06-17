@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-06-17 15:47:41 gawen>
+   Time-stamp: <2011-06-17 16:01:30 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -349,15 +349,16 @@ void account_changes(PurpleConnection *gc, gboolean enable)
   PurpleAccount *acct  = purple_connection_get_account(gc);
   PurplePlugin *plugin = purple_find_prpl(acct->protocol_id);
   PurplePluginProtocolInfo *protocol = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
+  PurpleMood *mood  = get_global_moods();
   GHashTable *attrs    = get_account_attrs(acct);
 
   if(!enable)
     inc = -1;
 
   /* update references */
-  if(g_hash_table_lookup(attrs, "mood"))
+  if(g_hash_table_lookup(attrs, "mood") && mood->mood)
     bar->mood_ref += inc;
-  if(g_hash_table_lookup(attrs, "moodtext"))
+  if(g_hash_table_lookup(attrs, "moodtext") && mood->mood)
     bar->mood_message_ref += inc;
   if(g_hash_table_lookup(attrs, "game"))
     bar->game_name_ref += inc;
