@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-06-17 17:15:13 gawen>
+   Time-stamp: <2011-06-17 17:23:39 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -39,6 +39,7 @@ void create_widget()
   if(!bar) {
     bar = g_malloc(sizeof(struct widget));
     memset(bar, 0, sizeof(struct widget));
+    check_available_features();
   }
 
   /* widgets that can possibly be modified along plugin's execution */
@@ -178,7 +179,6 @@ void create_widget()
 
   /* inform that the bar is installed */
   widget_set_all_sensitive(FALSE);
-  check_available_features();
   update_available_widgets();
   bar->installed = TRUE;
 }
