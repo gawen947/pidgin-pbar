@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-18 00:59+0200\n"
-"PO-Revision-Date: 2011-06-18 01:00+0100\n"
+"POT-Creation-Date: 2011-06-18 01:09+0200\n"
+"PO-Revision-Date: 2011-06-18 01:13+0100\n"
 "Last-Translator: David Hauweele <david@hauweele.net>\n"
 "Language-Team: French <fr@li.org>\n"
 "Language: fr\n"
@@ -67,6 +67,7 @@ msgstr "Icône"
 
 #: protocol_features.c:119
 #: acct_features.c:122
+#: mood_dialog.c:133
 msgid "Mood"
 msgstr "Humeur"
 
@@ -103,6 +104,44 @@ msgstr "La liste suivante montre les fonctionnalités disponibles pour tous les 
 #: acct_features.c:103
 msgid "Account"
 msgstr "Compte"
+
+#. widgets that can be modifier along dialog lifetime
+#: status_dialog.c:100
+msgid "Status selection"
+msgstr "Choix du status"
+
+#. widgets that are not modified
+#: status_dialog.c:115
+msgid "Select your status..."
+msgstr "Choisissez votre status..."
+
+#: status_dialog.c:116
+msgid "This will change your current status for every account which supports it."
+msgstr "Cela va changer votre status pour tous les comptes qui le supportent."
+
+#: status_dialog.c:132
+msgid "Status"
+msgstr "Status"
+
+#. widgets that can be modifier along dialog lifetime
+#: mood_dialog.c:101
+msgid "Mood selection"
+msgstr "Choix de l'humeur"
+
+#. widgets that are not modified
+#: mood_dialog.c:116
+msgid "Select your mood..."
+msgstr "Choisissez votre humeur..."
+
+#: mood_dialog.c:117
+msgid "This will change your mood for every account which supports it."
+msgstr "Cela va changer votre humeur pour tous les comptes qui le supportent."
+
+#: mood_dialog.c:201
+#: mood_dialog.c:203
+#: widget_gtk.c:276
+msgid "None"
+msgstr "Aucun"
 
 #: preferences.c:50
 msgid "Left"
@@ -149,7 +188,7 @@ msgstr "Balise du _message personnel"
 #: preferences.c:143
 #, c-format
 msgid "Change the markup used to display the personal message using the Pango Markup Language where %m is replaced with your personal message."
-msgstr "Change la balise utilisée pour afficher le message personnel en utilisant  le Pango Markup Language où %m est remplacé par votre message personnel."
+msgstr "Change la balise utilisée pour afficher le message personnel en utilisant le Pango Markup Language où %m est remplacé par votre message personnel."
 
 #: preferences.c:147
 msgid "Personal message markup _hovered"
@@ -333,8 +372,4 @@ msgstr "Entrez votre message d'état..."
 #: widget.c:527
 msgid "This will change some status messages for every account which supports it, please be advised that some are inconsistent between each other."
 msgstr "Cela va changer certains messages d'états pour tous les comptes qui le supportent, notez toutefois que certains sont incompatibles entre eux."
-
-#: widget_gtk.c:276
-msgid "None"
-msgstr "Aucun"
 

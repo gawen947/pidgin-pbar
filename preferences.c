@@ -222,12 +222,12 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
 
     gtk_label_set_mnemonic_widget(GTK_LABEL(widget_label), widget_entry);
     gtk_entry_set_text(GTK_ENTRY(widget_entry), prefs_value);
-    gtk_widget_set_tooltip_text(widget_entry, e->tooltip);
+    gtk_widget_set_tooltip_text(widget_entry, _(e->tooltip));
     gtk_misc_set_alignment(GTK_MISC(widget_label), 0., .5);
     gtk_table_attach(GTK_TABLE(table), widget_label, 0, 1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     gtk_table_attach(GTK_TABLE(table), widget_entry, 1, 2, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
-    g_signal_connect(G_OBJECT(widget_entry), "activate", G_CALLBACK(e->callback),NULL);
-    g_signal_connect(G_OBJECT(widget_entry), "focus-out-event", G_CALLBACK(e->callback),NULL);
+    g_signal_connect(G_OBJECT(widget_entry), "activate", G_CALLBACK(e->callback), NULL);
+    g_signal_connect(G_OBJECT(widget_entry), "focus-out-event", G_CALLBACK(e->callback), NULL);
   }
   for(; cbx->name ; cbx++, y++) {
     /* combobox widgets */
@@ -239,7 +239,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
 
     gtk_label_set_mnemonic_widget(GTK_LABEL(widget_label), widget_combo);
     gtk_misc_set_alignment(GTK_MISC(widget_label), 0., .5);
-    gtk_widget_set_tooltip_text(widget_label, cbx->tooltip);
+    gtk_widget_set_tooltip_text(widget_label, _(cbx->tooltip));
     gtk_table_attach(GTK_TABLE(table), widget_label, 0, 1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     gtk_table_attach(GTK_TABLE(table), widget_combo, 1, 2, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     for(i = 0, j = cbx->alias ; j->alias ; j++, i++) {
@@ -255,7 +255,7 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     gboolean prefs_value = purple_prefs_get_bool(cb->prefs);
 
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget_cb), prefs_value);
-    gtk_widget_set_tooltip_text(widget_cb, cb->tooltip);
+    gtk_widget_set_tooltip_text(widget_cb, _(cb->tooltip));
     gtk_table_attach(GTK_TABLE(table), widget_cb, x, x+1, y, y+1, GTK_FILL, GTK_FILL, 5, 5);
     g_signal_connect(G_OBJECT(widget_cb), "toggled", G_CALLBACK(cb->callback),NULL);
     if(x % 2)

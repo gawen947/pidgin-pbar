@@ -4,6 +4,10 @@ protocol_features.c
 protocol_features.h
 acct_features.c
 acct_features.h
+status_dialog.c
+status_dialog.h
+mood_dialog.c
+mood_dialog.h
 preferences.c
 preferences.h
 actions.c
