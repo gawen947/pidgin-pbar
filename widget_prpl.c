@@ -54,14 +54,19 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
 }
 
 void cb_signed_off(PurpleConnection *gc)
-{ account_changes(gc, FALSE); }
+{
+  PurpleAccount *acct = purple_connection_get_account(gc);
+  update_available_features(acct, FALSE);
+  update_available_widgets();
+}
 
 void cb_signed_on(PurpleConnection *gc)
 {
   const gchar *name = purple_prefs_get_string(PREF "/nickname");
   PurpleAccount *account = purple_connection_get_account(gc);
   set_display_name(account, name);
-  account_changes(gc, TRUE);
+  update_available_features(account, TRUE);
+  update_available_widgets();
 
   purple_debug_info(NAME, "nickname changed to \"%s\" by signed-on account\n",
                     name);

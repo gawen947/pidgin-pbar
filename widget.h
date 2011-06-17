@@ -89,11 +89,14 @@ struct widget {
 extern struct widget *bar;
 
 void create_widget();
+void reset_widget();
 void destroy_widget();
 void init_widget();
 void create_name_dialog();
 void create_pm_dialog();
-void account_changes(PurpleConnection *gc, gboolean enable);
+void update_available_features(PurpleAccount *acct, gboolean enable);
+void check_available_features();
+void update_available_widgets();
 void widget_set_all_sensitive(gboolean sensitive);
 void set_widget_name(const gchar *markup, const gchar *name);
 void set_widget_pm(const gchar *markup, const gchar *pm);

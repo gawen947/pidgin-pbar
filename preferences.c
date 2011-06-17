@@ -372,8 +372,7 @@ static void cb_compact(GtkWidget *widget, gpointer data)
 
   purple_prefs_set_bool(PREF "/compact", state);
   /* recreate bar since we need to repack everything */
-  destroy_widget();
-  create_widget();
+  reset_widget();
   init_widget();
 
   purple_debug_info(NAME, "compact state changed\n");
@@ -416,8 +415,7 @@ static void cb_widget_position(GtkWidget *widget, gpointer data)
     if(!strcmp(value, _(j->alias))) {
       purple_prefs_set_int(PREF "/widget-position", j->value);
       /* recreate bar since we need to repack everything */
-      destroy_widget();
-      create_widget();
+      reset_widget();
       init_widget();
       break;
     }

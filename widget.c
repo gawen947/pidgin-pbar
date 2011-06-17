@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-06-17 16:39:05 gawen>
+   Time-stamp: <2011-06-17 17:15:13 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -34,11 +34,12 @@ struct widget *bar;
 
 void create_widget()
 {
-  /* this should occurs only once but
-     this way we avoid memory leaks */
-  if(!bar)
+  /* we need this when the bar is reset for example
+     using the preferences dialog */
+  if(!bar) {
     bar = g_malloc(sizeof(struct widget));
-  memset(bar, 0, sizeof(struct widget));
+    memset(bar, 0, sizeof(struct widget));
+  }
 
   /* widgets that can possibly be modified along plugin's execution */
   bar->icon          = gtk_image_new();
@@ -177,10 +178,12 @@ void create_widget()
 
   /* inform that the bar is installed */
   widget_set_all_sensitive(FALSE);
+  check_available_features();
+  update_available_widgets();
   bar->installed = TRUE;
 }
 
-void destroy_widget()
+static void free_inner_widget()
 {
   g_return_if_fail(bar->installed);
 
@@ -191,6 +194,21 @@ void destroy_widget()
   prpl_prefs_disconnect_signals(PBAR_WIDGET(bar));
 
   gtk_destroy(PBAR_WIDGET(bar)); /* destroy widgets */
+}
+
+void reset_widget()
+{
+  free_inner_widget();
+
+  /* create widget but do not free the structure itself
+     to save references for available features */
+  create_widget();
+}
+
+void destroy_widget()
+{
+  free_inner_widget();
+
   g_free(bar);                   /* free widget */
   bar = NULL;
 }
@@ -344,11 +362,22 @@ void widget_set_all_sensitive(gboolean sensitive)
 
 #define assert_ref(count, inc) (bar->count > 0 || inc > 0)
 
+void check_available_features()
+{
+  GList *a = purple_accounts_get_all_active();
+
+  for(; a ; a = a->next) {
+    PurpleAccount *acct = (PurpleAccount *)a->data;
+
+    if(purple_account_is_connected(acct))
+      update_available_features(acct, TRUE);
+  }
+}
+
 /* enable/disable features when an account changes */
-void account_changes(PurpleConnection *gc, gboolean enable)
+void update_available_features(PurpleAccount *acct, gboolean enable)
 {
   int inc = 1;
-  PurpleAccount *acct  = purple_connection_get_account(gc);
   PurplePlugin *plugin = purple_find_prpl(acct->protocol_id);
   PurplePluginProtocolInfo *protocol = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
   PurpleMood *mood  = get_global_moods();
@@ -394,8 +423,10 @@ void account_changes(PurpleConnection *gc, gboolean enable)
          bar->song_title_ref,
          bar->game_name_ref,
          bar->office_app_ref);
+}
 
-  /* update widgets sensitive */
+void update_available_widgets()
+{
   gtk_widget_set_sensitive(bar->icon, bar->icon_ref);
   gtk_widget_set_sensitive(bar->icon_eventbox, bar->icon_ref);
   gtk_widget_set_sensitive(bar->status, bar->status_ref);
