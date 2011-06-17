@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-06-17 16:01:30 gawen>
+   Time-stamp: <2011-06-17 16:39:05 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -342,6 +342,8 @@ void widget_set_all_sensitive(gboolean sensitive)
     **a = sensitive;
 }
 
+#define assert_ref(count, inc) (bar->count > 0 || inc > 0)
+
 /* enable/disable features when an account changes */
 void account_changes(PurpleConnection *gc, gboolean enable)
 {
@@ -356,25 +358,42 @@ void account_changes(PurpleConnection *gc, gboolean enable)
     inc = -1;
 
   /* update references */
-  if(g_hash_table_lookup(attrs, "mood") && mood->mood)
-    bar->mood_ref += inc;
-  if(g_hash_table_lookup(attrs, "moodtext") && mood->mood)
+  if(g_hash_table_lookup(attrs, "mood") && mood->mood &&
+     assert_ref(mood_ref, inc))
+      bar->mood_ref += inc;
+  if(g_hash_table_lookup(attrs, "moodtext") && mood->mood &&
+     assert_ref(mood_message_ref, inc))
     bar->mood_message_ref += inc;
-  if(g_hash_table_lookup(attrs, "game"))
+  if(g_hash_table_lookup(attrs, "game") && assert_ref(game_name_ref, inc))
     bar->game_name_ref += inc;
-  if(g_hash_table_lookup(attrs, "office"))
+  if(g_hash_table_lookup(attrs, "office") && assert_ref(office_app_ref, inc))
     bar->office_app_ref += inc;
   if(g_hash_table_lookup(attrs, "tune_title")  &&
      g_hash_table_lookup(attrs, "tune_artist") &&
-     g_hash_table_lookup(attrs, "tune_album"))
+     g_hash_table_lookup(attrs, "tune_album") &&
+     assert_ref(current_song_ref, inc))
     bar->current_song_ref += inc;
-  if(protocol->set_status)
+  if(protocol->set_status && assert_ref(pm_ref, inc))
     bar->pm_ref += inc;
-  if(protocol->set_buddy_icon)
+  if(protocol->set_buddy_icon && assert_ref(icon_ref, inc))
     bar->icon_ref += inc;
-  if(!strcmp(acct->protocol_id, "prpl-jabber") || protocol->set_public_alias)
+  if((!strcmp(acct->protocol_id, "prpl-jabber") || protocol->set_public_alias)&&
+     assert_ref(name_ref, inc))
     bar->name_ref += inc;
-  bar->status_ref += inc;
+  if(assert_ref(status_ref, inc))
+    bar->status_ref += inc;
+
+  printf("account ref : %d %d %d %d %d %d %d %d %d %d\n",
+         bar->icon_ref,
+         bar->status_ref,
+         bar->mood_ref,
+         bar->name_ref,
+         bar->pm_ref,
+         bar->mood_message_ref,
+         bar->current_song_ref,
+         bar->song_title_ref,
+         bar->game_name_ref,
+         bar->office_app_ref);
 
   /* update widgets sensitive */
   gtk_widget_set_sensitive(bar->icon, bar->icon_ref);
