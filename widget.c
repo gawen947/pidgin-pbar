@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-06-17 17:23:39 gawen>
+   Time-stamp: <2011-06-17 17:26:35 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -411,18 +411,6 @@ void update_available_features(PurpleAccount *acct, gboolean enable)
     bar->name_ref += inc;
   if(assert_ref(status_ref, inc))
     bar->status_ref += inc;
-
-  printf("account ref : %d %d %d %d %d %d %d %d %d %d\n",
-         bar->icon_ref,
-         bar->status_ref,
-         bar->mood_ref,
-         bar->name_ref,
-         bar->pm_ref,
-         bar->mood_message_ref,
-         bar->current_song_ref,
-         bar->song_title_ref,
-         bar->game_name_ref,
-         bar->office_app_ref);
 }
 
 void update_available_widgets()
