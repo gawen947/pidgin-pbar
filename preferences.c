@@ -135,8 +135,8 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     { N_("Nickname markup _hovered"), PREF "/nickname-markup-hover",
       cb_nickname_markup_hover,
       N_("Change the markup used to display the nickname when hovered "
-         "by the mouse using the Pango Text Attribute Markup Language "
-         "where %n is replaced with your nickname") },
+         "by the mouse using the Pango Markup Language where %n is replaced "
+         "with your nickname.") },
 
     { N_("Personal _message markup"), PREF "/personal-message-markup",
       cb_personal_message_markup,
