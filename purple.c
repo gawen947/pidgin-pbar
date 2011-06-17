@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2011-02-10 17:54:01 gawen>
+   Time-stamp: <2011-06-17 13:57:28 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -271,7 +271,6 @@ void set_status_with_mood_all(const gchar *mood)
       set_status_with_mood(account, mood);
   }
 }
-
 
 /* set exclusive status for all accounts */
 void set_status_all(const gchar *status_id, GList *attrs)

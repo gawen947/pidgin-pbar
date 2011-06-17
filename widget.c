@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-02-08 19:42:07 gawen>
+   Time-stamp: <2011-06-17 15:47:41 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -35,7 +35,7 @@ struct widget *bar;
 void create_widget()
 {
   /* this should occurs only once but
-     this way way we avoid memory leaks */
+     this way we avoid memory leaks */
   if(!bar)
     bar = g_malloc(sizeof(struct widget));
   memset(bar, 0, sizeof(struct widget));
@@ -154,6 +154,7 @@ void create_widget()
   const struct pbar_prpl_signal p_signal_connections[] = {
     { purple_accounts_get_handle(), "account-status-changed", cb_status },
     { purple_connections_get_handle(), "signed-on", cb_signed_on },
+    { purple_connections_get_handle(), "signed-off", cb_signed_off },
     { NULL, NULL, NULL }
   };
 
@@ -175,6 +176,7 @@ void create_widget()
   gtk_widget_hide(bar->pm_entry);
 
   /* inform that the bar is installed */
+  widget_set_all_sensitive(FALSE);
   bar->installed = TRUE;
 }
 
@@ -305,6 +307,102 @@ void create_name_dialog()
   bar->name_dialog = TRUE;
 }
 
+/* disable every features of the widget */
+void widget_set_all_sensitive(gboolean sensitive)
+{
+  GtkWidget *widgets[] = {
+    bar->icon,
+    bar->icon_eventbox,
+    bar->status,
+    bar->status_menu,
+    bar->mood,
+    bar->mood_menu,
+    bar->name_label,
+    bar->name_eventbox,
+    bar->name_entry,
+    bar->pm_label,
+    bar->pm_eventbox,
+    bar->pm_entry,
+    NULL
+  }; GtkWidget **w = widgets;
+
+  gboolean *attrs[] = {
+    &bar->mood_message,
+    &bar->current_song,
+    &bar->song_title,
+    &bar->song_album,
+    &bar->game_name,
+    &bar->office_app,
+    NULL
+  }; gboolean **a = attrs;
+
+  for(; *w ; w++)
+    gtk_widget_set_sensitive(*w, sensitive);
+  for(; *a ; a++)
+    **a = sensitive;
+}
+
+/* enable/disable features when an account changes */
+void account_changes(PurpleConnection *gc, gboolean enable)
+{
+  int inc = 1;
+  PurpleAccount *acct  = purple_connection_get_account(gc);
+  PurplePlugin *plugin = purple_find_prpl(acct->protocol_id);
+  PurplePluginProtocolInfo *protocol = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
+  GHashTable *attrs    = get_account_attrs(acct);
+
+  if(!enable)
+    inc = -1;
+
+  /* update references */
+  if(g_hash_table_lookup(attrs, "mood"))
+    bar->mood_ref += inc;
+  if(g_hash_table_lookup(attrs, "moodtext"))
+    bar->mood_message_ref += inc;
+  if(g_hash_table_lookup(attrs, "game"))
+    bar->game_name_ref += inc;
+  if(g_hash_table_lookup(attrs, "office"))
+    bar->office_app_ref += inc;
+  if(g_hash_table_lookup(attrs, "tune_title")  &&
+     g_hash_table_lookup(attrs, "tune_artist") &&
+     g_hash_table_lookup(attrs, "tune_album"))
+    bar->current_song_ref += inc;
+  if(protocol->set_status)
+    bar->pm_ref += inc;
+  if(protocol->set_buddy_icon)
+    bar->icon_ref += inc;
+  if(!strcmp(acct->protocol_id, "prpl-jabber") || protocol->set_public_alias)
+    bar->name_ref += inc;
+  bar->status_ref += inc;
+
+  /* update widgets sensitive */
+  gtk_widget_set_sensitive(bar->icon, bar->icon_ref);
+  gtk_widget_set_sensitive(bar->icon_eventbox, bar->icon_ref);
+  gtk_widget_set_sensitive(bar->status, bar->status_ref);
+  gtk_widget_set_sensitive(bar->status_menu, bar->status_ref);
+  gtk_widget_set_sensitive(bar->mood, bar->mood_ref);
+  gtk_widget_set_sensitive(bar->mood_menu, bar->mood_ref);
+  gtk_widget_set_sensitive(bar->name_label, bar->name_ref);
+  gtk_widget_set_sensitive(bar->name_eventbox, bar->name_ref);
+  gtk_widget_set_sensitive(bar->name_entry, bar->name_ref);
+  gtk_widget_set_sensitive(bar->pm_label, bar->pm_ref + bar->mood_message_ref +\
+                           bar->game_name_ref + bar->office_app_ref +\
+                           bar->current_song_ref);
+  gtk_widget_set_sensitive(bar->pm_eventbox, bar->pm_ref +
+                           bar->mood_message_ref + bar->game_name_ref +
+                           bar->office_app_ref + bar->current_song_ref);
+  gtk_widget_set_sensitive(bar->pm_entry, bar->pm_ref +
+                           bar->mood_message_ref + bar->game_name_ref +
+                           bar->office_app_ref + bar->current_song_ref);
+  bar->pm_message   = bar->pm_ref;
+  bar->mood_message = bar->mood_message_ref;
+  bar->current_song = bar->current_song_ref;
+  bar->song_title   = bar->current_song_ref;
+  bar->song_album   = bar->current_song_ref;
+  bar->game_name    = bar->game_name;
+  bar->office_app   = bar->office_app;
+}
+
 /* create a personal message dialog */
 void create_pm_dialog()
 {
@@ -318,15 +416,16 @@ void create_pm_dialog()
   const struct s_field {
     const gchar *text;
     const gchar *pref;
+    gboolean enable;
   } groups[] = {
-    { N_("_Mood message"), PREF "/mood-message" },
-    { N_("Current song"), NULL },
-    { N_("Song _title"), PREF "/tune-title" },
-    { N_("Song _artist"), PREF "/tune-artist" },
-    { N_("Song al_bum"), PREF "/tune-album" },
-    { N_("MSN pecan extra attributes"), NULL },
-    { N_("_Game name"), PREF "/game-message" },
-    { N_("_Office app name"), PREF "/office-message" },
+    { N_("_Mood message"), PREF "/mood-message", bar->mood_message },
+    { N_("Current song"), NULL, bar->current_song },
+    { N_("Song _title"), PREF "/tune-title", bar->current_song },
+    { N_("Song _artist"), PREF "/tune-artist", bar->song_title },
+    { N_("Song al_bum"), PREF "/tune-album", bar->song_album },
+    { N_("MSN pecan extra attributes"), NULL, bar->game_name && bar->office_app },
+    { N_("_Game name"), PREF "/game-message", bar->game_name },
+    { N_("_Office app name"), PREF "/office-message", bar->office_app },
     { NULL, NULL },
     { NULL, NULL }
   }; const struct s_field *g = groups;
@@ -335,18 +434,22 @@ void create_pm_dialog()
   group = purple_request_field_group_new(_("Status and mood message"));
   purple_request_fields_add_group(fields, group);
 
-  field = purple_request_field_string_new(PREF "/personal-message",
-                                          _("_Personal message"),
-                                          pm,
-                                          FALSE);
-  purple_request_field_set_required(field, FALSE);
-  purple_request_field_group_add_field(group, field);
+  if(bar->pm_message) {
+    field = purple_request_field_string_new(PREF "/personal-message",
+                                            _("_Personal message"),
+                                            pm,
+                                            FALSE);
+    purple_request_field_set_required(field, FALSE);
+    purple_request_field_group_add_field(group, field);
+  }
 
   for(; g->pref ; g++) {
     for(; g->pref ; g++) {
       const gchar *message;
 
-      if(purple_prefs_get_bool(PREF "/reset-attrs"))
+      if(!g->enable)
+        continue;
+      else if(purple_prefs_get_bool(PREF "/reset-attrs"))
         message = "";
       else
         message = purple_prefs_get_string(g->pref);
@@ -357,8 +460,10 @@ void create_pm_dialog()
       purple_request_field_set_required(field, FALSE);
       purple_request_field_group_add_field(group, field);
     }
-    group = purple_request_field_group_new(_(g->text));
-    purple_request_fields_add_group(fields, group);
+    if(g->enable) {
+      group = purple_request_field_group_new(_(g->text));
+      purple_request_fields_add_group(fields, group);
+    }
   }
 
   purple_request_fields(thisplugin,
@@ -375,7 +480,6 @@ void create_pm_dialog()
                         NULL, NULL, NULL, NULL);
   bar->pm_dialog = TRUE;
 }
-
 
 /* replace format character <c><r> with <n> string and escape with <c><c> */
 static gchar * g_strreplacefmt(const gchar *s, gchar c, gchar r, const gchar *n)
@@ -409,7 +513,6 @@ static gchar * g_strreplacefmt(const gchar *s, gchar c, gchar r, const gchar *n)
 
   return ret;
 }
-
 
 void set_widget_name(const gchar *markup, const gchar *name)
 {

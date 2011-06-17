@@ -1,5 +1,5 @@
 /* File: widget.h
-   Time-stamp: <2011-02-08 19:39:51 gawen>
+   Time-stamp: <2011-06-17 15:32:27 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -62,6 +62,28 @@ struct widget {
   /* avoid activating entry with dialog */
   gboolean name_dialog;
   gboolean pm_dialog;
+
+  /* attributes state for
+     attributes dialogs */
+  gboolean mood_message;
+  gboolean current_song;
+  gboolean song_title;
+  gboolean song_album;
+  gboolean game_name;
+  gboolean office_app;
+  gboolean pm_message;
+
+  /* references */
+  unsigned int icon_ref;
+  unsigned int status_ref;
+  unsigned int mood_ref;
+  unsigned int name_ref;
+  unsigned int pm_ref;
+  unsigned int mood_message_ref;
+  unsigned int current_song_ref;
+  unsigned int song_title_ref;
+  unsigned int game_name_ref;
+  unsigned int office_app_ref;
 };
 
 extern struct widget *bar;
@@ -71,6 +93,8 @@ void destroy_widget();
 void init_widget();
 void create_name_dialog();
 void create_pm_dialog();
+void account_changes(PurpleConnection *gc, gboolean enable);
+void widget_set_all_sensitive(gboolean sensitive);
 void set_widget_name(const gchar *markup, const gchar *name);
 void set_widget_pm(const gchar *markup, const gchar *pm);
 void set_widget_status(const gchar *stock);
