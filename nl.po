@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the Pidgin PBar package.
 # Marleen Bekaert <bekaert.marleen@gmail.com>, 2010
 #
-
 msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-19 19:13+0100\n"
-"PO-Revision-Date: 2010-12-19 19:20+0100\n"
-"Last-Translator: Marleen Bekaert <bekaert.marleen@gmail.com>\n"
+"POT-Creation-Date: 2011-06-21 21:21+0200\n"
+"PO-Revision-Date: 2011-06-21 22:53+0100\n"
+"Last-Translator: David Hauweele <david@hauweele.net>\n"
 "Language-Team: Dutch <nl@li.org>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,7 +28,120 @@ msgstr "Een werkbalk om sommige account instellingen globaal te actualiseren."
 
 #: pbar.h:50
 msgid "Adds a toolbar to the buddy list to quickly update nickname, personal message, icon, status and mood. It also allows updating of the current song and other parameters which are updated globally on all accounts that support them."
-msgstr "Voegt een werkbalk aan de contact list om vlug bijnaam, persoonlijk bericht, icoon, status en humeur te actualiseren. Het laat ook toe om het huidig lied en andere parameters die globaal actualiseerd zijn op alle accounts die het verdragen."
+msgstr "Voegt een werkbalk aan de contact lijst om vlug bijnaam, persoonlijk bericht, icoon, status en humeur te actualiseren. Het laat ook toe om het huidig lied en andere parameters die globaal actualiseerd zijn op alle accounts die het verdragen."
+
+#. widgets that can possibly be modified along dialog lifetime
+#: protocol_features.c:63
+#: actions.c:92
+msgid "Protocol features"
+msgstr "Protocol bekwaamheden"
+
+#. widgets that are not modified
+#: protocol_features.c:83
+#: acct_features.c:84
+msgid "Available features..."
+msgstr "Beschikbaare bekwaamheden..."
+
+#: protocol_features.c:84
+msgid "The following list shows the available features for each protocol."
+msgstr "De volgende lijst toont de beschikbaare bekwaamheden voor iedere protocol."
+
+#: protocol_features.c:100
+msgid "Protocol"
+msgstr "Protocol"
+
+#: protocol_features.c:116
+#: acct_features.c:119
+msgid "Nickname"
+msgstr "Bijnaam"
+
+#: protocol_features.c:117
+#: acct_features.c:120
+msgid "Status message"
+msgstr "Status bericht"
+
+#: protocol_features.c:118
+#: acct_features.c:121
+msgid "Buddy icon"
+msgstr "Contacten icoon"
+
+#: protocol_features.c:119
+#: acct_features.c:122
+#: mood_dialog.c:133
+msgid "Mood"
+msgstr "Humeur"
+
+#: protocol_features.c:120
+#: acct_features.c:123
+msgid "Mood message"
+msgstr "Humeur bericht"
+
+#: protocol_features.c:121
+#: acct_features.c:124
+msgid "Tune"
+msgstr "Lied"
+
+#: protocol_features.c:122
+#: acct_features.c:125
+msgid "Game"
+msgstr "Spel"
+
+#: protocol_features.c:123
+#: acct_features.c:126
+msgid "App."
+msgstr "App."
+
+#. widgets that can possibly be modified along dialog lifetime
+#: acct_features.c:64
+#: actions.c:93
+msgid "Account features"
+msgstr "Account bekwaamheden"
+
+#: acct_features.c:85
+msgid "The following list shows the available features for each activated account. The last line summarizes features that have an impact on at least one account."
+msgstr "De volgende lijst toont the beschikbaare bekwaamheden voor iedere geactiveerde account. De laatste lijn vat de bekwaamheden samen die een effect hebben op ten minste een account."
+
+#: acct_features.c:103
+msgid "Account"
+msgstr "Account"
+
+#. widgets that can be modifier along dialog lifetime
+#: status_dialog.c:100
+msgid "Status selection"
+msgstr "Status selectie"
+
+#. widgets that are not modified
+#: status_dialog.c:115
+msgid "Select your status..."
+msgstr "Selecteer uw status..."
+
+#: status_dialog.c:116
+msgid "This will change your current status for every account which supports it."
+msgstr "Dat zal U lopend status veranderen voor iedere account die het verdraagt."
+
+#: status_dialog.c:132
+msgid "Status"
+msgstr "Status"
+
+#. widgets that can be modifier along dialog lifetime
+#: mood_dialog.c:101
+msgid "Mood selection"
+msgstr "Humeur selectie"
+
+#. widgets that are not modified
+#: mood_dialog.c:116
+msgid "Select your mood..."
+msgstr "Selecteer uw humeur..."
+
+#: mood_dialog.c:117
+msgid "This will change your mood for every account which supports it."
+msgstr "Dat zal U humeur veranderen vor iedere account die het verdraagt."
+
+#: mood_dialog.c:201
+#: mood_dialog.c:203
+#: widget_gtk.c:276
+msgid "None"
+msgstr "Niets"
 
 #: preferences.c:50
 msgid "Left"
@@ -50,57 +163,113 @@ msgstr "Boven"
 msgid "Bottom"
 msgstr "Beneden"
 
-#: preferences.c:130
+#: preferences.c:131
 msgid "_Nickname markup"
 msgstr "_Bijnaam baken"
 
-#: preferences.c:131
+#: preferences.c:132
+#, c-format
+msgid "Change the markup used to display the nickname using the Pango Markup Language where %n is replaced with your nickname."
+msgstr "Veranderd het baken die gebruikt werd om de bijnaam te displayen, door het gebruiken van de Pango Markup Language waar %n vervangen word door uw bijnaam."
+
+#: preferences.c:135
 msgid "Nickname markup _hovered"
 msgstr "Bijnaam baken _overgezweefd"
 
-#: preferences.c:132
+#: preferences.c:137
+#, c-format
+msgid "Change the markup used to display the nickname when hovered by the mouse using the Pango Markup Language where %n is replaced with your nickname."
+msgstr "Veranderd het baken die gebruikt werd om de bijnaam te displayen wanneer men er met de muis overzweefd, door het gebruiken van de Pango Markup language waar %n vervangen word door uw bijnaam."
+
+#: preferences.c:141
 msgid "Personal _message markup"
 msgstr "Persoonlijk _bericht baken"
 
-#: preferences.c:133
+#: preferences.c:143
+#, c-format
+msgid "Change the markup used to display the personal message using the Pango Markup Language where %m is replaced with your personal message."
+msgstr "veranderd het baken die gebruikt werd om het persoonlijk bericht te displayen, door het gebruiken van de Pango Markup Language waar %m vervangen word door uw persoonlijk bericht."
+
+#: preferences.c:147
 msgid "Personal message markup _hovered"
 msgstr "Persoonlijk bericht baken _overgezweefd"
 
-#: preferences.c:144
+#: preferences.c:149
+#, c-format
+msgid "Change the markup used to display the personal message when hovered by the mouse using the Pango Markup Language where %m is replaced with your personal message."
+msgstr "Veranderd het baken die gebruikt werd om het persoonlijk bericht te displayen wanneer men er met de muis overzweefd, door het gebruiken van de Pango Markup Language waar %m vervangen word door uw persoonlijke bericht."
+
+#: preferences.c:164
 msgid "Align _nickname"
 msgstr "Richten _bijnaam"
 
-#: preferences.c:145
+#: preferences.c:166
+msgid "Alignment of the nickname into the bar."
+msgstr "Alignment of the nickname into the bar."
+
+#: preferences.c:168
 msgid "Align personal _message"
 msgstr "Richten persoonlijk _bericht"
 
-#: preferences.c:146
+#: preferences.c:170
+msgid "Alignment of the personal message into the bar."
+msgstr "Het zetten van het persoonlijk bericht in de balk"
+
+#: preferences.c:172
 msgid "Widget _position in the buddy list"
 msgstr "Werkbalk _positie in contactlijst"
 
-#: preferences.c:152
+#: preferences.c:174
+msgid "Position of the widget into pidgin's buddy list."
+msgstr "Positie van de werkbalk in Pidgin contactlijst."
+
+#: preferences.c:181
 msgid "Hide _statusbox"
 msgstr "Verberg _statusbox"
 
-#: preferences.c:153
+#: preferences.c:182
+msgid "Show or hide the Pidgin's default statusbox."
+msgstr "Toon of verberg Pidgins bij verstek statusbox."
+
+#: preferences.c:184
 msgid "_Ignore status changes"
 msgstr "_Negeren van status negeren"
 
-#: preferences.c:154
+#: preferences.c:185
+msgid "Ignore changes made to status from outside the widget. This include changes made in Pidgin's default statusbox and other plugins."
+msgstr "Negeer de veranderingen van de status als ze van buiten de balk gemaakt zijn, dit omvat veranderingen gemaakt in Pidgins bij verstek statusbox en andere plugins."
+
+#: preferences.c:189
 msgid "Use a frame for _entry"
 msgstr "Gebruik een kader voor _textinvoer"
 
-#: preferences.c:155
+#: preferences.c:190
+msgid "Enable or disable the use of a frame around the entries when editing the nickname or personal message from the bar."
+msgstr "Stelt of schakelt het gebruik van een kader uit rond de invoer van de balk wanneer men de bijnaam of het persoolijk bericht bewerkt."
+
+#: preferences.c:193
 msgid "_Swap left and right click"
 msgstr "_Keer linkse and rechtse klik om"
 
-#: preferences.c:156
+#: preferences.c:194
+msgid "Swap the role of left and right click to edit the nickname or personal message in the bar."
+msgstr "Keer de rol van linkse en rechtse klik om de bijnaam of persoonlijk bericht te bewerken in de balk."
+
+#: preferences.c:197
 msgid "Use a _compact bar"
 msgstr "gebruikt een _compacte balk"
 
-#: preferences.c:157
+#: preferences.c:198
+msgid "Reduce the size of the widget putting the nickname and personal message on one line."
+msgstr "Verminderd de maat van de werkbalk door de bijnaam en persoonlijn bericht op een lijn te zetten."
+
+#: preferences.c:201
 msgid "_Reset status messages"
 msgstr "_Opmaak status berichten"
+
+#: preferences.c:202
+msgid "Clear the status messages when Pidgin restart (except for personal message). By default these messages are saved in the preferences and reactivated when pidgin restart."
+msgstr "Wiss de status berichten uit wanneer Pidgin herstart (uitgezonderd voor het persoonlijk bericht), bij verstek worden deze berichten opgeslagen in de voorkeuren en gereactiveerd als Pidgin terug opstart."
 
 #. preferences
 #. preference root
@@ -113,78 +282,94 @@ msgstr "<Hier bijnaam invoeren>"
 msgid "<Enter personal message here>"
 msgstr "<Hier persoonlijk bericht iuvoeren>"
 
-#: widget_gtk.c:94
+#: actions.c:87
+#: widget.c:309
 msgid "Change nickname"
 msgstr "Veranderd bijnaam"
 
-#: widget_gtk.c:95
+#: actions.c:88
+msgid "Change personal message"
+msgstr "Richten persoonlijk bericht"
+
+#: actions.c:89
+msgid "Change status"
+msgstr "Veranderd status"
+
+#: actions.c:90
+msgid "Change mood"
+msgstr "Veranderd humeur"
+
+#: actions.c:91
+msgid "Change icon"
+msgstr "Veranderd icoon"
+
+#: widget.c:310
 msgid "Enter your nickname here..."
 msgstr "Hier U bijnaam invoeren..."
 
-#: widget_gtk.c:96
+#: widget.c:311
 msgid "This will change your nickname for every account which supports it."
 msgstr "Dat zal U bijnaam veranderen vor iedere account die het verdraagt."
 
-#: widget_gtk.c:102 widget_gtk.c:246
+#: widget.c:317
+#: widget.c:531
 msgid "OK"
 msgstr "OK"
 
-#: widget_gtk.c:104 widget_gtk.c:248
+#: widget.c:319
+#: widget.c:533
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: widget_gtk.c:197
+#: widget.c:476
 msgid "_Mood message"
 msgstr "_Humeur bericht"
 
-#: widget_gtk.c:198
+#: widget.c:477
 msgid "Current song"
 msgstr "Huidig lied"
 
-#: widget_gtk.c:199
+#: widget.c:478
 msgid "Song _title"
 msgstr "Lied _tijtel"
 
-#: widget_gtk.c:200
+#: widget.c:479
 msgid "Song _artist"
 msgstr "Lied _artiest"
 
-#: widget_gtk.c:201
+#: widget.c:480
 msgid "Song al_bum"
 msgstr "Lied al_bum"
 
-#: widget_gtk.c:202
+#: widget.c:481
 msgid "MSN pecan extra attributes"
 msgstr "MSN pecan extra parameters"
 
-#: widget_gtk.c:203
+#: widget.c:482
 msgid "_Game name"
 msgstr "_Spelnaam"
 
-#: widget_gtk.c:204
+#: widget.c:483
 msgid "_Office app name"
 msgstr "_Office app naam"
 
-#: widget_gtk.c:210
+#: widget.c:489
 msgid "Status and mood message"
 msgstr "Status en humeur bericht"
 
-#: widget_gtk.c:214
+#: widget.c:494
 msgid "_Personal message"
 msgstr "_Persoonlijk bericht"
 
-#: widget_gtk.c:240
+#: widget.c:525
 msgid "Change status messages"
 msgstr "Veranderd status berichten"
 
-#: widget_gtk.c:241
+#: widget.c:526
 msgid "Enter status message..."
 msgstr "Voert Status berichten in..."
 
-#: widget_gtk.c:242
+#: widget.c:527
 msgid "This will change some status messages for every account which supports it, please be advised that some are inconsistent between each other."
-msgstr"Dat zal sommige status berichten voor iedere account die het verdraagt veranderen, Gelieve nota te nemen dat sommige inconsequent zijn onder elkaar."
+msgstr "Dat zal sommige status berichten veranderen voor iedere account die het verdraagt, houd er a.u.b rekening mee dat sommige inconsequent zijn tussen elkaar."
 
-#: widget_gtk.c:361
-msgid "None"
-msgstr "Niets"
