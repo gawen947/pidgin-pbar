@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the Pidgin PBar package.
 # Marleen Bekaert <bekaert.marleen@gmail.com>, 2010
 #
-
 msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-04 20:23+0100\n"
-"PO-Revision-Date: 2011-01-04 23:19+0100\n"
-"Last-Translator: Marleen Bekaert <bekaert.marleen@gmail.com>\n"
+"POT-Creation-Date: 2011-06-22 11:04+0200\n"
+"PO-Revision-Date: 2011-06-22 12:40+0100\n"
+"Last-Translator: David Hauweele <david@hauweele.net>\n"
 "Language-Team: German <de@li.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,11 +24,124 @@ msgstr "PBar"
 
 #: pbar.h:48
 msgid "A toolbar to update some account settings globally."
-msgstr "Eine Symbolleiste um manche Account Einstellungen vollständig zu aktualisieren."
+msgstr "Eine Symbolleiste um manche Konto Einstellungen vollständig zu aktualisieren."
 
 #: pbar.h:50
 msgid "Adds a toolbar to the buddy list to quickly update nickname, personal message, icon, status and mood. It also allows updating of the current song and other parameters which are updated globally on all accounts that support them."
-msgstr "Fügt eine Symbolleiste zu der Buddy-liste um schnell den Spitzname, den Persönlichen Bericht, die Ikone, den Status und die Laune schnell zu ändern. Erlaubt auch um das aktuelle Lied und anderen parameter die global aktualisiert werden auf alle Account die es ertragen ."
+msgstr "Fügt eine Symbolleiste zu der Buddy-liste um schnell den Spitzname, den Persönlichen Bericht, die Ikone, den Status und die Stimmung schnell zu ändern. Erlaubt auch um das aktuelle Lied und anderen parameter die global aktualisiert werden auf alle Account die es ertragen ."
+
+#. widgets that can possibly be modified along dialog lifetime
+#: protocol_features.c:63
+#: actions.c:92
+msgid "Protocol features"
+msgstr "Protokoll Funktionen"
+
+#. widgets that are not modified
+#: protocol_features.c:83
+#: acct_features.c:84
+msgid "Available features..."
+msgstr "verfügbaren Funktionen..."
+
+#: protocol_features.c:84
+msgid "The following list shows the available features for each protocol."
+msgstr "Die folgende Liste zeigt die verfügbaren Funktionen für jedes Protokoll."
+
+#: protocol_features.c:100
+msgid "Protocol"
+msgstr "Protokoll"
+
+#: protocol_features.c:116
+#: acct_features.c:119
+msgid "Nickname"
+msgstr "Spitzname Tag"
+
+#: protocol_features.c:117
+#: acct_features.c:120
+msgid "Status message"
+msgstr "Status Nachricht"
+
+#: protocol_features.c:118
+#: acct_features.c:121
+msgid "Buddy icon"
+msgstr "Buddy Ikone"
+
+#: protocol_features.c:119
+#: acct_features.c:122
+#: mood_dialog.c:133
+msgid "Mood"
+msgstr "Stimmung"
+
+#: protocol_features.c:120
+#: acct_features.c:123
+msgid "Mood message"
+msgstr "Stimmung Nachricht"
+
+#: protocol_features.c:121
+#: acct_features.c:124
+msgid "Tune"
+msgstr "Lied"
+
+#: protocol_features.c:122
+#: acct_features.c:125
+msgid "Game"
+msgstr "Spiel"
+
+#: protocol_features.c:123
+#: acct_features.c:126
+msgid "App."
+msgstr "App."
+
+#. widgets that can possibly be modified along dialog lifetime
+#: acct_features.c:64
+#: actions.c:93
+msgid "Account features"
+msgstr "Konto Funktionen"
+
+#: acct_features.c:85
+msgid "The following list shows the available features for each activated account. The last line summarizes features that have an impact on at least one account."
+msgstr "Die folgende Liste zeigt die verfügbaren Funktionen für jeden aktivierten Konto, die letzte Zeile fasst funktionen, die einen Einfluss auf mindestens ein konto haben."
+
+#: acct_features.c:103
+msgid "Account"
+msgstr "Konto"
+
+#. widgets that can be modifier along dialog lifetime
+#: status_dialog.c:100
+msgid "Status selection"
+msgstr "Status Auswahl"
+
+#. widgets that are not modified
+#: status_dialog.c:115
+msgid "Select your status..."
+msgstr "Wählen Sie Ihren Satus ..."
+
+#: status_dialog.c:116
+msgid "This will change your current status for every account which supports it."
+msgstr "ändernt ihr Spitzname für jedes Konto die es ertragt."
+
+#: status_dialog.c:132
+msgid "Status"
+msgstr "Status"
+
+#. widgets that can be modifier along dialog lifetime
+#: mood_dialog.c:101
+msgid "Mood selection"
+msgstr "Stimmung Auswahl"
+
+#. widgets that are not modified
+#: mood_dialog.c:116
+msgid "Select your mood..."
+msgstr "Wählen Sie Ihre Stimmung..."
+
+#: mood_dialog.c:117
+msgid "This will change your mood for every account which supports it."
+msgstr "ändernt ihre Stimmung für jedes Konto die es ertragt."
+
+#: mood_dialog.c:201
+#: mood_dialog.c:203
+#: widget_gtk.c:276
+msgid "None"
+msgstr "Nichts"
 
 #: preferences.c:50
 msgid "Left"
@@ -50,57 +163,113 @@ msgstr "Oben"
 msgid "Bottom"
 msgstr "Unter"
 
-#: preferences.c:130
+#: preferences.c:131
 msgid "_Nickname markup"
 msgstr "_Spitzname Tag"
 
-#: preferences.c:131
-msgid "Nickname markup _hovered"
-msgstr "_Übergezwegd Spitzname Tag"
-
 #: preferences.c:132
+#, c-format
+msgid "Change the markup used to display the nickname using the Pango Markup Language where %n is replaced with your nickname."
+msgstr "ändert das Markup das verwendet wird um den Spitzname zu anzeigen mit der Pango Markup Language wo %n mit deinem Spitzname ersetzt ist."
+
+#: preferences.c:135
+msgid "Nickname markup _hovered"
+msgstr "_Übergezwegt Spitzname Tag"
+
+#: preferences.c:137
+#, c-format
+msgid "Change the markup used to display the nickname when hovered by the mouse using the Pango Markup Language where %n is replaced with your nickname."
+msgstr "ändert das Markup das verwendet wird um den Spitzname zu anzeigen wenn überzwegt mit der Maus, mit der Pango Markup Language wo %n mit deinem Spitzname ersetzt ist."
+
+#: preferences.c:141
 msgid "Personal _message markup"
 msgstr "Persönliche _Nachricht Tag"
 
-#: preferences.c:133
+#: preferences.c:143
+#, c-format
+msgid "Change the markup used to display the personal message using the Pango Markup Language where %m is replaced with your personal message."
+msgstr "ändert das markup das verwendet wird um die persönliche Nachricht zu anzeigen, mit der Pango Markup Language wo %n mit deiner persönliche Nachricht ersetzt ist."
+
+#: preferences.c:147
 msgid "Personal message markup _hovered"
 msgstr "_Übergezwegd persönliche Nachricht Tag"
 
-#: preferences.c:144
+#: preferences.c:149
+#, c-format
+msgid "Change the markup used to display the personal message when hovered by the mouse using the Pango Markup Language where %m is replaced with your personal message."
+msgstr "ändert das Markup das verwendet wird um die persönliche Nachrict zu anzeigen wenn überzwegt mit der Maus, mit der Pango Markup Language wo %n mit deiner persönliche Nachricht."
+
+#: preferences.c:164
 msgid "Align _nickname"
 msgstr "Spitzname_ausrichten"
 
-#: preferences.c:145
+#: preferences.c:166
+msgid "Alignment of the nickname into the bar."
+msgstr "Ausrichtung der Spitzname in der Bar."
+
+#: preferences.c:168
 msgid "Align personal _message"
 msgstr "_Persönliche Nachricht ausrichten"
 
-#: preferences.c:146
+#: preferences.c:170
+msgid "Alignment of the personal message into the bar."
+msgstr "Aurichtung der persönliche Nachricht in die Bar."
+
+#: preferences.c:172
 msgid "Widget _position in the buddy list"
 msgstr "Widget _Lage in den buddy-Liste"
 
-#: preferences.c:152
+#: preferences.c:174
+msgid "Position of the widget into pidgin's buddy list."
+msgstr "Lage des Widget in Pidgin-Buddy-Liste."
+
+#: preferences.c:181
 msgid "Hide _statusbox"
 msgstr "_Statusbox verbergen"
 
-#: preferences.c:153
+#: preferences.c:182
+msgid "Show or hide the Pidgin's default statusbox."
+msgstr "Show or hide the Pidgin's default statusbox."
+
+#: preferences.c:184
 msgid "_Ignore status changes"
 msgstr "_Ignoriert Status anderungen"
 
-#: preferences.c:154
+#: preferences.c:185
+msgid "Ignore changes made to status from outside the widget. This include changes made in Pidgin's default statusbox and other plugins."
+msgstr "Ignoriert änderungen zu Status von außerhalb des Widgets gemacht, inbegriffen änderungen in Pidgin standarmäßige statusbox und andere Plugins gemacht."
+
+#: preferences.c:189
 msgid "Use a frame for _entry"
 msgstr "Nutz ein ein Rahmen für Textinput"
 
-#: preferences.c:155
+#: preferences.c:190
+msgid "Enable or disable the use of a frame around the entries when editing the nickname or personal message from the bar."
+msgstr "Enable or disable the use of a frame around the entries when editing the nickname or personal message from the bar."
+
+#: preferences.c:193
 msgid "_Swap left and right click"
 msgstr "_Dreht linke und rechte klik um"
 
-#: preferences.c:156
+#: preferences.c:194
+msgid "Swap the role of left and right click to edit the nickname or personal message in the bar."
+msgstr "Dreht die Rolle von links und rechts Klik um den Spitzname oder persönliche Nachricht in der Bar zu bearbeiten."
+
+#: preferences.c:197
 msgid "Use a _compact bar"
 msgstr "Benutz ein kompakt Balken"
 
-#: preferences.c:157
+#: preferences.c:198
+msgid "Reduce the size of the widget putting the nickname and personal message on one line."
+msgstr "Reduziert die größe des Widgets und setz den Spitzname und die persönliche Nachricht auf einer Linie."
+
+#: preferences.c:201
 msgid "_Reset status messages"
 msgstr "_Rûcksetz Status Berichten"
+
+#: preferences.c:202
+msgid "Clear the status messages when Pidgin restart (except for personal message). By default these messages are saved in the preferences and reactivated when pidgin restart."
+msgstr "Klar die Status nachrichten wenn pidgin neustart (außerhalb für persönliche Nacxhrichten). Standarmäßig werden diese Nachrichten in die Präferenzen gespeichert und neuaktiviert wenn Pidgin neustart."
 
 #. preferences
 #. preference root
@@ -113,78 +282,94 @@ msgstr "<hier Spitzname einführen>"
 msgid "<Enter personal message here>"
 msgstr "<Hier persönlich nachricht einführen>"
 
-#: widget_gtk.c:94
+#: actions.c:87
+#: widget.c:309
 msgid "Change nickname"
 msgstr "ändernt Spitzname"
 
-#: widget_gtk.c:95
+#: actions.c:88
+msgid "Change personal message"
+msgstr "Persönliche Nachricht ausrichten"
+
+#: actions.c:89
+msgid "Change status"
+msgstr "ändernt Status Nachricht"
+
+#: actions.c:90
+msgid "Change mood"
+msgstr "ändernt Stimmung"
+
+#: actions.c:91
+msgid "Change icon"
+msgstr "ändernt Ikone"
+
+#: widget.c:310
 msgid "Enter your nickname here..."
 msgstr "Hier Spitzname einführen..."
 
-#: widget_gtk.c:96
+#: widget.c:311
 msgid "This will change your nickname for every account which supports it."
-msgstr "ändernt ihr Spitzname für jeder Account die es ertragen ."
+msgstr "ändernt ihr Spitzname für jeder Account die es ertragen."
 
-#: widget_gtk.c:102 widget_gtk.c:246
+#: widget.c:317
+#: widget.c:531
 msgid "OK"
 msgstr "OK"
 
-#: widget_gtk.c:104 widget_gtk.c:248
+#: widget.c:319
+#: widget.c:533
 msgid "Cancel"
 msgstr "Annulieren"
 
-#: widget_gtk.c:197
+#: widget.c:476
 msgid "_Mood message"
-msgstr "_Laune Nachricht"
+msgstr "_Stimmung Nachricht"
 
-#: widget_gtk.c:198
+#: widget.c:477
 msgid "Current song"
 msgstr "Aktuel lied"
 
-#: widget_gtk.c:199
+#: widget.c:478
 msgid "Song _title"
 msgstr "lied _Titel"
 
-#: widget_gtk.c:200
+#: widget.c:479
 msgid "Song _artist"
 msgstr "Lied _Künstler"
 
-#: widget_gtk.c:201
+#: widget.c:480
 msgid "Song al_bum"
 msgstr "Lied Al_bum"
 
-#: widget_gtk.c:202
+#: widget.c:481
 msgid "MSN pecan extra attributes"
 msgstr "MSN pecan extra Parameter"
 
-#: widget_gtk.c:203
+#: widget.c:482
 msgid "_Game name"
 msgstr "_Spiel Name"
 
-#: widget_gtk.c:204
+#: widget.c:483
 msgid "_Office app name"
 msgstr "_Office app Name"
 
-#: widget_gtk.c:210
+#: widget.c:489
 msgid "Status and mood message"
-msgstr "Status und Laune Nachricht"
+msgstr "Status und Stimmung Nachricht"
 
-#: widget_gtk.c:214
+#: widget.c:494
 msgid "_Personal message"
 msgstr "_Persönliche Nachricht"
 
-#: widget_gtk.c:240
+#: widget.c:525
 msgid "Change status messages"
 msgstr "ändernt Status Nachricht"
 
-#: widget_gtk.c:241
+#: widget.c:526
 msgid "Enter status message..."
 msgstr "führt Status Nachricht ein..."
 
-#: widget_gtk.c:242
+#: widget.c:527
 msgid "This will change some status messages for every account which supports it, please be advised that some are inconsistent between each other."
 msgstr "ändernt einige Status Nachrichten für jeder Account die es ertragt, Bitte beachten Sie dass einige inkonsistent sind untereinander."
 
-#: widget_gtk.c:361
-msgid "None"
-msgstr "Nichts"
