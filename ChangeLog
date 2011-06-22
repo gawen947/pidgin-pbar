@@ -8,6 +8,7 @@
 	- Add tooltips to preferences dialog
 	- Disable features when no connected account supporting them
 	- Clean code
+	- Release 0.2
 
 * Wed Jan 5 2010 David Hauweele <david@hauweele.net>
   - Release 0.1
