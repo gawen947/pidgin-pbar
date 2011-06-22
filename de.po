@@ -188,7 +188,7 @@ msgstr "Persönliche _Nachricht Tag"
 #: preferences.c:143
 #, c-format
 msgid "Change the markup used to display the personal message using the Pango Markup Language where %m is replaced with your personal message."
-msgstr "ändert das markup das verwendet wird um die persönliche Nachricht zu anzeigen, mit der Pango Markup Language wo %n mit deiner persönliche Nachricht ersetzt ist."
+msgstr "ändert das markup das verwendet wird um die persönliche Nachricht zu anzeigen, mit der Pango Markup Language wo %m mit deiner persönliche Nachricht ersetzt ist."
 
 #: preferences.c:147
 msgid "Personal message markup _hovered"
@@ -197,7 +197,7 @@ msgstr "_Übergezwegd persönliche Nachricht Tag"
 #: preferences.c:149
 #, c-format
 msgid "Change the markup used to display the personal message when hovered by the mouse using the Pango Markup Language where %m is replaced with your personal message."
-msgstr "ändert das Markup das verwendet wird um die persönliche Nachrict zu anzeigen wenn überzwegt mit der Maus, mit der Pango Markup Language wo %n mit deiner persönliche Nachricht."
+msgstr "ändert das Markup das verwendet wird um die persönliche Nachrict zu anzeigen wenn überzwegt mit der Maus, mit der Pango Markup Language wo %m mit deiner persönliche Nachricht."
 
 #: preferences.c:164
 msgid "Align _nickname"
