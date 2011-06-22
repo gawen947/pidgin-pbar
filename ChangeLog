@@ -1,2 +1,13 @@
+* Wed Jun 22 2011 David Hauweele <david@hauweele.net>
+	- Fix cursor bug
+	- Fix makefile to ease packaging
+	- Fix compilation against Gtk 2.12
+	- Add features dialogs
+	- Add dialogs to change attributes through Pidgin's tools menu
+	- Change contact addresses
+	- Add tooltips to preferences dialog
+	- Disable features when no connected account supporting them
+	- Clean code
+
 * Wed Jan 5 2010 David Hauweele <david@hauweele.net>
   - Release 0.1
