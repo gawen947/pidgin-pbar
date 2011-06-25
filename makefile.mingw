@@ -1,0 +1,109 @@
+include commands.mk
+
+PIDGIN_TREE_TOP := ../../..
+include $(PIDGIN_TREE_TOP)/libpurple/win32/global.mak
+
+SRC = $(wildcard *.c)
+OBJ = $(SRC:%.c=%.o)
+DEP = $(SRC:.c=.c)
+POFILES  = $(wildcard *.po)
+CATALOGS = $(foreach cat, $(POFILES:.po=.mo), $(notdir $(cat)))
+
+PLUGINDIR ?= $(PIDGIN_INSTALL_PLUGINS_DIR)
+DATADIR   ?= $(PIDGIN_INSTALL_DIR)
+LOCALDIR  ?= $(PURPLE_INSTALL_PO_DIR)
+
+PIDGIN_VERSION := $(shell cat $(PIDGIN_TREE_TOP)/VERSION)
+PBAR_VERSION   := $(shell cat VERSION)
+CFLAGS += -DVERSION="\"$(PBAR_VERSION)\"" -DPIDGIN_VERSION="\"$(PIDGIN_VERSION)\""
+
+INCLUDE += -I. \
+           -I$(GTK_TOP)/include \
+           -I$(GTK_TOP)/include/gtk-2.0 \
+           -I$(GTK_TOP)/include/glib-2.0 \
+           -I$(GTK_TOP)/include/pango-1.0 \
+           -I$(GTK_TOP)/include/atk-1.0 \
+           -I$(GTK_TOP)/include/cairo \
+           -I$(GTK_TOP)/lib/glib-2.0/include \
+           -I$(GTK_TOP)/lib/gtk-2.0/include \
+           -I$(PURPLE_TOP) \
+           -I$(PURPLE_TOP)/win32 \
+           -I$(PIDGIN_TOP) \
+           -I$(PIDGIN_TOP)/win32 \
+           -I$(PIDGIN_TREE_TOP)
+
+LIB_PATHS += -L$(GTK_TOP)/lib \
+             -L$(PURPLE_TOP) \
+             -L$(PIDGIN_TOP)
+LDFLAGS    = -lgtk-win32-2.0 \
+             -lglib-2.0 \
+             -lgdk-win32-2.0 \
+             -lgdk_pixbuf-2.0 \
+             -lgobject-2.0 \
+             -lintl \
+             -lpurple \
+             -lpidgin
+
+ifndef DISABLE_DEBUG
+CFLAGS += -ggdb
+endif
+
+commit = $(shell ./hash.sh)
+ifneq ($(commit), UNKNOWN)
+CFLAGS += -DCOMMIT="\"$(commit)\""
+endif
+
+ifndef DISABLE_NLS
+CFLAGS += -DENABLE_NLS=1 -DLOCALEDIR="\"$(LOCALEDIR)\""
+locales           := locales
+install-locales   := install-locales
+uninstall-locales := uninstall-locales
+endif
+
+include $(PIDGIN_COMMON_RULES)
+
+.PHONY: all clean
+
+all: pbar.dll $(locales)
+
+pbar.dll: $(OBJ)
+ $(CC) -shared -o $@ $^ $LIB_PATHS) $(LDFLAGS) $(DLL_LD_FLAGS)
+
+%o: %.c
+ $(CC) -Wp,-MMD,$*.d -c $(CFLAGS) -o $@ $<
+
+clean:
+ $(RM) $(DEP)
+ $(RM) $(OBJ)
+ $(RM) $(CATALOGS)
+ $(RM) messages.pot
+ $(RM) pbar.dll
+
+install: $(install-locales)
+ cp pbar.dll $(PLUGINDIR)
+
+$(OBJECTS): $(PIDGIN_CONFIG_H)
+
+locales: $(CATALOGS)
+
+CAT_INST_PATH = $(foreach lang, $(POFILES:.po=), $(LOCALEDIR)/$(lang)/LC_MESSAGES/pidgin-pbar.mo)
+
+install-locales: $(CAT_INST_PATH)
+
+$(LOCALEDIR)/%/LC_MESSAGES/pidgin-pbar.mo: %.mo
+	$(MKDIR) -p $(LOCALEDIR)/$(basename $<)/LC_MESSAGES
+	$(INSTALL_DATA) $< $@
+
+uninstall-locales:
+	$(RM) $(CAT_INST_PATH)
+
+%.mo: %.po
+	$(MSGFMT) -c -o $@ $<
+
+messages.pot: POTFILES.in
+	$(XGETTEXT) --no-wrap -m -c --files-from $< --keyword --keyword=_ --keyword=N_ -o $@
+
+installer: all
+	$(MAKENSIS) -DPBAR_VERSION="$(PBAR_VERSION)" -DPIDGIN_VERSION="$(PIDGIN_VERSION)" -DPIDGIN_TREE_TOP="$(PIDGIN_TREE_TOP)" installer.nsi
+
+include $(PIDGIN_COMMON_TARGETS)
