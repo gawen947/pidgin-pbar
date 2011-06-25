@@ -141,13 +141,13 @@ GtkWidget * get_config_frame(PurplePlugin *plugin)
     { N_("Personal _message markup"), PREF "/personal-message-markup",
       cb_personal_message_markup,
       N_("Change the markup used to display the personal message using the "
-         "Pango Markup Language where %m is replaced with your personal "
+         "Pango Markup Language where %p is replaced with your personal "
          "message.") },
 
      { N_("Personal message markup _hovered"), PREF "/personal-message-markup-hover",
        cb_personal_message_markup_hover,
        N_("Change the markup used to display the personal message when hovered "
-          "by the mouse using the Pango Markup Language where %m is replaced "
+          "by the mouse using the Pango Markup Language where %p is replaced "
           "with your personal message.") },
 
     { NULL, NULL, NULL }

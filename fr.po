@@ -187,8 +187,8 @@ msgstr "Balise du _message personnel"
 
 #: preferences.c:143
 #, c-format
-msgid "Change the markup used to display the personal message using the Pango Markup Language where %m is replaced with your personal message."
-msgstr "Change la balise utilisée pour afficher le message personnel en utilisant le Pango Markup Language où %m est remplacé par votre message personnel."
+msgid "Change the markup used to display the personal message using the Pango Markup Language where %p is replaced with your personal message."
+msgstr "Change la balise utilisée pour afficher le message personnel en utilisant le Pango Markup Language où %p est remplacé par votre message personnel."
 
 #: preferences.c:147
 msgid "Personal message markup _hovered"
@@ -196,8 +196,8 @@ msgstr "Balise du message personnel _survolé"
 
 #: preferences.c:149
 #, c-format
-msgid "Change the markup used to display the personal message when hovered by the mouse using the Pango Markup Language where %m is replaced with your personal message."
-msgstr "Change la balise utilisée pour afficher le message personnel quand celui-ci est survolé par la souris en utilisant le Pango Markup Language où %m est remplacé par votre message personnel."
+msgid "Change the markup used to display the personal message when hovered by the mouse using the Pango Markup Language where %p is replaced with your personal message."
+msgstr "Change la balise utilisée pour afficher le message personnel quand celui-ci est survolé par la souris en utilisant le Pango Markup Language où %p est remplacé par votre message personnel."
 
 #: preferences.c:164
 msgid "Align _nickname"

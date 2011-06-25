@@ -187,8 +187,8 @@ msgstr "Persoonlijk _bericht baken"
 
 #: preferences.c:143
 #, c-format
-msgid "Change the markup used to display the personal message using the Pango Markup Language where %m is replaced with your personal message."
-msgstr "veranderd het baken die gebruikt werd om het persoonlijk bericht te displayen, door het gebruiken van de Pango Markup Language waar %m vervangen word door uw persoonlijk bericht."
+msgid "Change the markup used to display the personal message using the Pango Markup Language where %p is replaced with your personal message."
+msgstr "veranderd het baken die gebruikt werd om het persoonlijk bericht te displayen, door het gebruiken van de Pango Markup Language waar %p vervangen word door uw persoonlijk bericht."
 
 #: preferences.c:147
 msgid "Personal message markup _hovered"
@@ -196,8 +196,8 @@ msgstr "Persoonlijk bericht baken _overgezweefd"
 
 #: preferences.c:149
 #, c-format
-msgid "Change the markup used to display the personal message when hovered by the mouse using the Pango Markup Language where %m is replaced with your personal message."
-msgstr "Veranderd het baken die gebruikt werd om het persoonlijk bericht te displayen wanneer men er met de muis overzweefd, door het gebruiken van de Pango Markup Language waar %m vervangen word door uw persoonlijke bericht."
+msgid "Change the markup used to display the personal message when hovered by the mouse using the Pango Markup Language where %p is replaced with your personal message."
+msgstr "Veranderd het baken die gebruikt werd om het persoonlijk bericht te displayen wanneer men er met de muis overzweefd, door het gebruiken van de Pango Markup Language waar %p vervangen word door uw persoonlijke bericht."
 
 #: preferences.c:164
 msgid "Align _nickname"
