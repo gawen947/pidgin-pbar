@@ -34,7 +34,6 @@
 /* name */
 #define NAME               "pbar"     /* internal name */
 #define DISP_NAME          N_("PBar") /* displayed name */
-#define VERSION            "0.3-git"  /* current version */
 
 /* plugin information */
 #define PLUGIN_ID          "gtk-" NAME   /* gtk plugin id */
