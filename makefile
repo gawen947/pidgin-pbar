@@ -15,8 +15,7 @@ LOCALEDIR ?= $(PREFIX)/share/locale
 PLUGINDIR ?= $(shell pkg-config --variable=plugindir pidgin)
 DATADIR   ?= $(shell pkg-config --variable=datadir pidgin)
 
-PBAR_VERSION ?= $(shell cat VERSION)
-
+PBAR_VERSION := $(shell cat VERSION)
 CFLAGS += -DVERSION="\"$(PBAR_VERSION)\""
 
 ifndef DISABLE_DEBUG
