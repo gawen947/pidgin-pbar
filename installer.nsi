@@ -183,6 +183,9 @@ Section "Install"
     ; Write the uninstall keys for Windows
     WriteRegStr HKLM ${PBAR_UNINSTALL_KEY} "DisplayName" "$(PBAR_UNINSTALL_DESC)"
     WriteRegStr HKLM ${PBAR_UNINSTALL_KEY} "UninstallString" "$INSTDIR\${PBAR_UNINST_EXE}"
+    WriteRegStr HKLM ${PBAR_UNINSTALL_KEY} "DisplayVersion" "${PBAR_VERSION}"
+    WriteRegStr HKLM ${PBAR_UNINSTALL_KEY} "HelpLink" "http://www.hauweele.net/~gawen/pidgin-pbar.html"
+    WriteRegStr HKLM ${PBAR_UNINSTALL_KEY} "Publisher" "David Hauweele"
     SetShellVarContext "all"
     Goto install_files
 
@@ -194,6 +197,9 @@ Section "Install"
     ; Write the uninstall keys for Windows
     WriteRegStr HKCU ${PBAR_UNINSTALL_KEY} "DisplayName" "$(PBAR_UNINSTALL_DESC)"
     WriteRegStr HKCU ${PBAR_UNINSTALL_KEY} "UninstallString" "$INSTDIR\${PBAR_UNINST_EXE}"
+    WriteRegStr HKCU ${PBAR_UNINSTALL_KEY} "DisplayVersion" "${PBAR_VERSION}"
+    WriteRegStr HKCU ${PBAR_UNINSTALL_KEY} "HelpLink" "http://www.hauweele.net/~gawen/pidgin-pbar.html"
+    WriteRegStr HKCU ${PBAR_UNINSTALL_KEY} "Publisher" "David Hauweele"
     Goto install_files
 
   instrights_none:
