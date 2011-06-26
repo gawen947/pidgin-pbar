@@ -165,7 +165,7 @@ SectionEnd
 
 !macro INSTALL_MO LANG
     SetOutPath "$INSTDIR\locale\${LANG}\LC_MESSAGES"
-    File /oname=pbar.mo ${LANG}.mo
+    File /oname=pidgin-pbar.mo ${LANG}.mo
 !macroend
 
 Section "Install"
@@ -255,8 +255,8 @@ Section Uninstall
       ;Ignore "." and ".."
       StrCmp $R2 "." readNextTranslationDir
       StrCmp $R2 ".." readNextTranslationDir
-      IfFileExists "$INSTDIR\locale\$R2\LC_MESSAGES\pbar.mo" +1 readNextTranslationDir
-      Delete "$INSTDIR\locale\$R2\LC_MESSAGES\pbar.mo"
+      IfFileExists "$INSTDIR\locale\$R2\LC_MESSAGES\pidgin-pbar.mo" +1 readNextTranslationDir
+      Delete "$INSTDIR\locale\$R2\LC_MESSAGES\pidgin-pbar.mo"
       RMDir  "$INSTDIR\locale\$R2\LC_MESSAGES"
       RMDir  "$INSTDIR\locale\$R2"
       ClearErrors
