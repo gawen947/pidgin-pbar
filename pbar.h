@@ -1,5 +1,5 @@
 /* File: pbar.h
-   Time-stamp: <2010-11-15 23:55:36 gawen>
+   Time-stamp: <2011-06-26 21:15:42 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -41,8 +41,8 @@
 #ifndef COMMIT
 # define PLUGIN_VERSION    VERSION
 #else
-# define PLUGIN_VERSION    VERSION " (commit:" COMMIT ")" /* add git commit
-                                                             when available */
+# define PLUGIN_VERSION    VERSION " (commit: " COMMIT ")" /* add git commit
+                                                              when available */
 #endif
 #define PLUGIN_SUMMARY     N_("A toolbar to update some account settings "    \
                               "globally.")
