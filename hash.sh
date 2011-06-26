@@ -8,7 +8,7 @@ fi
 
 if [ x"$hash" != x ]
 then
-	echo $hash | cut -c1-8
+	echo $hash
 else
 	echo "UNKNOWN"
 fi

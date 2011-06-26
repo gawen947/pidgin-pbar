@@ -41,8 +41,11 @@
 #ifndef COMMIT
 # define PLUGIN_VERSION    VERSION
 #else
-# define PLUGIN_VERSION    VERSION " (commit: " COMMIT ")" /* add git commit
-                                                              when available */
+# define PLUGIN_VERSION    VERSION " (commit: " PARTIAL_COMMIT ")" /* add git 
+                                                                      commit
+                                                                      when 
+                                                                      available
+                                                                   */
 #endif
 #define PLUGIN_SUMMARY     N_("A toolbar to update some account settings "    \
                               "globally.")

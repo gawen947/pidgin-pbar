@@ -55,8 +55,9 @@ endif
 
 commit = $(shell ./hash.sh)
 ifneq ($(commit), UNKNOWN)
-NSIS_VERSION = "$(VERSION)+$(commit)"
 DEFINES += -DCOMMIT="\"$(commit)\""
+DEFINES += -DPARTIAL_COMMIT="\"$(shell echo $(commit) | cut -c1-8)\""
+NSIS_VERSION = "$(VERSION)+$(shell echo $(commit) | cut -c1- 8)\""
 endif
 
 POFILES  = $(wildcard *.po)
