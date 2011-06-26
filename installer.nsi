@@ -93,10 +93,10 @@
   !insertmacro MUI_LANGUAGE "German"
 
   ;Translations
-  !include "nsis\translations\english.nsh"
-  !include "nsis\translations\french.nsh"
-  !include "nsis\translations\dutch.nsh"
-  !include "nsis\translations\german.nsh"
+  !include "nsis\english.nsh"
+  !include "nsis\french.nsh"
+  !include "nsis\dutch.nsh"
+  !include "nsis\german.nsh"
 
 ; Uninstall the previous version if it exists
 Section -SecUninstallOldPlugin
