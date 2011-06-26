@@ -14,9 +14,7 @@ VERSION      = $(shell cat VERSION)
 NSIS_VERSION = "$(VERSION)"
 TARGET = pbar
 
-#DEFINES += -DGETTEXT_PACKAGE=\"pbar\"
-DEFINES += -DVERSION=\"$(VERSION)\"
-#DEFINES += -DDATADIR=\"$(PIDGIN_INSTALL_DIR)\"
+DEFINES += -DVERSION="\"$(VERSION)\""
 
 INCLUDE_PATHS += -I. \
                  -I$(GTK_TOP)/include \
@@ -57,7 +55,7 @@ commit = $(shell ./hash.sh)
 ifneq ($(commit), UNKNOWN)
 DEFINES += -DCOMMIT="\"$(commit)\""
 DEFINES += -DPARTIAL_COMMIT="\"$(shell echo $(commit) | cut -c1-8)\""
-NSIS_VERSION = "$(VERSION)+$(shell echo $(commit) | cut -c1- 8)\""
+NSIS_VERSION = "$(VERSION)+$(shell echo $(commit) | cut -c1-8)"
 endif
 
 POFILES  = $(wildcard *.po)
