@@ -10,13 +10,13 @@ include commands.mk
 PIDGIN_TREE_TOP := ../../..
 include $(PIDGIN_TREE_TOP)/libpurple/win32/global.mak
 
-VERSION = $(shell cat VERSION)
-
+VERSION      = $(shell cat VERSION)
+NSIS_VERSION = "$(VERSION)"
 TARGET = pbar
 
-DEFINES += -DGETTEXT_PACKAGE=\"pbar\"
+#DEFINES += -DGETTEXT_PACKAGE=\"pbar\"
 DEFINES += -DVERSION=\"$(VERSION)\"
-DEFINES += -DDATADIR=\"$(PIDGIN_INSTALL_DIR)\"
+#DEFINES += -DDATADIR=\"$(PIDGIN_INSTALL_DIR)\"
 
 INCLUDE_PATHS += -I. \
                  -I$(GTK_TOP)/include \
@@ -55,6 +55,7 @@ endif
 
 commit = $(shell ./hash.sh)
 ifneq ($(commit), UNKNOWN)
+NSIS_VERSION = "$(VERSION)+$(commit)"
 DEFINES += -DCOMMIT="\"$(commit)\""
 endif
 
@@ -106,6 +107,6 @@ messages.pot: POTFILES.in
 	$(XGETTEXT) --no-wrap -m -c --files-from $< --keyword --keyword=_ --keyword=N_ -o $@
 
 installer: all
-	$(MAKENSIS) -DPBAR_VERSION="$(VERSION)" -DPIDGIN_VERSION="$(PIDGIN_VERSION)" -DPIDGIN_TREE_TOP="$(PIDGIN_TREE_TOP)" installer.nsi
+	$(MAKENSIS) -DPBAR_VERSION="$(NSIS_VERSION)" -DPIDGIN_VERSION="$(PIDGIN_VERSION)" -DPIDGIN_TREE_TOP="$(PIDGIN_TREE_TOP)" installer.nsi
 
 include $(PIDGIN_COMMON_TARGETS)
