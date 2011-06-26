@@ -1,39 +1,41 @@
 ;;
-;;  english.nsh
+;;  french.nsh
 ;;
-;;  Default language strings for the Windows guifications NSIS installer.
+;;  French language strings for the Windows PBar NSIS installer.
 ;;  Windows Code page: 1252
-;;  Language Code: 1033
+;;  Language Code: 1036
+;;  Derived from the French translation for the Windows guificiations NSIS installer by Yannick LE NY
+;;  
 ;;
 
 ; Startup Pidgin check
-LangString PIDGIN_NEEDED ${LANG_ENGLISH} "Guifications requires that Pidgin be installed. You must install Pidgin before installing Guifications."
+LangString PIDGIN_NEEDED ${LANG_FRENCH} "PBar requiert que Pidgin soit installé. Vous devez installer Pidgin avant de faire l'installation de PBar."
 
-LangString GUIFICATIONS_TITLE ${LANG_ENGLISH} "Guifications plugin for Pidgin"
+LangString PBAR_TITLE ${LANG_FRENCH} "Plugin PBar pour Pidgin"
 
-LangString BAD_PIDGIN_VERSION_1 ${LANG_ENGLISH} "Incompatible version.$\r$\n$\r$\nThis version of the Guifications plugin was built for Pidgin version ${PIDGIN_VERSION}.  It appears that you have Pidgin version"
+LangString BAD_PIDGIN_VERSION_1 ${LANG_FRENCH} "Version incompatible.$\r$\n$\r$\nCette version du plugin PBar a été créé pour la version ${PIDGIN_VERSION} de Pidgin. Il apparait que vous avez la version"
 
-LangString BAD_PIDGIN_VERSION_2 ${LANG_ENGLISH} "installed.$\r$\n$\r$\nSee http://guifications.sourceforge.net for more information."
+LangString BAD_PIDGIN_VERSION_2 ${LANG_FRENCH} "installée de Pidgin. $\r$\n$\r$\nRegardez à http://guifications.sourceforge.net pour plus d'informations."
 
-LangString NO_PIDGIN_VERSION ${LANG_ENGLISH} "Unable to determine installed Pidgin version."
+LangString NO_PIDGIN_VERSION ${LANG_FRENCH} "Impossible de déterminer la version installée de Pidgin."
 
 
 ; Overrides for default text in windows:
 
-LangString WELCOME_TITLE ${LANG_ENGLISH} "Guifications v${GUIFICATIONS_VERSION} Installer"
-LangString WELCOME_TEXT  ${LANG_ENGLISH} "Note: This version of the plugin is designed for Pidgin ${PIDGIN_VERSION}, and will not install or function with versions of Pidgin having a different major version number.\r\n\r\nWhen you upgrade your version of Pidgin, you must uninstall or upgrade this plugin as well.\r\n\r\n"
+LangString WELCOME_TITLE ${LANG_FRENCH} "Installeur de PBar v${PBAR_VERSION}"
+LangString WELCOME_TEXT  ${LANG_FRENCH} "Note: Cette version du plugin est conçu pour Pidgin ${PIDGIN_VERSION}, et ne s'installera pas ou ne fonctionnera pas avec les versions de Pidgin ayant un numéro de version majeur différent.\r\n\r\nQuand vous mettez à jour votre version de Pidgin, vous devez désinstaller ou mettre à jour ce plugin aussi.\r\n\r\n"
 
-LangString DIR_SUBTITLE ${LANG_ENGLISH} "Please locate the directory where Pidgin is installed"
-LangString DIR_INNERTEXT ${LANG_ENGLISH} "Install in this Pidgin folder:"
+LangString DIR_SUBTITLE ${LANG_FRENCH} "Merci d'indiquer le répertoire où Pidgin est installé"
+LangString DIR_INNERTEXT ${LANG_FRENCH} "Installation dans le répertoire Pidgin:"
 
-LangString FINISH_TITLE ${LANG_ENGLISH} "Guifications v${GUIFICATIONS_VERSION} Install Complete"
-LangString FINISH_TEXT ${LANG_ENGLISH} "You will need to restart Pidgin for the plugin to be loaded, then go the Pidgin preferences and enable the Guifications Plugin."
+LangString FINISH_TITLE ${LANG_FRENCH} "Installation terminée de PBar v${PBAR_VERSION}"
+LangString FINISH_TEXT ${LANG_FRENCH} "Vous avez besoin de redémarrer Pidgin pour que le plugin soit chargé, ensuite allez dans les préférences de Pidgin et activez le plugin PBar."
 
 ; during install uninstaller
-LangString GUIFICATIONS_PROMPT_WIPEOUT ${LANG_ENGLISH} "The guifications.dll plugin is about to be deleted from your Pidgin/plugins directory.  Continue?"
+LangString PBAR_PROMPT_WIPEOUT ${LANG_FRENCH} "La librairie guifications.dll du plugin sera supprimé de votre répertoire Pidgin/plugins.  Continuer ?"
 
 ; for windows uninstall
-LangString GUIFICATIONS_UNINSTALL_DESC ${LANG_ENGLISH} "Guifications Plugin (remove only)"
-LangString un.GUIFICATIONS_UNINSTALL_ERROR_1 ${LANG_ENGLISH} "The uninstaller could not find registry entries for Guifications.$\rIt is likely that another user installed the plugin."
-LangString un.GUIFICATIONS_UNINSTALL_ERROR_2 ${LANG_ENGLISH} "You do not have the permissions necessary to uninstall the plugin."
+LangString PBAR_UNINSTALL_DESC ${LANG_FRENCH} "Plugin PBar (supprimer uniquement)"
+LangString un.PBAR_UNINSTALL_ERROR_1 ${LANG_FRENCH} "Le désinstalleur ne peut pas trouver les entrées de registre pour Guifications.$\rIl se peut qu'un autre utilisateur a installé le plugin."
+LangString un.PBAR_UNINSTALL_ERROR_2 ${LANG_FRENCH} "Vous n'avez pas les permissions nécessaires pour désinstaller le plugin."
 
