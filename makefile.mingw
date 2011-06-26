@@ -1,48 +1,52 @@
+#
+# Makefile.mingw
+#
+# Description: Makefile for Pidgin PBar.
+# Taken from the privacy please plugin.
+#
+
 include commands.mk
 
 PIDGIN_TREE_TOP := ../../..
 include $(PIDGIN_TREE_TOP)/libpurple/win32/global.mak
 
-SRC = $(wildcard *.c)
-OBJ = $(SRC:%.c=%.o)
-DEP = $(SRC:.c=.c)
-POFILES  = $(wildcard *.po)
-CATALOGS = $(foreach cat, $(POFILES:.po=.mo), $(notdir $(cat)))
+VERSION = $(shell cat VERSION)
 
-PLUGINDIR ?= $(PIDGIN_INSTALL_PLUGINS_DIR)
-DATADIR   ?= $(PIDGIN_INSTALL_DIR)
-LOCALDIR  ?= $(PURPLE_INSTALL_PO_DIR)
+TARGET = pbar
 
-PIDGIN_VERSION := $(shell cat $(PIDGIN_TREE_TOP)/VERSION)
-PBAR_VERSION   := $(shell cat VERSION)
-CFLAGS += -DVERSION="\"$(PBAR_VERSION)\"" -DPIDGIN_VERSION="\"$(PIDGIN_VERSION)\""
+DEFINES += -DGETTEXT_PACKAGE=\"pbar\"
+DEFINES += -DPACKAGE_VERSION=\"$(VERSION)\"
 
-INCLUDE += -I. \
-           -I$(GTK_TOP)/include \
-           -I$(GTK_TOP)/include/gtk-2.0 \
-           -I$(GTK_TOP)/include/glib-2.0 \
-           -I$(GTK_TOP)/include/pango-1.0 \
-           -I$(GTK_TOP)/include/atk-1.0 \
-           -I$(GTK_TOP)/include/cairo \
-           -I$(GTK_TOP)/lib/glib-2.0/include \
-           -I$(GTK_TOP)/lib/gtk-2.0/include \
-           -I$(PURPLE_TOP) \
-           -I$(PURPLE_TOP)/win32 \
-           -I$(PIDGIN_TOP) \
-           -I$(PIDGIN_TOP)/win32 \
-           -I$(PIDGIN_TREE_TOP)
+INCLUDE_PATHS += -I. \
+                 -I$(GTK_TOP)/include \
+                 -I$(GTK_TOP)/include/gtk-2.0 \
+                 -I$(GTK_TOP)/include/glib-2.0 \
+                 -I$(GTK_TOP)/include/pango-1.0 \
+                 -I$(GTK_TOP)/include/atk-1.0 \
+                 -I$(GTK_TOP)/include/cairo \
+                 -I$(GTK_TOP)/lib/glib-2.0/include \
+                 -I$(GTK_TOP)/lib/gtk-2.0/include \
+                 -I$(PURPLE_TOP) \
+                 -I$(PURPLE_TOP)/win32 \
+                 -I$(PIDGIN_TOP) \
+                 -I$(PIDGIN_TOP)/win32 \
+                 -I$(PIDGIN_TREE_TOP)
 
 LIB_PATHS += -L$(GTK_TOP)/lib \
-             -L$(PURPLE_TOP) \
-             -L$(PIDGIN_TOP)
-LDFLAGS    = -lgtk-win32-2.0 \
-             -lglib-2.0 \
-             -lgdk-win32-2.0 \
-             -lgdk_pixbuf-2.0 \
-             -lgobject-2.0 \
-             -lintl \
-             -lpurple \
-             -lpidgin
+	        	 -L$(PURPLE_TOP) \
+		         -L$(PIDGIN_TOP)
+
+C_SRC =	$(wildcard *.c)
+OBJECTS = $(C_SRC:%.c=%.o)
+
+LIBS = -lgtk-win32-2.0 \
+       -lglib-2.0 \
+       -lgdk-win32-2.0 \
+       -lgdk_pixbuf-2.0 \
+       -lgobject-2.0 \
+       -lintl \
+       -lpurple \
+       -lpidgin
 
 ifndef DISABLE_DEBUG
 CFLAGS += -ggdb
@@ -50,11 +54,14 @@ endif
 
 commit = $(shell ./hash.sh)
 ifneq ($(commit), UNKNOWN)
-CFLAGS += -DCOMMIT="\"$(commit)\""
+DEFINES += -DCOMMIT="\"$(commit)\""
 endif
 
+POFILES  = $(wildcard *.po)
+CATALOGS = $(foreach cat, $(POFILES:.po=.mo), $(notdir $(cat)))
+
 ifndef DISABLE_NLS
-CFLAGS += -DENABLE_NLS=1 -DLOCALEDIR="\"$(LOCALEDIR)\""
+DEFINES += -DENABLE_NLS=1 -DLOCALEDIR="\"$(LOCALEDIR)\""
 locales           := locales
 install-locales   := install-locales
 uninstall-locales := uninstall-locales
@@ -62,27 +69,21 @@ endif
 
 include $(PIDGIN_COMMON_RULES)
 
-.PHONY: all clean
+.PHONY: all install clean
 
-all: pbar.dll $(locales)
+all: $(TARGET).dll $(locales)
 
-pbar.dll: $(OBJ)
-	$(CC) -shared -o $@ $^ $LIB_PATHS) $(LDFLAGS) $(DLL_LD_FLAGS)
-
-%o: %.c
-	$(CC) -Wp,-MMD,$*.d -c $(CFLAGS) -o $@ $<
-
-clean:
-	$(RM) $(DEP)
-	$(RM) $(OBJ)
-	$(RM) $(CATALOGS)
-	$(RM) messages.pot
-	$(RM) pbar.dll
-
-install: $(install-locales)
-	cp pbar.dll $(PLUGINDIR)
+install: $(PIDGIN_INSTALL_PLUGINS_DIR) all
+	cp $(TARGET).dll $(PIDGIN_INSTALL_PLUGINS_DIR)
 
 $(OBJECTS): $(PIDGIN_CONFIG_H)
+
+$(TARGET).dll: $(PURPLE_DLL).a $(PIDGIN_DLL).a $(OBJECTS)
+	$(CC) -shared $(OBJECTS) $(LIB_PATHS) $(LIBS) $(DLL_LD_FLAGS) -o $(TARGET).dll
+
+clean:
+	rm -rf $(OBJECTS)
+	rm -rf $(TARGET).dll
 
 locales: $(CATALOGS)
 
