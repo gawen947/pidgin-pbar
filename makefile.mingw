@@ -15,7 +15,8 @@ VERSION = $(shell cat VERSION)
 TARGET = pbar
 
 DEFINES += -DGETTEXT_PACKAGE=\"pbar\"
-DEFINES += -DPACKAGE_VERSION=\"$(VERSION)\"
+DEFINES += -DVERSION=\"$(VERSION)\"
+DEFINES += -DDATADIR=\"$(PIDGIN_INSTALL_DIR)\"
 
 INCLUDE_PATHS += -I. \
                  -I$(GTK_TOP)/include \
@@ -61,7 +62,7 @@ POFILES  = $(wildcard *.po)
 CATALOGS = $(foreach cat, $(POFILES:.po=.mo), $(notdir $(cat)))
 
 ifndef DISABLE_NLS
-DEFINES += -DENABLE_NLS=1 -DLOCALEDIR="\"$(LOCALEDIR)\""
+DEFINES += -DENABLE_NLS=1
 locales           := locales
 install-locales   := install-locales
 uninstall-locales := uninstall-locales
@@ -105,6 +106,6 @@ messages.pot: POTFILES.in
 	$(XGETTEXT) --no-wrap -m -c --files-from $< --keyword --keyword=_ --keyword=N_ -o $@
 
 installer: all
-	$(MAKENSIS) -DPBAR_VERSION="$(PBAR_VERSION)" -DPIDGIN_VERSION="$(PIDGIN_VERSION)" -DPIDGIN_TREE_TOP="$(PIDGIN_TREE_TOP)" installer.nsi
+	$(MAKENSIS) -DPBAR_VERSION="$(VERSION)" -DPIDGIN_VERSION="$(PIDGIN_VERSION)" -DPIDGIN_TREE_TOP="$(PIDGIN_TREE_TOP)" installer.nsi
 
 include $(PIDGIN_COMMON_TARGETS)

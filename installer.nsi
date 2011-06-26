@@ -163,9 +163,9 @@ Section -SecUninstallOldPlugin
   done:
 SectionEnd
 
-!macro INSTALL_GMO LANG
+!macro INSTALL_MO LANG
     SetOutPath "$INSTDIR\locale\${LANG}\LC_MESSAGES"
-    File /oname=pbar.mo po\${LANG}.gmo
+    File /oname=pbar.mo ${LANG}.mo
 !macroend
 
 Section "Install"
@@ -203,12 +203,12 @@ Section "Install"
     SetOutPath "$INSTDIR\plugins"
     SetCompress Auto
     SetOverwrite on
-    File "src\${PBAR_DLL}"
+    File "${PBAR_DLL}"
 
     ; translations - if there is a way to automate this, i can't find it
-    !insertmacro INSTALL_GMO "de"
-    !insertmacro INSTALL_GMO "fr"
-    !insertmacro INSTALL_GMO "nl"
+    !insertmacro INSTALL_MO "de"
+    !insertmacro INSTALL_MO "fr"
+    !insertmacro INSTALL_MO "nl"
 
     StrCmp $R0 "NONE" done
     CreateShortCut "$SMPROGRAMS\Pidgin\${PBAR_UNINSTALL_LNK}" "$INSTDIR\${PBAR_UNINST_EXE}"
