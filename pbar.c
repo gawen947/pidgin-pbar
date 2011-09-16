@@ -1,5 +1,5 @@
 /* File: pbar.c
-   Time-stamp: <2011-01-31 19:06:59 gawen>
+   Time-stamp: <2011-09-17 01:29:53 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -102,6 +102,14 @@ static gboolean plugin_load(PurplePlugin *plugin)
 
 static gboolean plugin_unload(PurplePlugin *plugin)
 {
+#ifdef _WIN32
+  /* force gtk-button-images to 1 on Windows,
+     otherwise, mood and status images won't
+     be displayed */
+  GtkSettings *settings = gtk_settings_get_default();
+  gtk_settings_set_long_property(settings, "gtk-button-images", 1, "gtkrc:21");
+#endif /* _WIN32 */
+
   /* destroy widget and free memory */
   destroy_widget();
 

@@ -1,5 +1,5 @@
 /* File: widget.c
-   Time-stamp: <2011-06-17 19:38:35 gawen>
+   Time-stamp: <2011-08-26 18:48:52 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
