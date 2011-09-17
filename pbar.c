@@ -102,13 +102,6 @@ static gboolean plugin_load(PurplePlugin *plugin)
 
 static gboolean plugin_unload(PurplePlugin *plugin)
 {
-#ifdef _WIN32
-  /* force gtk-button-images to 1 on Windows,
-     otherwise, mood and status images won't
-     be displayed */
-  GtkSettings *settings = gtk_settings_get_default();
-  gtk_settings_set_long_property(settings, "gtk-button-images", 1, "gtkrc:21");
-#endif /* _WIN32 */
 
   /* destroy widget and free memory */
   destroy_widget();

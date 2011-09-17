@@ -42,6 +42,14 @@ void create_widget()
     check_available_features();
   }
 
+#ifdef _WIN32
+  /* force gtk-button-images to 1 on Windows,
+     otherwise, mood and status images won't
+     be displayed */
+  GtkSettings *settings = gtk_settings_get_default();
+  gtk_settings_set_long_property(settings, "gtk-button-images", 1, "gtkrc:21");
+#endif /* _WIN32 */
+
   /* widgets that can possibly be modified along plugin's execution */
   bar->icon          = gtk_image_new();
   bar->status        = gtk_button_new_from_stock(NULL);
