@@ -1,8 +1,9 @@
-* Sat Sep 17 2011 David Hauweele <david@hauweele.net>
+* Sat Sep 18 2011 David Hauweele <david@hauweele.net>
   - Fix a bug in preference tooltip which state '%m' instead of '%p'
 	- Add a makefile for Windows
 	- Add an installer for Windows
 	- Fix status and mood icons that did not show up correctly on Windows
+	- Release 0.3
 
 * Wed Jun 22 2011 David Hauweele <david@hauweele.net>
 	- Fix cursor bug
