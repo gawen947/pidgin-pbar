@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-22 11:04+0200\n"
-"PO-Revision-Date: 2011-06-22 12:40+0100\n"
-"Last-Translator: Bekaert Marleen <bekaert.marleen@gmail.com>\n"
+"POT-Creation-Date: 2011-09-17 19:15+0200\n"
+"PO-Revision-Date: 2011-09-17 19:24+0100\n"
+"Last-Translator: David Hauweele <david@hauweele.net>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -22,11 +22,11 @@ msgstr ""
 msgid "PBar"
 msgstr "PBar"
 
-#: pbar.h:48
+#: pbar.h:50
 msgid "A toolbar to update some account settings globally."
 msgstr "Eine Symbolleiste um manche Konto Einstellungen vollständig zu aktualisieren."
 
-#: pbar.h:50
+#: pbar.h:52
 msgid "Adds a toolbar to the buddy list to quickly update nickname, personal message, icon, status and mood. It also allows updating of the current song and other parameters which are updated globally on all accounts that support them."
 msgstr "Fügt eine Symbolleiste zu der Buddy-liste um schnell den Spitzname, den Persönlichen Bericht, die Ikone, den Status und die Stimmung schnell zu ändern. Erlaubt auch um das aktuelle Lied und anderen parameter die global aktualisiert werden auf alle Account die es ertragen ."
 
@@ -196,8 +196,8 @@ msgstr "_Übergezwegd persönliche Nachricht Tag"
 
 #: preferences.c:149
 #, c-format
-msgid "Change the markup used to display the personal message when hovered by the mouse using the Pango Markup Language where %m is replaced with your personal message."
-msgstr "ändert das Markup das verwendet wird um die persönliche Nachrict zu anzeigen wenn überzwegt mit der Maus, mit der Pango Markup Language wo %m mit deiner persönliche Nachricht."
+msgid "Change the markup used to display the personal message when hovered by the mouse using the Pango Markup Language where %p is replaced with your personal message."
+msgstr "ändert das Markup das verwendet wird um die persönliche Nachricht zu anzeigen wenn überzwegt mit der Maus, mit der Pango Markup Language wo %p mit deiner persönliche Nachricht ersetzt wird."
 
 #: preferences.c:164
 msgid "Align _nickname"
