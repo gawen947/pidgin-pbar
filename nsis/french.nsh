@@ -15,7 +15,7 @@ LangString PBAR_TITLE ${LANG_FRENCH} "Plugin PBar pour Pidgin"
 
 LangString BAD_PIDGIN_VERSION_1 ${LANG_FRENCH} "Version incompatible.$\r$\n$\r$\nCette version du plugin PBar a été créé pour la version ${PIDGIN_VERSION} de Pidgin. Il apparait que vous avez la version"
 
-LangString BAD_PIDGIN_VERSION_2 ${LANG_FRENCH} "installée de Pidgin. $\r$\n$\r$\nRegardez à http://guifications.sourceforge.net pour plus d'informations."
+LangString BAD_PIDGIN_VERSION_2 ${LANG_FRENCH} "installée de Pidgin. $\r$\n$\r$\nRegardez à http://www.hauweele.net/~gawen/pidgin-pbar.html pour plus d'informations."
 
 LangString NO_PIDGIN_VERSION ${LANG_FRENCH} "Impossible de déterminer la version installée de Pidgin."
 
@@ -32,10 +32,10 @@ LangString FINISH_TITLE ${LANG_FRENCH} "Installation terminée de PBar v${PBAR_VE
 LangString FINISH_TEXT ${LANG_FRENCH} "Vous avez besoin de redémarrer Pidgin pour que le plugin soit chargé, ensuite allez dans les préférences de Pidgin et activez le plugin PBar."
 
 ; during install uninstaller
-LangString PBAR_PROMPT_WIPEOUT ${LANG_FRENCH} "La librairie guifications.dll du plugin sera supprimé de votre répertoire Pidgin/plugins.  Continuer ?"
+LangString PBAR_PROMPT_WIPEOUT ${LANG_FRENCH} "La librairie pbar.dll du plugin sera supprimé de votre répertoire Pidgin/plugins.  Continuer ?"
 
 ; for windows uninstall
 LangString PBAR_UNINSTALL_DESC ${LANG_FRENCH} "Plugin PBar (supprimer uniquement)"
-LangString un.PBAR_UNINSTALL_ERROR_1 ${LANG_FRENCH} "Le désinstalleur ne peut pas trouver les entrées de registre pour Guifications.$\rIl se peut qu'un autre utilisateur a installé le plugin."
+LangString un.PBAR_UNINSTALL_ERROR_1 ${LANG_FRENCH} "Le désinstalleur ne peut pas trouver les entrées de registre pour PBar.$\rIl se peut qu'un autre utilisateur a installé le plugin."
 LangString un.PBAR_UNINSTALL_ERROR_2 ${LANG_FRENCH} "Vous n'avez pas les permissions nécessaires pour désinstaller le plugin."
 
