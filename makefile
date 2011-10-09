@@ -56,7 +56,7 @@ clean:
 
 install: $(install-locales)
 	$(MKDIR) -p $(DESTDIR)$(PLUGINDIR)
-	$(INSTALL_PROGRAM) pbar.so $(DESTDIR)$(PLUGINDIR)
+	$(INSTALL_LIB) pbar.so $(DESTDIR)$(PLUGINDIR)
 
 uninstall: $(uninstall-locales)
 	$(RM) $(PLUGINDIR)/pbar.so
