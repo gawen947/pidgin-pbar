@@ -55,7 +55,7 @@ clean:
 	$(RM) pbar.so
 
 install: $(install-locales)
-	$(MKDIR) -p $(DESTDIR)$(PLUGINDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(PLUGINDIR)
 	$(INSTALL_LIB) pbar.so $(DESTDIR)$(PLUGINDIR)
 
 uninstall: $(uninstall-locales)
@@ -68,7 +68,7 @@ CAT_INST_PATH = $(foreach lang, $(POFILES:.po=), $(DESTDIR)$(LOCALEDIR)/$(lang)/
 install-locales: $(CAT_INST_PATH)
 
 $(DESTDIR)$(LOCALEDIR)/%/LC_MESSAGES/pidgin-pbar.mo: %.mo
-	$(MKDIR) -p $(DESTDIR)$(LOCALEDIR)/$(basename $<)/LC_MESSAGES
+	$(INSTALL_DIR) $(DESTDIR)$(LOCALEDIR)/$(basename $<)/LC_MESSAGES
 	$(INSTALL_DATA) $< $@
 
 uninstall-locales:
