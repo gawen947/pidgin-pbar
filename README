@@ -7,7 +7,7 @@ support them.
 
 INSTALLATION
 ============
-You will need a C compiler like gcc, make and the following depencies :
+You will need a C compiler like gcc, make and the following dependencies :
 
   - pidgin-dev
   - gtk2-dev
