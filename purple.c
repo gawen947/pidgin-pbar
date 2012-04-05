@@ -1,5 +1,5 @@
 /* File: purple.c
-   Time-stamp: <2011-06-17 13:57:28 gawen>
+   Time-stamp: <2012-04-05 17:25:20 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -23,6 +23,7 @@
 
 #include "pbar.h"
 #include "gtk.h"
+#include "preferences.h"
 #include "purple.h"
 
 /* callbacks */
@@ -32,7 +33,7 @@ static void cb_set_alias_failure(PurpleAccount *account, const char *error);
 static void cb_dummy();
 
 /* check if default gtk blist is created */
-gboolean is_gtk_blist_created()
+gboolean is_gtk_blist_created(void)
 {
   const PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
 
@@ -43,8 +44,35 @@ gboolean is_gtk_blist_created()
   return TRUE;
 }
 
+/* check wether two strings attributes are equals */
+static gboolean is_same_string_attr(const PurpleStatus *old,
+                                    const PurpleStatus *new,
+                                    const char *id)
+{
+  const gchar *new_value = purple_status_get_attr_string(new, id);
+  const gchar *old_value = purple_status_get_attr_string(old, id);
+
+  if(old_value == NULL && new_value)
+    return FALSE;
+  else if(new_value == NULL || !strcmp(new_value, old_value))
+    return TRUE;
+  return FALSE;
+}
+
+/* Check if the new song is different from the old one. */
+gboolean is_same_song(const PurpleStatus *old, const PurpleStatus *new)
+{
+  if(!is_same_string_attr(old, new, PURPLE_TUNE_TITLE))
+    return FALSE;
+  else if(!is_same_string_attr(old, new, PURPLE_TUNE_ALBUM))
+    return FALSE;
+  else if(!is_same_string_attr(old, new, PURPLE_TUNE_ARTIST))
+    return FALSE;
+  return TRUE;
+}
+
 /* get buddy icon from statusbox widget */
-GdkPixbuf * get_buddy_icon()
+GdkPixbuf * get_buddy_icon(void)
 {
   const PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
   const PidginStatusBox *statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
@@ -53,7 +81,7 @@ GdkPixbuf * get_buddy_icon()
 }
 
 /* get buddy icon hovered from statusbox widget */
-GdkPixbuf * get_buddy_icon_hover()
+GdkPixbuf * get_buddy_icon_hover(void)
 {
   const PidginBuddyList *blist = pidgin_blist_get_default_gtk_blist();
   const PidginStatusBox *statusbox = PIDGIN_STATUS_BOX(blist->statusbox);
@@ -96,7 +124,7 @@ GdkPixbuf * create_prpl_icon_from_info(PurplePluginProtocolInfo *prpl_info,
 }
 
 /* get current status stock id */
-const gchar * get_status_stock_id()
+const gchar * get_status_stock_id(void)
 {
   const PurpleSavedStatus *status = purple_savedstatus_get_current();
   PurpleStatusPrimitive prim = purple_savedstatus_get_type(status);
@@ -189,7 +217,7 @@ GHashTable * get_account_attrs(PurpleAccount *account)
 
 
 /* get global moods */
-PurpleMood * get_global_moods()
+PurpleMood * get_global_moods(void)
 {
   GHashTable *global_moods = g_hash_table_new_full(g_str_hash, g_str_equal,
                                                    NULL, NULL);
@@ -398,4 +426,4 @@ static void cb_set_alias_failure(PurpleAccount *account, const char *error)
   purple_debug_info(NAME, "aliases not supported by \"%s\"\n", id);
 }
 
-static void cb_dummy() {}
+static void cb_dummy(void) {}

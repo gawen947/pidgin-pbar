@@ -1,5 +1,5 @@
 /* File: widget_prpl.c
-   Time-stamp: <2011-06-17 14:42:59 gawen>
+   Time-stamp: <2012-04-05 17:22:08 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
    Copyright (C) 2008,2009 Craig Harding <craigwharding@gmail.com>
@@ -25,6 +25,12 @@
 #include "widget_prpl.h"
 #include "purple.h"
 
+static GList * append_attr(GList *list, const gchar *id, const gchar *value)
+{
+  list = g_list_append(list, (gpointer)id);
+  return g_list_append(list, (gpointer)value);
+}
+
 void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
 {
   g_return_if_fail(bar->installed);
@@ -46,6 +52,28 @@ void cb_status(PurpleAccount *account, PurpleStatus *old, PurpleStatus *new)
       pm = "";
     set_widget_pm(markup, pm);
     purple_prefs_set_string(PREF "/personal-message", pm);
+  }
+
+  /* we should at least check for the current song,
+     if it's different we just apply the new one */
+  if(!is_same_song(old, new)) {
+    GList *a_tune = NULL;
+    const gchar *value;
+
+    value = purple_status_get_attr_string(new, PURPLE_TUNE_TITLE);
+    purple_prefs_set_string(PREF "/tune-title", value);
+    append_attr(a_tune, PURPLE_TUNE_TITLE, value);
+
+    value = purple_status_get_attr_string(new, PURPLE_TUNE_ALBUM);
+    purple_prefs_set_string(PREF "/tune-album", value);
+    append_attr(a_tune, PURPLE_TUNE_ALBUM, value);
+
+    value = purple_status_get_attr_string(new, PURPLE_TUNE_ARTIST);
+    purple_prefs_set_string(PREF "/tune-artist", value);
+    append_attr(a_tune, PURPLE_TUNE_ARTIST, value);
+
+    set_status_all("tune", a_tune);
+    g_list_free(a_tune);
   }
 
   prim = purple_savedstatus_get_type(status);
@@ -208,8 +236,7 @@ void cb_pm_apply(gpointer data, PurpleRequestFields *fields)
       purple_debug_info(NAME, "%s message changed to \"%s\" by user\n",
                         rf->attr, value);
 
-    *(rf->list) = g_list_append(*(rf->list), (gpointer)rf->attr);
-    *(rf->list) = g_list_append(*(rf->list), (gpointer)value);
+    *(rf->list) = append_attr(*(rf->list), rf->attr, value);
   }
 
   const struct status_list {
